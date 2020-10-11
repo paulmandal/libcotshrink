@@ -1,8 +1,8 @@
-package com.paulmandal.atak.forwarder.comm.protobuf.shape;
+package com.paulmandal.atak.libcotshrink.protobuf.shape;
 
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
-import com.paulmandal.atak.forwarder.comm.protobuf.UnknownDetailFieldException;
+import com.paulmandal.atak.libcotshrink.protobuf.UnknownDetailFieldException;
 import com.paulmandal.atak.forwarder.protobufs.ProtobufEllipse;
 
 import java.util.List;

@@ -1,16 +1,16 @@
-package com.paulmandal.atak.forwarder.comm.protobuf;
+package com.paulmandal.atak.libcotshrink.protobuf;
 
-import com.paulmandal.atak.forwarder.comm.protobuf.medevac.FlowTagsProtobufConverter;
-import com.paulmandal.atak.forwarder.comm.protobuf.medevac.MedevacProtobufConverter;
-import com.paulmandal.atak.forwarder.comm.protobuf.medevac.MistProtobufConverter;
-import com.paulmandal.atak.forwarder.comm.protobuf.medevac.MistsMapProtobufConverter;
-import com.paulmandal.atak.forwarder.comm.protobuf.shape.EllipseLinkProtobufConverter;
-import com.paulmandal.atak.forwarder.comm.protobuf.shape.EllipseProtobufConverter;
-import com.paulmandal.atak.forwarder.comm.protobuf.shape.GeoFenceProtobufConverter;
-import com.paulmandal.atak.forwarder.comm.protobuf.shape.LineStyleProtobufConverter;
-import com.paulmandal.atak.forwarder.comm.protobuf.shape.PolyStyleProtobufConverter;
-import com.paulmandal.atak.forwarder.comm.protobuf.shape.ShapeProtobufConverter;
-import com.paulmandal.atak.forwarder.comm.protobuf.shape.StyleProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.medevac.FlowTagsProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.medevac.MedevacProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.medevac.MistProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.medevac.MistsMapProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.shape.EllipseLinkProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.shape.EllipseProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.shape.GeoFenceProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.shape.LineStyleProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.shape.PolyStyleProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.shape.ShapeProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.shape.StyleProtobufConverter;
 
 import java.util.Calendar;
 

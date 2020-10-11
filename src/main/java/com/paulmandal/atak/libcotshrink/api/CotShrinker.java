@@ -5,7 +5,7 @@ import com.paulmandal.atak.libcotshrink.exi.ExiConverter;
 
 public class CotShrinker {
     private ExiConverter mExiConverter;
-    private com.paulmandal.atak.forwarder.comm.protobuf.CotEventProtobufConverter mCotEventProtobufConverter;
+    private com.paulmandal.atak.libcotshrink.protobuf.CotEventProtobufConverter mCotEventProtobufConverter;
 
     public CotShrinker(ExiConverter exiConverter) {
         mExiConverter = exiConverter;

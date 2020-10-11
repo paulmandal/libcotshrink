@@ -1,4 +1,4 @@
-package com.paulmandal.atak.forwarder.comm.protobuf;
+package com.paulmandal.atak.libcotshrink.protobuf;
 
 public class CustomBytesExtFields {
     public String how;

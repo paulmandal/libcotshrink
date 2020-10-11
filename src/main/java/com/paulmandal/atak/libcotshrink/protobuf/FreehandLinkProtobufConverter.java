@@ -1,9 +1,9 @@
-package com.paulmandal.atak.forwarder.comm.protobuf;
+package com.paulmandal.atak.libcotshrink.protobuf;
 
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
 import com.google.protobuf.ByteString;
-import com.paulmandal.atak.forwarder.comm.protobuf.gzip.GzipHelper;
+import com.paulmandal.atak.libcotshrink.protobuf.gzip.GzipHelper;
 import com.paulmandal.atak.forwarder.protobufs.ProtobufFreehandLink;
 
 import java.io.IOException;

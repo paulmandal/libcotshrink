@@ -1,11 +1,11 @@
-package com.paulmandal.atak.forwarder.comm.protobuf;
+package com.paulmandal.atak.libcotshrink.protobuf;
 
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
 import com.paulmandal.atak.forwarder.protobufs.ProtobufGroupContact;
 
-import static com.paulmandal.atak.forwarder.comm.protobuf.SubstitutionValues.SENDER_CALLSIGN_SUBSTITUION_MARKER;
-import static com.paulmandal.atak.forwarder.comm.protobuf.SubstitutionValues.UID_SUBSTITUTION_MARKER;
+import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.SENDER_CALLSIGN_SUBSTITUION_MARKER;
+import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.UID_SUBSTITUTION_MARKER;
 
 public class GroupContactProtobufConverter {
     private static final String KEY_CONTACT = "contact";

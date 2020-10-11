@@ -1,4 +1,4 @@
-package com.paulmandal.atak.forwarder.comm.protobuf;
+package com.paulmandal.atak.libcotshrink.protobuf;
 
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
@@ -7,12 +7,12 @@ import com.paulmandal.atak.forwarder.protobufs.ProtobufGroupContact;
 
 import java.util.List;
 
-import static com.paulmandal.atak.forwarder.comm.protobuf.SubstitutionValues.CHATROOM_SUBSTITUTION_MARKER;
-import static com.paulmandal.atak.forwarder.comm.protobuf.SubstitutionValues.GROUPS_SUBSTITUION_MARKER;
-import static com.paulmandal.atak.forwarder.comm.protobuf.SubstitutionValues.ID_SUBSTITUTION_MARKER;
-import static com.paulmandal.atak.forwarder.comm.protobuf.SubstitutionValues.USER_GROUPS_SUBSTITUTION_MARKER;
-import static com.paulmandal.atak.forwarder.comm.protobuf.SubstitutionValues.VALUE_GROUPS;
-import static com.paulmandal.atak.forwarder.comm.protobuf.SubstitutionValues.VALUE_USER_GROUPS;
+import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.CHATROOM_SUBSTITUTION_MARKER;
+import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.GROUPS_SUBSTITUION_MARKER;
+import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.ID_SUBSTITUTION_MARKER;
+import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.USER_GROUPS_SUBSTITUTION_MARKER;
+import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.VALUE_GROUPS;
+import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.VALUE_USER_GROUPS;
 
 public class GroupProtobufConverter {
     private static final String KEY_GROUP = "group";

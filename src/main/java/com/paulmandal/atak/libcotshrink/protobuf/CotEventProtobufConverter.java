@@ -1,14 +1,14 @@
-package com.paulmandal.atak.forwarder.comm.protobuf;
+package com.paulmandal.atak.libcotshrink.protobuf;
 
 import com.atakmap.coremap.cot.event.CotDetail;
 import com.atakmap.coremap.cot.event.CotEvent;
 import com.atakmap.coremap.cot.event.CotPoint;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.paulmandal.atak.forwarder.Config;
-import com.paulmandal.atak.forwarder.comm.protobuf.medevac.FlowTagsProtobufConverter;
-import com.paulmandal.atak.forwarder.comm.protobuf.medevac.MedevacProtobufConverter;
-import com.paulmandal.atak.forwarder.comm.protobuf.shape.GeoFenceProtobufConverter;
-import com.paulmandal.atak.forwarder.comm.protobuf.shape.ShapeProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.medevac.FlowTagsProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.medevac.MedevacProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.shape.GeoFenceProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.shape.ShapeProtobufConverter;
 import com.paulmandal.atak.forwarder.cotutils.CotMessageTypes;
 import com.paulmandal.atak.forwarder.protobufs.ProtobufContact;
 import com.paulmandal.atak.forwarder.protobufs.ProtobufCotEvent;

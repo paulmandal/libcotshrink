@@ -1,4 +1,4 @@
-package com.paulmandal.atak.forwarder.comm.protobuf;
+package com.paulmandal.atak.libcotshrink.protobuf;
 
 public class MappingNotFoundException extends Exception {
     public MappingNotFoundException(String message) {

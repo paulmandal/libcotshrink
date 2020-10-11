@@ -1,4 +1,4 @@
-package com.paulmandal.atak.forwarder.comm.protobuf;
+package com.paulmandal.atak.libcotshrink.protobuf;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

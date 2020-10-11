@@ -1,4 +1,4 @@
-package com.paulmandal.atak.forwarder.comm.protobuf;
+package com.paulmandal.atak.libcotshrink.protobuf;
 
 public class StringUtils {
     public static boolean isNullOrEmpty(String s) {

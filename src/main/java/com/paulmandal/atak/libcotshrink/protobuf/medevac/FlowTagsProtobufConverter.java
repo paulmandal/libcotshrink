@@ -1,9 +1,9 @@
-package com.paulmandal.atak.forwarder.comm.protobuf.medevac;
+package com.paulmandal.atak.libcotshrink.protobuf.medevac;
 
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
-import com.paulmandal.atak.forwarder.comm.protobuf.StringUtils;
-import com.paulmandal.atak.forwarder.comm.protobuf.UnknownDetailFieldException;
+import com.paulmandal.atak.libcotshrink.protobuf.StringUtils;
+import com.paulmandal.atak.libcotshrink.protobuf.UnknownDetailFieldException;
 import com.paulmandal.atak.forwarder.protobufs.ProtobufFlowTags;
 
 public class FlowTagsProtobufConverter {
