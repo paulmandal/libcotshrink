@@ -1,4 +1,4 @@
-apply plugin: 'com.android.libary'
+apply plugin: 'com.android.library'
 apply plugin: 'com.google.protobuf'
 
 android {
