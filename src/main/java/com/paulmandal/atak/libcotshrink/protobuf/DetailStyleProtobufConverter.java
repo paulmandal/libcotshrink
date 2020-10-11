@@ -2,8 +2,8 @@ package com.paulmandal.atak.libcotshrink.protobuf;
 
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
-import com.paulmandal.atak.forwarder.protobufs.ProtobufColor;
-import com.paulmandal.atak.forwarder.protobufs.ProtobufDetailStyle;
+import com.paulmandal.atak.libcotshrink.protobufs.ProtobufColor;
+import com.paulmandal.atak.libcotshrink.protobufs.ProtobufDetailStyle;
 
 public class DetailStyleProtobufConverter {
     private static final String KEY_COLOR = "color";

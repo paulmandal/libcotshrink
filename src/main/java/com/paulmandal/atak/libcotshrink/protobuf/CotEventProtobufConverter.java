@@ -1,24 +1,25 @@
 package com.paulmandal.atak.libcotshrink.protobuf;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.atakmap.coremap.cot.event.CotDetail;
 import com.atakmap.coremap.cot.event.CotEvent;
 import com.atakmap.coremap.cot.event.CotPoint;
 import com.google.protobuf.InvalidProtocolBufferException;
-import com.paulmandal.atak.forwarder.Config;
 import com.paulmandal.atak.libcotshrink.protobuf.medevac.FlowTagsProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.medevac.MedevacProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.shape.GeoFenceProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.shape.ShapeProtobufConverter;
-import com.paulmandal.atak.forwarder.cotutils.CotMessageTypes;
-import com.paulmandal.atak.forwarder.protobufs.ProtobufContact;
-import com.paulmandal.atak.forwarder.protobufs.ProtobufCotEvent;
-import com.paulmandal.atak.forwarder.protobufs.ProtobufDetail;
-import com.paulmandal.atak.forwarder.protobufs.ProtobufDetailStyle;
-import com.paulmandal.atak.forwarder.protobufs.ProtobufDrawnShape;
-import com.paulmandal.atak.forwarder.protobufs.ProtobufRoute;
+import com.paulmandal.atak.libcotshrink.protobufs.ProtobufContact;
+import com.paulmandal.atak.libcotshrink.protobufs.ProtobufCotEvent;
+import com.paulmandal.atak.libcotshrink.protobufs.ProtobufDetail;
+import com.paulmandal.atak.libcotshrink.protobufs.ProtobufDetailStyle;
+import com.paulmandal.atak.libcotshrink.protobufs.ProtobufDrawnShape;
+import com.paulmandal.atak.libcotshrink.protobufs.ProtobufRoute;
 
 public class CotEventProtobufConverter {
-    private static final String TAG = Config.DEBUG_TAG_PREFIX + CotEventProtobufConverter.class.getSimpleName();
+    private static final String TAG = CotEventProtobufConverter.class.getSimpleName();
 
     /**
      * CotDetail fields
@@ -64,6 +65,8 @@ public class CotEventProtobufConverter {
     /**
      * Special Values
      */
+    public static final String MESSAGE_TYPE_PLI = "a-f-G-U-C";
+    
     private static final String GEOCHAT_MARKER = "GeoChat";
 
     private final TakvProtobufConverter mTakvProtobufConverter;
@@ -162,11 +165,13 @@ public class CotEventProtobufConverter {
         mStartOfYearMs = startOfYearMs;
     }
 
+    @NonNull
     public byte[] toByteArray(CotEvent cotEvent) throws MappingNotFoundException, UnknownDetailFieldException {
         ProtobufCotEvent.CotEvent cotEventProtobuf = toCotEventProtobuf(cotEvent);
         return cotEventProtobuf.toByteArray();
     }
 
+    @Nullable
     public CotEvent toCotEvent(byte[] cotProtobuf) {
         CotEvent cotEvent = null;
 
@@ -399,7 +404,7 @@ public class CotEventProtobufConverter {
         CotDetail cotDetail = new CotDetail();
 
         mTakvProtobufConverter.maybeAddTakv(cotDetail, detail.getTakv());
-        mContactProtobufConverter.maybeAddContact(cotDetail, detail.getContact(), cotEvent.getType().equals(CotMessageTypes.TYPE_PLI));
+        mContactProtobufConverter.maybeAddContact(cotDetail, detail.getContact(), cotEvent.getType().equals(MESSAGE_TYPE_PLI));
         mPrecisionLocationProtobufConverter.maybeAddPrecisionLocation(cotDetail, customBytesExtFields);
         mUnderscoreGroupProtobufConverter.maybeAddUnderscoreGroup(cotDetail, detail.getGroup(), customBytesExtFields);
         mStatusProtobufConverter.maybeAddStatus(cotDetail, customBytesExtFields);
@@ -439,7 +444,7 @@ public class CotEventProtobufConverter {
     }
 
     private void maybeAddUidDroid(CotEvent cotEvent, CotDetail cotDetail, ProtobufContact.Contact contact) {
-        boolean isPli = cotEvent.getType().equals(CotMessageTypes.TYPE_PLI);
+        boolean isPli = cotEvent.getType().equals(MESSAGE_TYPE_PLI);
         String callsign = contact.getCallsign();
 
         if (!StringUtils.isNullOrEmpty(callsign) && isPli) {

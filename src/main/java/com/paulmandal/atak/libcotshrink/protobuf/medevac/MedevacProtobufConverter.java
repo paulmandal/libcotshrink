@@ -3,7 +3,7 @@ package com.paulmandal.atak.libcotshrink.protobuf.medevac;
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
 import com.paulmandal.atak.libcotshrink.protobuf.UnknownDetailFieldException;
-import com.paulmandal.atak.forwarder.protobufs.ProtobufMedevac;
+import com.paulmandal.atak.libcotshrink.protobufs.ProtobufMedevac;
 
 public class MedevacProtobufConverter {
     private static final String KEY_MEDEVAC = "_medevac_";

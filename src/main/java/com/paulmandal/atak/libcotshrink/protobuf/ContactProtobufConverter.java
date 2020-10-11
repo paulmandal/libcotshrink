@@ -2,7 +2,7 @@ package com.paulmandal.atak.libcotshrink.protobuf;
 
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
-import com.paulmandal.atak.forwarder.protobufs.ProtobufContact;
+import com.paulmandal.atak.libcotshrink.protobufs.ProtobufContact;
 
 import java.math.BigInteger;
 import java.net.InetAddress;

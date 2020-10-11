@@ -2,7 +2,7 @@ package com.paulmandal.atak.libcotshrink.protobuf;
 
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
-import com.paulmandal.atak.forwarder.protobufs.ProtobufUnderscoreGroup;
+import com.paulmandal.atak.libcotshrink.protobufs.ProtobufUnderscoreGroup;
 
 public class UnderscoreGroupProtobufConverter {
     private static final String KEY_UNDERSCORED_GROUP = "__group";

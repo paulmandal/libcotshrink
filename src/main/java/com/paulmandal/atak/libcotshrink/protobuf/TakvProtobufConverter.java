@@ -2,7 +2,7 @@ package com.paulmandal.atak.libcotshrink.protobuf;
 
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
-import com.paulmandal.atak.forwarder.protobufs.ProtobufTakv;
+import com.paulmandal.atak.libcotshrink.protobufs.ProtobufTakv;
 
 public class TakvProtobufConverter {
     private static final String KEY_TAKV = "takv";

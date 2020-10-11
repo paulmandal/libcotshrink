@@ -2,7 +2,7 @@ package com.paulmandal.atak.libcotshrink.protobuf;
 
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
-import com.paulmandal.atak.forwarder.protobufs.ProtobufHeight;
+import com.paulmandal.atak.libcotshrink.protobufs.ProtobufHeight;
 
 public class HeightAndHeightUnitProtobufConverter {
     private static final String KEY_HEIGHT_UNIT = "height_unit";

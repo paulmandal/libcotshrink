@@ -3,8 +3,8 @@ package com.paulmandal.atak.libcotshrink.protobuf.medevac;
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
 import com.paulmandal.atak.libcotshrink.protobuf.UnknownDetailFieldException;
-import com.paulmandal.atak.forwarder.protobufs.ProtobufMist;
-import com.paulmandal.atak.forwarder.protobufs.ProtobufMistsMap;
+import com.paulmandal.atak.libcotshrink.protobufs.ProtobufMist;
+import com.paulmandal.atak.libcotshrink.protobufs.ProtobufMistsMap;
 
 public class MistsMapProtobufConverter {
     private static final String KEY_MISTS_MAP = "zMistsMap";

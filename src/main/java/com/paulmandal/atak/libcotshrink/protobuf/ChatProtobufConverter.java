@@ -2,7 +2,7 @@ package com.paulmandal.atak.libcotshrink.protobuf;
 
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
-import com.paulmandal.atak.forwarder.protobufs.ProtobufChat;
+import com.paulmandal.atak.libcotshrink.protobufs.ProtobufChat;
 
 import java.util.List;
 

@@ -2,8 +2,8 @@ package com.paulmandal.atak.libcotshrink.protobuf;
 
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
-import com.paulmandal.atak.forwarder.protobufs.ProtobufDrawnShape;
-import com.paulmandal.atak.forwarder.protobufs.ProtobufShapeLink;
+import com.paulmandal.atak.libcotshrink.protobufs.ProtobufDrawnShape;
+import com.paulmandal.atak.libcotshrink.protobufs.ProtobufShapeLink;
 
 public class ShapeLinkProtobufConverter {
     private static final String KEY_LINK = "link";

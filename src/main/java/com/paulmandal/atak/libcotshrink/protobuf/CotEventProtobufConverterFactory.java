@@ -15,7 +15,7 @@ import com.paulmandal.atak.libcotshrink.protobuf.shape.StyleProtobufConverter;
 import java.util.Calendar;
 
 public class CotEventProtobufConverterFactory {
-    public static CotEventProtobufConverter createCotEventProtobufConverter() {
+    public CotEventProtobufConverter createCotEventProtobufConverter() {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.MONTH, 0);
         cal.set(Calendar.DATE, 1);

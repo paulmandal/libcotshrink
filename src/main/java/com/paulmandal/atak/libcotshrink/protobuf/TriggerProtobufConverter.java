@@ -2,7 +2,7 @@ package com.paulmandal.atak.libcotshrink.protobuf;
 
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
-import com.paulmandal.atak.forwarder.protobufs.ProtobufTrigger;
+import com.paulmandal.atak.libcotshrink.protobufs.ProtobufTrigger;
 
 public class TriggerProtobufConverter {
     private static String KEY_TRIGGER = "trigger";

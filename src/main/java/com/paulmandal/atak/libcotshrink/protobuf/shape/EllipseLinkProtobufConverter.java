@@ -3,7 +3,7 @@ package com.paulmandal.atak.libcotshrink.protobuf.shape;
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
 import com.paulmandal.atak.libcotshrink.protobuf.UnknownDetailFieldException;
-import com.paulmandal.atak.forwarder.protobufs.ProtobufEllipseLink;
+import com.paulmandal.atak.libcotshrink.protobufs.ProtobufEllipseLink;
 
 import java.util.List;
 

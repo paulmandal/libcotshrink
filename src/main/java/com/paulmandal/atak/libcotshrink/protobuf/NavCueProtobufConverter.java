@@ -2,8 +2,8 @@ package com.paulmandal.atak.libcotshrink.protobuf;
 
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
-import com.paulmandal.atak.forwarder.protobufs.ProtobufNavCue;
-import com.paulmandal.atak.forwarder.protobufs.ProtobufTrigger;
+import com.paulmandal.atak.libcotshrink.protobufs.ProtobufNavCue;
+import com.paulmandal.atak.libcotshrink.protobufs.ProtobufTrigger;
 
 import java.util.List;
 

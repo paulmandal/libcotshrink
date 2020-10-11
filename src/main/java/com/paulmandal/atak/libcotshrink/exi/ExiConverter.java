@@ -34,7 +34,7 @@ public class ExiConverter {
     }
 
     public byte[] xmlToExi(String xml) {
-        byte[] exiBytes;
+        byte[] exiBytes = null;
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
              ByteArrayInputStream bais = new ByteArrayInputStream(xml.getBytes())) {
             mExiResult.setOutputStream(baos);
@@ -44,13 +44,12 @@ public class ExiConverter {
             exiBytes = baos.toByteArray();
         } catch (IOException | EXIException | SAXException e) {
             e.printStackTrace();
-            return new byte[0];
         }
         return exiBytes;
     }
 
     public String exiToXml(byte[] exi) {
-        String xml;
+        String xml = null;
         try (ByteArrayInputStream bais = new ByteArrayInputStream(exi);
              ByteArrayOutputStream baos = new ByteArrayOutputStream()) {
             InputSource is = new InputSource(bais);
@@ -61,7 +60,6 @@ public class ExiConverter {
             xml = baos.toString();
         } catch (IOException | TransformerException e) {
             e.printStackTrace();
-            return null;
         }
 
         return xml;

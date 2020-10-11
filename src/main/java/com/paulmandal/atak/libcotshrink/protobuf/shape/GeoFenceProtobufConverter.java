@@ -4,14 +4,13 @@ import android.util.Log;
 
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
-import com.paulmandal.atak.forwarder.Config;
 import com.paulmandal.atak.libcotshrink.protobuf.UnknownDetailFieldException;
-import com.paulmandal.atak.forwarder.protobufs.ProtobufGeoFence;
+import com.paulmandal.atak.libcotshrink.protobufs.ProtobufGeoFence;
 
 import java.util.List;
 
 public class GeoFenceProtobufConverter {
-    private static final String TAG = Config.DEBUG_TAG_PREFIX + GeoFenceProtobufConverter.class.getSimpleName();
+    private static final String TAG = GeoFenceProtobufConverter.class.getSimpleName();
 
     private static final String KEY_GEOFENCE = "__geofence";
 

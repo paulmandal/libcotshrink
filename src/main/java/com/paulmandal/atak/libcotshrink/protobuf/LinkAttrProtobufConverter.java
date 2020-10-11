@@ -2,8 +2,8 @@ package com.paulmandal.atak.libcotshrink.protobuf;
 
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
-import com.paulmandal.atak.forwarder.protobufs.ProtobufLinkAttr;
-import com.paulmandal.atak.forwarder.protobufs.ProtobufRoute;
+import com.paulmandal.atak.libcotshrink.protobufs.ProtobufLinkAttr;
+import com.paulmandal.atak.libcotshrink.protobufs.ProtobufRoute;
 
 public class LinkAttrProtobufConverter {
     private static final String KEY_LINK_ATTR = "link_attr";

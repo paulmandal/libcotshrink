@@ -4,7 +4,7 @@ import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
 import com.paulmandal.atak.libcotshrink.protobuf.StringUtils;
 import com.paulmandal.atak.libcotshrink.protobuf.UnknownDetailFieldException;
-import com.paulmandal.atak.forwarder.protobufs.ProtobufMist;
+import com.paulmandal.atak.libcotshrink.protobufs.ProtobufMist;
 
 public class MistProtobufConverter {
     private static final String KEY_MIST = "zMist";

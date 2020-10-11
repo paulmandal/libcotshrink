@@ -3,7 +3,7 @@ package com.paulmandal.atak.libcotshrink.protobuf.shape;
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
 import com.paulmandal.atak.libcotshrink.protobuf.UnknownDetailFieldException;
-import com.paulmandal.atak.forwarder.protobufs.ProtobufLineStyle;
+import com.paulmandal.atak.libcotshrink.protobufs.ProtobufLineStyle;
 
 import java.util.List;
 
