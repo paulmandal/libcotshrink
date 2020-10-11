@@ -51,12 +51,21 @@ dependencies {
     implementation 'com.google.protobuf:protobuf-lite:3.0.1'
     implementation 'com.siemens.ct.exi:exificient:1.0.4'
 
-    def f = new File("$project.projectDir/../../AndroidTacticalAssaultKit-CIV/atak/ATAK/app/build/libs/4.1.0.CIV/main.jar")
-    if (f.exists()) {
-        compileOnly fileTree(dir: '../../AndroidTacticalAssaultKit-CIV/atak/ATAK/app/build/libs/4.1.0.CIV/main.jar', include: '*.jar')
-    } else {
-        compileOnly fileTree(dir: '../AndroidTacticalAssaultKit-CIV/atak/ATAK/app/build/libs/4.1.0.CIV/main.jar', include: '*.jar')
+    def atakLibPathBase = 'AndroidTacticalAssaultKit-CIV/atak/ATAK/app/build/libs/4.1.0.CIV/main.jar'
+    def atakLibPath = "../../${atakLibPathBase}"
+    def atakLibFile = new File("${project.projectDir}/${atakLibPath}")
+
+    if (!atakLibFile.exists()) {
+        // fallback to building standalone
+        atakLibPath = "../${atakLibPathBase}"
+        atakLibFile = new File("${project.projectDir}/${atakLibPath}")
     }
+
+    if (!atakLibFile.exists()) {
+        throw new Exception("The libcotshrink directory must be either side-by-side in the same parent directory as AndroidTacticalAssaultKit-CIV or it must be inside a project that is side-by-side in the same parent directory as AndroidTacticalAssaultKit-CIV")
+    }
+
+    compileOnly fileTree(dir: atakLibPath, include: '*.jar')
 
     testImplementation 'junit:junit:4.13'
 }
