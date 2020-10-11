@@ -23,6 +23,11 @@ public class CotShrinker {
 
     @Nullable
     public byte[] toByteArray(CotEvent cotEvent) {
+        return mExiConverter.xmlToExi(cotEvent.toString());
+    }
+
+    @Nullable
+    public byte[] toByteArrayLossy(CotEvent cotEvent) {
         byte[] cotEventBytes = null;
 
         try {
@@ -33,7 +38,7 @@ public class CotShrinker {
         }
 
         if (cotEventBytes == null) {
-            cotEventBytes = mExiConverter.xmlToExi(cotEvent.toString());
+            return toByteArray(cotEvent);
         }
 
         return cotEventBytes;
@@ -41,7 +46,7 @@ public class CotShrinker {
 
     @Nullable
     public CotEvent toCotEvent(byte[] cotEventBytes) {
-        CotEvent cotEvent = null;
+        CotEvent cotEvent;
         cotEvent = mCotEventProtobufConverter.toCotEvent(cotEventBytes);
 
         if (cotEvent == null) {
