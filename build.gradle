@@ -49,7 +49,6 @@ sourceSets {
 }
 
 dependencies {
-    implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'com.google.protobuf:protobuf-lite:3.0.1'
 
     def f = new File("$project.projectDir/../../AndroidTacticalAssaultKit-CIV/atak/ATAK/app/build/libs/4.1.0.CIV/main.jar")
