@@ -34,6 +34,7 @@ Run Gradle Sync and you will have access to libcotshrink's classes.
 The `CotShrinker` class contains the libcotshrink API. It has lossless and lossy variants:
 
 `CotShrinker.toByteArray(CotEvent)` - Losslessly converts a `CotEvent` to a byte array, currently this uses EXI (Efficient XML Interchange)
+
 `CotShrinker.toByteArrayLossy(CotEvent)` - Lossy conversion for a `CotEvent` to a byte array, uses custom protobufs. This will fall back to `toByteArray(CotEvent)` if the custom protobuf conversion fails.
 
 `CotShrinker.toCotEvent(byte[])` - Will attempt to convert back to a `CotEvent`, first using the lossy conversion and then using the lossless if that one fails.
