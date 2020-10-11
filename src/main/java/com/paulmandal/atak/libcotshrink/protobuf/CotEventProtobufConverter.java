@@ -199,7 +199,7 @@ public class CotEventProtobufConverter {
             cotEvent.setDetail(cotDetailFromProtoDetail(cotEvent, protoCotEvent.getDetail(), customBytesExtFields, substitutionValues));
             cotEvent.setPoint(new CotPoint(protoCotEvent.getLat(), protoCotEvent.getLon(), customBytesFields.hae, protoCotEvent.getCe(), protoCotEvent.getLe()));
         } catch (InvalidProtocolBufferException e) {
-            e.printStackTrace();
+//            e.printStackTrace();
         }
         return cotEvent;
     }
