@@ -1,5 +1,7 @@
 libcotshrink takes `CotEvent` instances from ATAK and turns them into minimally sized byte arrays.
 
+It uses a combination of EXI (Efficient XML Interchange), Protobufs, and GZip.
+
 # Adding to your Project
 
 This module expects to be side-by-side in the same parent directory as the `AndroidTacticalAssaultKit-CIV` directory (ATAK source)
@@ -80,18 +82,18 @@ Using the `CotShrinker.toByteArrayLossy(CotEvent)` method will cause loss of pre
 | PLI                     | 731           | 568 (-22.30%)  | 193 (-73.60%) |
 | PLI w 0.0.0.0 endpoint  | 725           | 562 (-22.48%)  | 188 (-74.07%) |
 | Complex Shape           | 800           | 598 (-25.25%)  | 226 (-71.75%) |
-| Drawn Shape             | 963           | 711 (-26.17%)  | 273 (-71.65%) |
-| Freehand                | 1867          | 1286 (-31.12%) | 606 (-67.54%) |
-| Group Chat              | 1181          | 746 (-36.83%)  | 355 (-69.94%) |
+| Drawn Shape             | 963           | 711 (-26.17%)  | 264 (-72.59%) |
+| Freehand                | 1867          | 958 (-48.69%)  | 606 (-67.54%) |
+| Group Chat              | 1181          | 746 (-36.83%)  | 352 (-70.19%) |
 | OP                      | 735           | 569 (-22.59%)  | 200 (-72.79%) |
-| P2P Chat                | 951           | 665 (-30.07%)  | 343 (-63.93%) |
-| Route                   | 2826          | 1754 (-37.93%) | 887 (-68.61%) |
+| P2P Chat                | 951           | 665 (-30.07%)  | 309 (-67.51%) |
+| Route                   | 2826          | 1680 (-40.55%) | 667 (-76.40%) |
 | Sensor                  | 1106          | 859 (-22.33%)  | 305 (-72.42%) |
-| Simple Shape            | 881           | 680 (-22.81%)  | 252 (-71.40%) |
+| Simple Shape            | 881           | 678 (-23.04%)  | 252 (-71.40%) |
 | User Icon               | 770           | 606 (-21.30%)  | 258 (-66.49%) |
 | Waypoint                | 756           | 577 (-23.68%)  | 204 (-73.02%) |
-| Casevac w/ All Fields   | 1810          | 1476 (-18.45%) | 696 (-61.55%) |
+| Casevac w/ All Fields   | 1810          | 1438 (-20.55%) | 609 (-66.35%) |
 | Casevac w/ Empty Fields | 876           | 694 (-20.78%)  | 242 (-72.37%) |
-| Circle                  | 912           | 645 (-29.28%)  | 256 (-71.93%) |
-| GeoFence w/ Altitude    | 1040          | 816 (-21.54%)  | 294 (-71.73%) |
-| GeoFence w/o Altitude   | 1009          | 785 (-22.20%)  | 290 (-71.26%) |
+| Circle                  | 912           | 645 (-29.28%)  | 222 (-75.66%) |
+| GeoFence w/ Altitude    | 1040          | 816 (-21.54%)  | 284 (-72.69%) |
+| GeoFence w/o Altitude   | 1009          | 785 (-22.20%)  | 269 (-73.34%) |
