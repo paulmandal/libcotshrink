@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.protobuf'
 
 android {
     compileSdkVersion 28
@@ -20,23 +21,68 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
+    sourceSets {
+        main {
+
+            proto {
+                srcDir 'src/main/protobuf'
+                srcDir 'src/main/protocolbuffers'
+            }
+        }
+        test {
+            proto {
+                srcDir 'src/test/protocolbuffers'
+            }
+            java.srcDirs 'src/test/java'
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+sourceSets {
+    main.java.srcDirs += "${protobuf.generatedFilesBaseDir}/main/javalite"
 }
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation 'com.google.protobuf:protobuf-lite:3.0.1'
 
     def f = new File("$project.projectDir/../../AndroidTacticalAssaultKit-CIV/atak/ATAK/app/build/libs/4.1.0.CIV/main.jar")
     if (f.exists()) {
-        println("ATAK main.jar found two directories down")
         compileOnly fileTree(dir: '../../AndroidTacticalAssaultKit-CIV/atak/ATAK/app/build/libs/4.1.0.CIV/main.jar', include: '*.jar')
     } else {
-        println("!!ATAK main.jar found ONE directory down!!")
         compileOnly fileTree(dir: '../AndroidTacticalAssaultKit-CIV/atak/ATAK/app/build/libs/4.1.0.CIV/main.jar', include: '*.jar')
     }
 
     testImplementation 'junit:junit:4.13'
 //    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+}
+
+protobuf {
+    protoc {
+        artifact = 'com.google.protobuf:protoc:3.7.0'
+    }
+    plugins {
+        javalite {
+            artifact = 'com.google.protobuf:protoc-gen-javalite:3.0.0'
+        }
+    }
+    generateProtoTasks {
+        all().each { task ->
+            task.builtins {
+                remove java
+            }
+            task.plugins {
+                javalite {}
+            }
+        }
+    }
 }
 
 buildscript {
@@ -46,9 +92,7 @@ buildscript {
     }
     dependencies {
         classpath "com.android.tools.build:gradle:4.0.1"
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+        classpath "com.google.protobuf:protobuf-gradle-plugin:0.8.12"
     }
 }
 
