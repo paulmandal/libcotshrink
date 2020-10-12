@@ -86,7 +86,10 @@ public class CotShrinker {
 
         if (cotEvent == null) {
             String cotXml = mExiConverter.exiToXml(cotEventBytes);
-            cotEvent = CotEvent.parse(cotXml);
+
+            if (cotXml != null) {
+                cotEvent = CotEvent.parse(cotXml);
+            }
         }
 
         return cotEvent;
