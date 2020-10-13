@@ -13,14 +13,14 @@ Add the module repo to your project:
 
 Edit your `settings.gradle` and add the module:
 
-```
+```groovy
 include ':libcotshrink'
 project(':libcotshrink').projectDir = new File('libcotshrink')
 ```
 
 Edit your `app/build.gradle` and add the module to your app/plugin's dependencies:
 
-```
+```groovy
 dependencies {
     ...
 
@@ -43,7 +43,7 @@ The `CotShrinker` class contains the libcotshrink API. It has lossless and lossy
 
 Example usage:
 
-```
+```java
 CotEvent cotEvent = ...;
 CotShrinkerFactory cotShrinkerFactory = new CotShrinkerFactory();
 CotShrinker cotShrinker = cotShrinkerFactory.createCotShrinker();
