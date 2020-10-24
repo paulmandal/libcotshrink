@@ -61,7 +61,13 @@ Using the `CotShrinker.toByteArrayLossy(CotEvent)` method will cause loss of pre
 
 * Figure out how to get unit tests working, they rely on the ATAK lib but it doesn't seem to work during testing
 * Improve structure of Cot*ProtobufConverter classes, there should be a reasonable directory tree there
+* Ensure that all Cot*ProtobufConverter classes check for unhandled: InnerText, Child Objs. and Fields
+* Use `sint32` instead of `int32` for fields that can be negative
+* Support more message types (please identify them and how they are generated in Issues)
+* Make more fields into enums (e.g. `CotEvent.type`)
+* Create detail subobjects for each set of detail fields used by a specific message type, e.g. the detail field should have objs like GeoChatDetail, PliDetail, etc. that are composed of the existing detail fields. This MAY save some space, need to test with PLI or something like that first.
 * Shrink messages further
+* Use Dagger 2
 
 # Performance Stats
 
