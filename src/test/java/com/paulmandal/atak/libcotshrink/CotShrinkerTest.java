@@ -4,8 +4,8 @@
 //import com.atakmap.coremap.cot.event.CotEvent;
 //import com.atakmap.coremap.cot.event.CotPoint;
 //import com.atakmap.coremap.maps.time.CoordinatedTime;
-//import com.paulmandal.atak.libcotshrink.api.CotShrinker;
-//import com.paulmandal.atak.libcotshrink.api.CotShrinkerFactory;
+//import com.paulmandal.atak.libcotshrink.pub.api.CotShrinker;
+//import com.paulmandal.atak.libcotshrink.pub.api.CotShrinkerFactory;
 //import com.paulmandal.atak.libcotshrink.utils.XmlComparer;
 //
 //import org.junit.Test;

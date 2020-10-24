@@ -1,11 +1,19 @@
-package com.paulmandal.atak.libcotshrink.api;
+package com.paulmandal.atak.libcotshrink.pub.api;
 
 import com.paulmandal.atak.libcotshrink.exi.ExiConverter;
 import com.paulmandal.atak.libcotshrink.exi.ExiConverterFactory;
 import com.paulmandal.atak.libcotshrink.protobuf.CotEventProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.CotEventProtobufConverterFactory;
 
+/**
+ * Factory for CotShrinker instances
+ */
 public class CotShrinkerFactory {
+    /**
+     * Create a CotShrinker instance
+     *
+     * @return A CotShrinker instance
+     */
     public CotShrinker createCotShrinker() {
         ExiConverterFactory exiConverterFactory = new ExiConverterFactory();
         ExiConverter exiConverter = exiConverterFactory.createExiConverter();

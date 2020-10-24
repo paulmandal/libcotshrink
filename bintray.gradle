@@ -8,8 +8,13 @@ task sourcesJar(type: Jar) {
 }
 
 task javadoc(type: Javadoc) {
-   source = android.sourceSets.main.java.srcDirs
-   classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+    title = "${archivesBaseName} ${version} API"
+    include 'com/paulmandal/atak/libcotshrink/pub/api/**/*.java'
+
+    source = android.sourceSets.main.java.srcDirs
+    ext.androidJar = "${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar"
+
+    classpath += (files(getAtakLibPath()) + files(ext.androidJar) + project.files(android.getBootClasspath().join(File.pathSeparator)))
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
