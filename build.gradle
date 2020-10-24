@@ -1,5 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.google.protobuf'
+apply from: 'install.gradle'
+apply from: 'bintray.gradle'
 
 android {
     compileSdkVersion 28
@@ -95,10 +97,16 @@ buildscript {
     repositories {
         google()
         jcenter()
+        maven {
+          url 'https://maven.google.com'
+        }
     }
     dependencies {
         classpath "com.android.tools.build:gradle:4.0.1"
         classpath "com.google.protobuf:protobuf-gradle-plugin:0.8.12"
+
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
     }
 }
 

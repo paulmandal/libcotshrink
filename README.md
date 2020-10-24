@@ -4,27 +4,15 @@ It uses a combination of EXI (Efficient XML Interchange), Protobufs, and GZip.
 
 # Adding to your Project
 
-This module expects to be side-by-side in the same parent directory as the `AndroidTacticalAssaultKit-CIV` directory (ATAK source)
-  OR in a project that is side-by-side with the ATAK source. Building will fail if it is not.
-  
-Add the module repo to your project:
+libcotshrink is now available on JCenter
 
-`git submodule add git@github.com:paulmandal/libcotshrink.git`
-
-Edit your `settings.gradle` and add the module:
-
-```groovy
-include ':libcotshrink'
-project(':libcotshrink').projectDir = new File('libcotshrink')
-```
-
-Edit your `app/build.gradle` and add the module to your app/plugin's dependencies:
+Edit your `app/build.gradle` and add the library to your app/plugin's dependencies:
 
 ```groovy
 dependencies {
     ...
 
-    implementation project(':libcotshrink')
+    implementation 'com.paulmandal.atak:libcotshrink:0.1.0'
 }
 
 ```
