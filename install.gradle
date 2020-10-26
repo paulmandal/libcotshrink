@@ -1,0 +1,53 @@
+apply plugin: 'com.github.dcendents.android-maven'
+
+group = 'com.paulmandal.atak'
+
+install {
+   repositories.mavenInstaller {
+       pom {
+           project {
+               packaging 'aar'
+               groupId 'com.paulmandal.atak'
+               artifactId 'libcotshrink'
+               name 'libcotshrink'
+               description 'libcotshrink takes CotEvent instances from ATAK and turns them into minimally sized byte arrays.'
+               url 'https://github.com/paulmandal/libcotshrink'
+
+               licenses {
+                   license {
+                       name 'MIT License'
+                       url 'https://opensource.org/licenses/MIT'
+                   }
+               }
+
+               developers {
+                   developer {
+                       id 'paulmandal'
+                       name 'Paul Mandal'
+                       email 'paul.mandal@gmail.com'
+                   }
+               }
+
+               scm {
+                   connection 'https://github.com/paulmandal/libcotshrink.git'
+                   developerConnection 'https://github.com/paulmandal/libcotshrink.git'
+                   url 'https://github.com/paulmandal/libcotshrink'
+               }
+           }
+       }
+       pom.withXml {
+           def dependenciesNode = asNode().appendNode('dependencies')
+
+           configurations.implementation.allDependencies.each {
+               if (it.name == 'protobuf-lite') {
+                   return
+               }
+               def dependencyNode = dependenciesNode.appendNode('dependency')
+               dependencyNode.appendNode('groupId', it.group)
+               dependencyNode.appendNode('artifactId', it.name)
+               dependencyNode.appendNode('version', it.version)
+           }
+       }
+   }
+}
+

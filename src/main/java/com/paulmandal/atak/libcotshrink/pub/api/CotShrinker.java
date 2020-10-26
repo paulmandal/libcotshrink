@@ -1,4 +1,4 @@
-package com.paulmandal.atak.libcotshrink.api;
+package com.paulmandal.atak.libcotshrink.pub.api;
 
 import android.util.Log;
 
@@ -13,6 +13,9 @@ import com.paulmandal.atak.libcotshrink.protobuf.UnknownDetailFieldException;
 
 import java.io.IOException;
 
+/**
+ * CotShrinker exposes the libcotshrink API
+ */
 public class CotShrinker {
     private static final String TAG = CotShrinker.class.getSimpleName();
 
@@ -24,6 +27,12 @@ public class CotShrinker {
         mCotEventProtobufConverter = cotEventProtobufConverter;
     }
 
+    /**
+     * Converts a {@link CotEvent} to a byte array without any data loss
+     *
+     * @param cotEvent The CotEvent to convert to a byte array
+     * @return a byte array or null if there was an error
+     */
     @Nullable
     public byte[] toByteArray(CotEvent cotEvent) {
         byte[] exiBytes = mExiConverter.xmlToExi(cotEvent.toString());
@@ -43,6 +52,12 @@ public class CotShrinker {
         return exiBytes;
     }
 
+    /**
+     * Converts a {@link CotEvent} to a byte array with some precision loss (documented in the libcotshrink README)
+     *
+     * @param cotEvent The CotEvent to convert to a byte array
+     * @return a byte array or null if there was an error
+     */
     @Nullable
     public byte[] toByteArrayLossy(CotEvent cotEvent) {
         byte[] cotEventBytes = null;
@@ -72,6 +87,12 @@ public class CotShrinker {
         return cotEventBytes;
     }
 
+    /**
+     * Converts a byte array into a {@link CotEvent}. The byte array input can be from either a lossy or lossless conversion.
+     *
+     * @param cotEventBytes The byte array representing your CotEvent
+     * @return A CotEvent or null if there was an error
+     */
     @Nullable
     public CotEvent toCotEvent(byte[] cotEventBytes) {
         CotEvent cotEvent;

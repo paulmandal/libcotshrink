@@ -1,0 +1,49 @@
+apply plugin: 'com.jfrog.bintray'
+
+version = '0.1.0'
+
+task sourcesJar(type: Jar) {
+   from android.sourceSets.main.java.srcDirs
+   classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    title = "${archivesBaseName} ${version} API"
+    include 'com/paulmandal/atak/libcotshrink/pub/api/**/*.java'
+
+    source = android.sourceSets.main.java.srcDirs
+    ext.androidJar = "${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar"
+
+    classpath += (files(getAtakLibPath()) + files(ext.androidJar) + project.files(android.getBootClasspath().join(File.pathSeparator)))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+   classifier = 'javadoc'
+   from javadoc.destinationDir
+}
+
+artifacts {
+   archives javadocJar
+   archives sourcesJar
+}
+
+Properties properties = new Properties()
+properties.load(new FileInputStream("local.properties"))
+
+// Bintray
+bintray {
+   user = properties.getProperty("bintray.user")
+   key = properties.getProperty("bintray.apikey")
+
+   pkg {
+       repo = 'maven'
+       name = 'com.paulmandal.atak'
+       configurations = ['archives']
+       desc = 'libcotshrink takes CotEvent instances from ATAK and turns them into minimally sized byte arrays.'
+       websiteUrl = 'https://github.com/paulmandal/libcotshrink'
+       vcsUrl = 'https://github.com/paulmandal/libcotshrink.git'
+       licenses = ["MIT"]
+       publish = true
+       publicDownloadNumbers = true
+   }
+}

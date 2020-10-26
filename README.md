@@ -4,27 +4,15 @@ It uses a combination of EXI (Efficient XML Interchange), Protobufs, and GZip.
 
 # Adding to your Project
 
-This module expects to be side-by-side in the same parent directory as the `AndroidTacticalAssaultKit-CIV` directory (ATAK source)
-  OR in a project that is side-by-side with the ATAK source. Building will fail if it is not.
-  
-Add the module repo to your project:
+libcotshrink is now available on JCenter
 
-`git submodule add git@github.com:paulmandal/libcotshrink.git`
-
-Edit your `settings.gradle` and add the module:
-
-```groovy
-include ':libcotshrink'
-project(':libcotshrink').projectDir = new File('libcotshrink')
-```
-
-Edit your `app/build.gradle` and add the module to your app/plugin's dependencies:
+Edit your `app/build.gradle` and add the library to your app/plugin's dependencies:
 
 ```groovy
 dependencies {
     ...
 
-    implementation project(':libcotshrink')
+    implementation 'com.paulmandal.atak:libcotshrink:0.1.0'
 }
 
 ```
@@ -73,7 +61,13 @@ Using the `CotShrinker.toByteArrayLossy(CotEvent)` method will cause loss of pre
 
 * Figure out how to get unit tests working, they rely on the ATAK lib but it doesn't seem to work during testing
 * Improve structure of Cot*ProtobufConverter classes, there should be a reasonable directory tree there
+* Ensure that all Cot*ProtobufConverter classes check for unhandled: InnerText, Child Objs. and Fields
+* Use `sint32` instead of `int32` for fields that can be negative
+* Support more message types (please identify them and how they are generated in Issues)
+* Make more fields into enums (e.g. `CotEvent.type`)
+* Create detail subobjects for each set of detail fields used by a specific message type, e.g. the detail field should have objs like GeoChatDetail, PliDetail, etc. that are composed of the existing detail fields. This MAY save some space, need to test with PLI or something like that first.
 * Shrink messages further
+* Use Dagger 2
 
 # Performance Stats
 
