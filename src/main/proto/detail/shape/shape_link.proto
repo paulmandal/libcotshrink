@@ -7,7 +7,7 @@ package com.paulmandal.atak.libcotshrink.protobufs;
 option java_outer_classname = "ProtobufShapeLink";
 
 message ShapeLink {
-  double lat = 1;
-  double lon = 2;
+  sint32 lat = 1;
+  sint32 lon = 2;
   double hae = 3;
 }

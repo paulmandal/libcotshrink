@@ -7,6 +7,7 @@ import com.atakmap.coremap.cot.event.CotDetail;
 import com.atakmap.coremap.cot.event.CotEvent;
 import com.atakmap.coremap.cot.event.CotPoint;
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.paulmandal.atak.libcotshrink.protobuf.Constants;
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.cehumaninput.CeHumanInputProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.link.ChatLinkProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.chat.ChatProtobufConverter;
@@ -102,7 +103,7 @@ public class CotEventProtobufConverter {
     
     private static final String GEOCHAT_MARKER = "GeoChat";
 
-    private static final double LAT_LON_INT_CONVERSION_FACTOR = 10000000F;
+    private static final double LAT_LON_INT_CONVERSION_FACTOR = Constants.LAT_LON_INT_CONVERSION_FACTOR;
 
     private final TakvProtobufConverter mTakvProtobufConverter;
     private final TrackProtobufConverter mTrackProtobufConverter;
