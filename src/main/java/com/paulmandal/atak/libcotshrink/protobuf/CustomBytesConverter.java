@@ -7,14 +7,14 @@ import com.paulmandal.atak.libcotshrink.protobuf.utils.BitUtils;
  * CustomBytes Format (fixed64):
  *
  * time   (25 bits, seconds since start of year)
- * stale  (17 bits, seconds after `time`)
- * hae    (14 bits, whole meters)
+ * stale  (23 bits, seconds after `time`)
+ * hae    (16 bits, whole meters)
  */
 public class CustomBytesConverter {
     private static final int LONG_INT_LENGTH = 64;
 
     private static final int CUSTOM_FIELD_TIME_LENGTH = 25;
-    private static final int CUSTOM_FIELD_STALE_LENGTH = 17;
+    private static final int CUSTOM_FIELD_STALE_LENGTH = 23;
     private static final int CUSTOM_FIELD_HAE_LENGTH = 16;
 
     private static final int MAX_HAE_PACKED = 65535;
