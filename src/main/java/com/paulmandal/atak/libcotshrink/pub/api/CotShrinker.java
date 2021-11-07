@@ -8,6 +8,7 @@ import com.atakmap.coremap.cot.event.CotEvent;
 import com.paulmandal.atak.libcotshrink.exi.ExiConverter;
 import com.paulmandal.atak.libcotshrink.gzip.GzipHelper;
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.CotEventProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.InvalidCotEventTypeException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.MappingNotFoundException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 
@@ -64,7 +65,7 @@ public class  CotShrinker {
 
         try {
             cotEventBytes = mCotEventProtobufConverter.toByteArray(cotEvent);
-        } catch (MappingNotFoundException | UnknownDetailFieldException e) {
+        } catch (MappingNotFoundException | InvalidCotEventTypeException | UnknownDetailFieldException e) {
             Log.e(TAG, e.getMessage());
             e.printStackTrace();
         }

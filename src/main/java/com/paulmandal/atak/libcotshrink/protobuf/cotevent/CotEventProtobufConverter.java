@@ -36,6 +36,7 @@ import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.tog.TogProtobuf
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.track.TrackProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.underscoredgroup.UnderscoreGroupProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.video.VideoProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.InvalidCotEventTypeException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.MappingNotFoundException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.medevac.FlowTagsProtobufConverter;
@@ -198,7 +199,7 @@ public class CotEventProtobufConverter {
     }
 
     @NonNull
-    public byte[] toByteArray(CotEvent cotEvent) throws MappingNotFoundException, UnknownDetailFieldException {
+    public byte[] toByteArray(CotEvent cotEvent) throws MappingNotFoundException, InvalidCotEventTypeException, UnknownDetailFieldException {
         ProtobufCotEvent.CotEvent cotEventProtobuf = toCotEventProtobuf(cotEvent);
         return cotEventProtobuf.toByteArray();
     }
@@ -223,7 +224,11 @@ public class CotEventProtobufConverter {
                 substitutionValues.chatroomFromGeoChat = geoChatSplit[2];
             }
             cotEvent.setUID(uid);
-            cotEvent.setType(protoCotEvent.getType());
+            if (protoCotEvent.getType().equals("")) {
+                cotEvent.setType(MESSAGE_TYPE_PLI);
+            } else {
+                cotEvent.setType(protoCotEvent.getType());
+            }
             cotEvent.setTime(customBytesFields.time);
             cotEvent.setStart(customBytesFields.time);
             cotEvent.setStale(customBytesFields.stale);
@@ -239,7 +244,7 @@ public class CotEventProtobufConverter {
     /**
      * toByteArray
      */
-    private ProtobufCotEvent.CotEvent toCotEventProtobuf(CotEvent cotEvent) throws MappingNotFoundException, UnknownDetailFieldException {
+    private ProtobufCotEvent.CotEvent toCotEventProtobuf(CotEvent cotEvent) throws MappingNotFoundException, InvalidCotEventTypeException, UnknownDetailFieldException {
         ProtobufCotEvent.CotEvent.Builder builder = ProtobufCotEvent.CotEvent.newBuilder();
 
         SubstitutionValues substitutionValues = new SubstitutionValues();
@@ -253,7 +258,11 @@ public class CotEventProtobufConverter {
             }
         }
 
-        if (cotEvent.getType() != null) {
+        if (cotEvent.getType() == null) {
+            throw new InvalidCotEventTypeException("CotEvent had a null type field");
+        }
+
+        if (!cotEvent.getType().equals(MESSAGE_TYPE_PLI)) {
             builder.setType(cotEvent.getType());
         }
 
