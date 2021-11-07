@@ -1,4 +1,4 @@
-package com.paulmandal.atak.libcotshrink.protobuf.shape;
+package com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.shape;
 
 import android.util.Log;
 

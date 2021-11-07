@@ -1,4 +1,4 @@
-package com.paulmandal.atak.libcotshrink.protobuf.medevac;
+package com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.medevac;
 
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;

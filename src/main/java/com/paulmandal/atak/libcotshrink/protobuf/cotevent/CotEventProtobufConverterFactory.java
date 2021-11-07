@@ -34,17 +34,17 @@ import com.paulmandal.atak.libcotshrink.protobuf.TrackProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.TriggerProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.UnderscoreGroupProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.VideoProtobufConverter;
-import com.paulmandal.atak.libcotshrink.protobuf.medevac.FlowTagsProtobufConverter;
-import com.paulmandal.atak.libcotshrink.protobuf.medevac.MedevacProtobufConverter;
-import com.paulmandal.atak.libcotshrink.protobuf.medevac.MistProtobufConverter;
-import com.paulmandal.atak.libcotshrink.protobuf.medevac.MistsMapProtobufConverter;
-import com.paulmandal.atak.libcotshrink.protobuf.shape.EllipseLinkProtobufConverter;
-import com.paulmandal.atak.libcotshrink.protobuf.shape.EllipseProtobufConverter;
-import com.paulmandal.atak.libcotshrink.protobuf.shape.GeoFenceProtobufConverter;
-import com.paulmandal.atak.libcotshrink.protobuf.shape.LineStyleProtobufConverter;
-import com.paulmandal.atak.libcotshrink.protobuf.shape.PolyStyleProtobufConverter;
-import com.paulmandal.atak.libcotshrink.protobuf.shape.ShapeProtobufConverter;
-import com.paulmandal.atak.libcotshrink.protobuf.shape.StyleProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.medevac.FlowTagsProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.medevac.MedevacProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.medevac.MistProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.medevac.MistsMapProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.shape.EllipseLinkProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.shape.EllipseProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.shape.GeoFenceProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.shape.LineStyleProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.shape.PolyStyleProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.shape.ShapeProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.shape.StyleProtobufConverter;
 
 import java.util.Calendar;
 

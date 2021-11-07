@@ -38,10 +38,10 @@ import com.paulmandal.atak.libcotshrink.protobuf.UnderscoreGroupProtobufConverte
 import com.paulmandal.atak.libcotshrink.protobuf.VideoProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.MappingNotFoundException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
-import com.paulmandal.atak.libcotshrink.protobuf.medevac.FlowTagsProtobufConverter;
-import com.paulmandal.atak.libcotshrink.protobuf.medevac.MedevacProtobufConverter;
-import com.paulmandal.atak.libcotshrink.protobuf.shape.GeoFenceProtobufConverter;
-import com.paulmandal.atak.libcotshrink.protobuf.shape.ShapeProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.medevac.FlowTagsProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.medevac.MedevacProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.shape.GeoFenceProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.shape.ShapeProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.utils.StringUtils;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufContact;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufCotEvent;
