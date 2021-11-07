@@ -211,22 +211,23 @@ public class HackyTests {
         CotEvent convertedCotEvent = cotShrinker.toCotEvent(cotEventAsBytes);
 
         // Reduce precision of known lossy fields
-        CoordinatedTime fuzzedTime = new CoordinatedTime((int)cotEvent.getTime().getMilliseconds());
-//        CoordinatedTime fuzzedStart = new CoordinatedTime((int)cotEvent.getStart().getMilliseconds());
-//        CoordinatedTime fuzzedStale = new CoordinatedTime((int)cotEvent.getStale().getMilliseconds());
+        Log.e("TEST", "original time: " + cotEvent.getTime());
+        Log.e("TEST", "milliseconds: " + (cotEvent.getTime().getMilliseconds() % 1000));
+        Log.e("TEST", "deleted ms: " + cotEvent.getTime().addMilliseconds((int)(-1 * (cotEvent.getTime().getMilliseconds() % 1000))));
+
+        CoordinatedTime fuzzedTime = cotEvent.getTime().addMilliseconds((int)(-1 * (cotEvent.getTime().getMilliseconds() % 1000)));
+        CoordinatedTime fuzzedStart = cotEvent.getStart().addMilliseconds((int)(-1 * (cotEvent.getStart().getMilliseconds() % 1000)));
+        CoordinatedTime fuzzedStale = cotEvent.getStale().addMilliseconds((int)(-1 * (cotEvent.getStale().getMilliseconds() % 1000)));
 
         CotPoint originalCotPoint = cotEvent.getCotPoint();
         CotPoint fuzzedCotPoint = new CotPoint(fuzzLatLon(originalCotPoint.getLat()), fuzzLatLon(originalCotPoint.getLon()), originalCotPoint.getHae(), originalCotPoint.getCe(), originalCotPoint.getLe());
 
-        cotEvent.setTime(fuzzedTime);
-//        cotEvent.setStart(fuzzedStart);
-//        cotEvent.setStale(fuzzedStale);
-        cotEvent.setPoint(fuzzedCotPoint);
+        CoordinatedTime placeholderTime = new CoordinatedTime();
 
-//        convertedCotEvent.setTime(placeholderTime);
-//        convertedCotEvent.setStart(placeholderTime);
-//        convertedCotEvent.setStale(placeholderTime);
-//        convertedCotEvent.setPoint(cotPoint);
+        cotEvent.setTime(fuzzedTime);
+        cotEvent.setStart(fuzzedStart);
+        cotEvent.setStale(fuzzedStale);
+        cotEvent.setPoint(fuzzedCotPoint);
 
         Log.e("TEST", "cotEvent.time: " + cotEvent.getTime() + ", converted.time: " + convertedCotEvent.getTime());
         Log.e("TEST", "cotEvent.point.lat: " + cotEvent.getCotPoint().getLat() + ", converted.point.lat: " + convertedCotEvent.getCotPoint().getLat());
@@ -235,15 +236,15 @@ public class HackyTests {
         CotDetail remarksDetail = cotEvent.getDetail().getFirstChildByName(0, "remarks");
         CotDetail convertedRemarksDetail = convertedCotEvent.getDetail().getFirstChildByName(0, "remarks");
         if (remarksDetail != null) {
-//            remarksDetail.setAttribute("time", placeholderTime.toString());
-//            convertedRemarksDetail.setAttribute("time", placeholderTime.toString());
+            remarksDetail.setAttribute("time", placeholderTime.toString());
+            convertedRemarksDetail.setAttribute("time", placeholderTime.toString());
         }
 
         CotDetail linkDetail = cotEvent.getDetail().getFirstChildByName(0, "link");
         CotDetail convertedLinkDetail = convertedCotEvent.getDetail().getFirstChildByName(0, "link");
         if (linkDetail != null && linkDetail.getAttribute("production_time") != null) {
-//            linkDetail.setAttribute("production_time", placeholderTime.toString());
-//            convertedLinkDetail.setAttribute("production_time", placeholderTime.toString());
+            linkDetail.setAttribute("production_time", placeholderTime.toString());
+            convertedLinkDetail.setAttribute("production_time", placeholderTime.toString());
         }
 
         List<CotDetail> removeable = new ArrayList<>();
