@@ -1,6 +1,7 @@
 package com.paulmandal.atak.libcotshrink.protobuf;
 
 import com.atakmap.coremap.maps.time.CoordinatedTime;
+import com.paulmandal.atak.libcotshrink.protobuf.utils.BitUtils;
 
 /**
  * CustomBytes Format (fixed64):
