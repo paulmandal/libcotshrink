@@ -13,8 +13,8 @@ message CotEvent {
   string uid = 1;
   string type = 2;
 
-  double lat = 3;
-  double lon = 4;
+  int32 lat = 3;
+  int32 lon = 4;
   int32 ce = 5;
   int32 le = 6;
 

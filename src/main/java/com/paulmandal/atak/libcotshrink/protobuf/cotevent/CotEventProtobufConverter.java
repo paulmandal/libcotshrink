@@ -102,6 +102,8 @@ public class CotEventProtobufConverter {
     
     private static final String GEOCHAT_MARKER = "GeoChat";
 
+    private static final double LAT_LON_INT_CONVERSION_FACTOR = 10000000F;
+
     private final TakvProtobufConverter mTakvProtobufConverter;
     private final TrackProtobufConverter mTrackProtobufConverter;
     private final ServerDestinationProtobufConverter mServerDestinationProtobufConverter;
@@ -234,7 +236,7 @@ public class CotEventProtobufConverter {
             cotEvent.setStale(customBytesFields.stale);
             cotEvent.setHow(customBytesExtFields.how);
             cotEvent.setDetail(cotDetailFromProtoDetail(cotEvent, protoCotEvent.getDetail(), customBytesExtFields, substitutionValues));
-            cotEvent.setPoint(new CotPoint(protoCotEvent.getLat(), protoCotEvent.getLon(), customBytesFields.hae, protoCotEvent.getCe(), protoCotEvent.getLe()));
+            cotEvent.setPoint(new CotPoint(protoCotEvent.getLat() / LAT_LON_INT_CONVERSION_FACTOR, protoCotEvent.getLon() / LAT_LON_INT_CONVERSION_FACTOR, customBytesFields.hae, protoCotEvent.getCe(), protoCotEvent.getLe()));
         } catch (InvalidProtocolBufferException e) {
 //            e.printStackTrace();
         }
@@ -268,8 +270,8 @@ public class CotEventProtobufConverter {
 
         CotPoint cotPoint = cotEvent.getCotPoint();
         if (cotPoint != null) {
-            builder.setLat(cotPoint.getLat());
-            builder.setLon(cotPoint.getLon());
+            builder.setLat((int)(cotPoint.getLat() * LAT_LON_INT_CONVERSION_FACTOR));
+            builder.setLon((int)(cotPoint.getLon() * LAT_LON_INT_CONVERSION_FACTOR));
             builder.setCe((int)cotPoint.getCe());
             builder.setLe((int)cotPoint.getLe());
         }
