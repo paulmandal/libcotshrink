@@ -50,7 +50,7 @@ public class HackyTests {
     }
 
     public void testPliWithNegativeHae() {
-        String messageType = "PLI";
+        String messageType = "PLI with negative HAE";
         String testXml = "<?xml version='1.0' encoding='UTF-8' standalone='yes'?><event version='2.0' uid='ANDROID-53af0912586418dc' type='a-f-G-U-C' time='2021-08-29T21:14:00.406Z' start='2021-08-29T21:14:00.406Z' stale='2021-08-29T21:15:15.406Z' how='h-e'><point lat='39.71401955573084' lon='-104.99452709918448' hae='-800.0' ce='9999999.0' le='9999999.0'/><detail><takv os='29' version='4.0.0.7 (a457ad0d).1597850931-CIV' device='GOOGLE PIXEL 4 XL' platform='ATAK-CIV'/><contact endpoint='192.168.1.159:4242:tcp' callsign='dasuberdog'/><uid Droid='dasuberdog'/><precisionlocation altsrc='DTED2' geopointsrc='USER'/><__group role='Team Lead' name='Orange'/><status battery='58'/><track course='327.66875837972367' speed='0.0'/></detail></event>";
         validateLossy(messageType, 193, testXml);
         validateLossless(messageType, 568, testXml);
@@ -226,7 +226,7 @@ public class HackyTests {
         CoordinatedTime fuzzedStale = cotEvent.getStale().addMilliseconds((int)(-1 * (cotEvent.getStale().getMilliseconds() % 1000)));
 
         CotPoint originalCotPoint = cotEvent.getCotPoint();
-        CotPoint fuzzedCotPoint = new CotPoint(fuzzLatLon(originalCotPoint.getLat()), fuzzLatLon(originalCotPoint.getLon()), (int)originalCotPoint.getHae(), originalCotPoint.getCe(), originalCotPoint.getLe());
+        CotPoint fuzzedCotPoint = new CotPoint(fuzzLatLon(originalCotPoint.getLat()), fuzzLatLon(originalCotPoint.getLon()), (int)originalCotPoint.getHae(), (int)originalCotPoint.getCe(), (int)originalCotPoint.getLe());
 
         cotEvent.setTime(fuzzedTime);
         cotEvent.setStart(fuzzedStart);
