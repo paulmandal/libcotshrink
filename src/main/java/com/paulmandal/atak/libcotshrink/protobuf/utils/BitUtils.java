@@ -1,8 +1,9 @@
-package com.paulmandal.atak.libcotshrink.protobuf;
+package com.paulmandal.atak.libcotshrink.protobuf.utils;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.paulmandal.atak.libcotshrink.protobuf.ShiftTracker;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.MappingNotFoundException;
 
 import org.apache.commons.lang.ArrayUtils;

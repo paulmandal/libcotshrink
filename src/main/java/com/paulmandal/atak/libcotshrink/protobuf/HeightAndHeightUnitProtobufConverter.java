@@ -4,6 +4,7 @@ import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.MappingNotFoundException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
+import com.paulmandal.atak.libcotshrink.protobuf.utils.BitUtils;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufHeight;
 
 public class HeightAndHeightUnitProtobufConverter {

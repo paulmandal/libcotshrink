@@ -1,6 +1,7 @@
 package com.paulmandal.atak.libcotshrink.protobuf;
 
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.MappingNotFoundException;
+import com.paulmandal.atak.libcotshrink.protobuf.utils.BitUtils;
 
 /**
  * CustomBytesExt Format (fixed64):

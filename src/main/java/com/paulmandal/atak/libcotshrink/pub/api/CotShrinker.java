@@ -7,7 +7,7 @@ import androidx.annotation.Nullable;
 import com.atakmap.coremap.cot.event.CotEvent;
 import com.paulmandal.atak.libcotshrink.exi.ExiConverter;
 import com.paulmandal.atak.libcotshrink.gzip.GzipHelper;
-import com.paulmandal.atak.libcotshrink.protobuf.CotEventProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.cotevent.CotEventProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.MappingNotFoundException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 
