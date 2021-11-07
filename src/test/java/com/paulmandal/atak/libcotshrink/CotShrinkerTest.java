@@ -9,6 +9,8 @@ import com.paulmandal.atak.libcotshrink.api.CotShrinkerFactory;
 import com.paulmandal.atak.libcotshrink.utils.XmlComparer;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.robolectric.RobolectricTestRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,9 +21,39 @@ import static org.junit.Assert.assertTrue;
 /**
  * Basic pinning tests for now
  */
+@RunWith(RobolectricTestRunner.class)
 public class CotShrinkerTest {
+
+    @Test
+    public void testAnotherWay() {
+        CotEvent cotEvent = new CotEvent();
+        cotEvent.setUID("ANDROID-53af0912586418dc");
+        cotEvent.setType("a-f-G-U-C");
+        cotEvent.setTime(new CoordinatedTime(1620600771));
+        cotEvent.setStart(new CoordinatedTime(1620600971));
+        cotEvent.setStale(new CoordinatedTime(1620601771));
+        cotEvent.setHow("h-e");
+        cotEvent.setPoint(new CotPoint(39.71401955573084, -104.99452709918448, 1586.245787738948, 9999999.0, 9999999.0));
+
+        CotShrinkerFactory cotShrinkerFactory = new CotShrinkerFactory();
+        CotShrinker cotShrinker = cotShrinkerFactory.createCotShrinker();
+        byte[] cotEventAsBytes = cotShrinker.toByteArray(cotEvent);
+        CotEvent convertedCotEvent = cotShrinker.toCotEvent(cotEventAsBytes);
+
+        XmlComparer xmlComparer = new XmlComparer();
+        boolean matched = xmlComparer.compareXmls("whatever", cotEvent.toString(), convertedCotEvent.toString());
+        assertTrue("Pre and post conversion did not match!", matched);
+        int size = cotEventAsBytes.length;
+        assertTrue("", size <= 1);
+//        assertFalse(messageType + " size decreased from " + maxSize + " to " + size + "! NICEWORK, Update to the new max size: " + size, size < maxSize);
+        // <detail><takv os='29' version='4.0.0.7 (a457ad0d).1597850931-CIV' device='GOOGLE PIXEL 4 XL' platform='ATAK-CIV'/><contact endpoint='192.168.1.159:4242:tcp' callsign='dasuberdog'/><uid Droid='dasuberdog'/><precisionlocation altsrc='DTED2' geopointsrc='USER'/><__group role='Team Lead' name='Orange'/><status battery='58'/><track course='327.66875837972367' speed='0.0'/></detail>
+    }
     @Test
     public void testLossyPli() {
+        CotEvent cotEvent = CotEvent.parse("<?xml version='1.0' encoding='UTF-8' standalone='yes'?><event version='2.0' uid='ANDROID-53af0912586418dc' type='a-f-G-U-C' time='2020-08-29T21:14:00.406Z' start='2020-08-29T21:14:00.406Z' stale='2020-08-29T21:15:15.406Z' how='h-e'><point lat='39.71401955573084' lon='-104.99452709918448' hae='1586.245787738948' ce='9999999.0' le='9999999.0'/><detail><takv os='29' version='4.0.0.7 (a457ad0d).1597850931-CIV' device='GOOGLE PIXEL 4 XL' platform='ATAK-CIV'/><contact endpoint='192.168.1.159:4242:tcp' callsign='dasuberdog'/><uid Droid='dasuberdog'/><precisionlocation altsrc='DTED2' geopointsrc='USER'/><__group role='Team Lead' name='Orange'/><status battery='58'/><track course='327.66875837972367' speed='0.0'/></detail></event>");
+        System.out.println("CotEvent.uid: " + cotEvent.getUID());
+        System.out.println("CotEvent.type: " + cotEvent.getType());
+        System.out.println("CotEvent.time: " + cotEvent.getTime());
         validateLossy("PLI", 193, "<?xml version='1.0' encoding='UTF-8' standalone='yes'?><event version='2.0' uid='ANDROID-53af0912586418dc' type='a-f-G-U-C' time='2020-08-29T21:14:00.406Z' start='2020-08-29T21:14:00.406Z' stale='2020-08-29T21:15:15.406Z' how='h-e'><point lat='39.71401955573084' lon='-104.99452709918448' hae='1586.245787738948' ce='9999999.0' le='9999999.0'/><detail><takv os='29' version='4.0.0.7 (a457ad0d).1597850931-CIV' device='GOOGLE PIXEL 4 XL' platform='ATAK-CIV'/><contact endpoint='192.168.1.159:4242:tcp' callsign='dasuberdog'/><uid Droid='dasuberdog'/><precisionlocation altsrc='DTED2' geopointsrc='USER'/><__group role='Team Lead' name='Orange'/><status battery='58'/><track course='327.66875837972367' speed='0.0'/></detail></event>");
     }
 
