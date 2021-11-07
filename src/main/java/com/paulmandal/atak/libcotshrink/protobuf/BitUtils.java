@@ -3,6 +3,8 @@ package com.paulmandal.atak.libcotshrink.protobuf;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.MappingNotFoundException;
+
 import org.apache.commons.lang.ArrayUtils;
 
 public class BitUtils {

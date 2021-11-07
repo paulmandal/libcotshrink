@@ -7,6 +7,8 @@ import com.atakmap.coremap.cot.event.CotDetail;
 import com.atakmap.coremap.cot.event.CotEvent;
 import com.atakmap.coremap.cot.event.CotPoint;
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.MappingNotFoundException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 import com.paulmandal.atak.libcotshrink.protobuf.medevac.FlowTagsProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.medevac.MedevacProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.shape.GeoFenceProtobufConverter;

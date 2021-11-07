@@ -8,15 +8,15 @@ import com.atakmap.coremap.cot.event.CotEvent;
 import com.paulmandal.atak.libcotshrink.exi.ExiConverter;
 import com.paulmandal.atak.libcotshrink.gzip.GzipHelper;
 import com.paulmandal.atak.libcotshrink.protobuf.CotEventProtobufConverter;
-import com.paulmandal.atak.libcotshrink.protobuf.MappingNotFoundException;
-import com.paulmandal.atak.libcotshrink.protobuf.UnknownDetailFieldException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.MappingNotFoundException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 
 import java.io.IOException;
 
 /**
  * CotShrinker exposes the libcotshrink API
  */
-public class CotShrinker {
+public class  CotShrinker {
     private static final String TAG = CotShrinker.class.getSimpleName();
 
     private ExiConverter mExiConverter;

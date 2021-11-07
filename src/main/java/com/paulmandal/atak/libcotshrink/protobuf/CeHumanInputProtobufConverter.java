@@ -2,6 +2,7 @@ package com.paulmandal.atak.libcotshrink.protobuf;
 
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 
 public class CeHumanInputProtobufConverter {
     private static final String KEY_CE_HUMAN_INPUT = "ce_human_input";

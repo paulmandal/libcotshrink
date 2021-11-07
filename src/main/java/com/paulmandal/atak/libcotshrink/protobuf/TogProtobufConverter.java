@@ -2,6 +2,7 @@ package com.paulmandal.atak.libcotshrink.protobuf;
 
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 
 public class TogProtobufConverter {
     private static final String KEY_TOG = "tog";
