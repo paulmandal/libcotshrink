@@ -220,7 +220,7 @@ public class HackyTests {
         CoordinatedTime fuzzedStale = cotEvent.getStale().addMilliseconds((int)(-1 * (cotEvent.getStale().getMilliseconds() % 1000)));
 
         CotPoint originalCotPoint = cotEvent.getCotPoint();
-        CotPoint fuzzedCotPoint = new CotPoint(fuzzLatLon(originalCotPoint.getLat()), fuzzLatLon(originalCotPoint.getLon()), originalCotPoint.getHae(), originalCotPoint.getCe(), originalCotPoint.getLe());
+        CotPoint fuzzedCotPoint = new CotPoint(fuzzLatLon(originalCotPoint.getLat()), fuzzLatLon(originalCotPoint.getLon()), (int)originalCotPoint.getHae(), originalCotPoint.getCe(), originalCotPoint.getLe());
 
         CoordinatedTime placeholderTime = new CoordinatedTime();
 
