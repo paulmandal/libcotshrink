@@ -27,7 +27,7 @@ public class CustomBytesConverter {
         long timeSinceStartOfYear = (time.getMilliseconds() - startOfYearMs) / 1000L;
         customBytes = BitUtils.packBits(customBytes, LONG_INT_LENGTH, timeSinceStartOfYear, CUSTOM_FIELD_TIME_LENGTH, shiftTracker);
 
-        long timeUntilStale = (stale.getMilliseconds() - time.getMilliseconds()) / 1000L;
+        long timeUntilStale = stale.getMilliseconds() / 1000L - time.getMilliseconds() / 1000L;
         customBytes = BitUtils.packBits(customBytes, LONG_INT_LENGTH, timeUntilStale, CUSTOM_FIELD_STALE_LENGTH, shiftTracker);
 
         if (hae == MAX_HAE) {
