@@ -122,3 +122,11 @@ protobuf {
         }
     }
 }
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
