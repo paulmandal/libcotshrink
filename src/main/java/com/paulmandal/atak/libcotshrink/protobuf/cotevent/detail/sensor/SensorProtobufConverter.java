@@ -3,6 +3,8 @@ package com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.sensor;
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
 import com.paulmandal.atak.libcotshrink.protobuf.Constants;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledChildException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledInnerTextException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 import com.paulmandal.atak.libcotshrink.protobuf.utils.PrecisionUtil;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufSensor;
@@ -28,7 +30,15 @@ public class SensorProtobufConverter {
         mPrecisionUtil = precisionUtil;
     }
 
-    public ProtobufSensor.Sensor toSensor(CotDetail cotDetail) throws UnknownDetailFieldException {
+    public ProtobufSensor.Sensor toSensor(CotDetail cotDetail) throws UnknownDetailFieldException, UnhandledInnerTextException, UnhandledChildException {
+        if (cotDetail.getInnerText() != null && !cotDetail.getInnerText().isEmpty()) {
+            throw new UnhandledInnerTextException("Unhandled inner text: " + cotDetail.getInnerText());
+        }
+
+        if (cotDetail.getChildren() != null && cotDetail.getChildren().size() > 0) {
+            throw new UnhandledChildException("Unhandled child: " + cotDetail.getChildren().get(0).getElementName());
+        }
+
         ProtobufSensor.Sensor.Builder builder = ProtobufSensor.Sensor.newBuilder();
         CotAttribute[] attributes = cotDetail.getAttributes();
         for (CotAttribute attribute : attributes) {

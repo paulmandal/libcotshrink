@@ -2,6 +2,8 @@ package com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.routeinfo.navc
 
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledChildException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledInnerTextException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 import com.paulmandal.atak.libcotshrink.protobuf.utils.StringUtils;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufTrigger;
@@ -12,7 +14,15 @@ public class TriggerProtobufConverter {
     private static final String KEY_MODE = "mode";
     private static final String KEY_VALUE = "value";
 
-    public ProtobufTrigger.Trigger toTrigger(CotDetail cotDetail) throws UnknownDetailFieldException {
+    public ProtobufTrigger.Trigger toTrigger(CotDetail cotDetail) throws UnknownDetailFieldException, UnhandledInnerTextException, UnhandledChildException {
+        if (cotDetail.getInnerText() != null && !cotDetail.getInnerText().isEmpty()) {
+            throw new UnhandledInnerTextException("Unhandled inner text: " + cotDetail.getInnerText());
+        }
+
+        if (cotDetail.getChildren() != null && cotDetail.getChildren().size() > 0) {
+            throw new UnhandledChildException("Unhandled child: " + cotDetail.getChildren().get(0).getElementName());
+        }
+
         ProtobufTrigger.Trigger.Builder builder = ProtobufTrigger.Trigger.newBuilder();
 
         CotAttribute[] attributes = cotDetail.getAttributes();

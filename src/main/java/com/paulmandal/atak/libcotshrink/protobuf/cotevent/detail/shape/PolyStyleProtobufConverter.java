@@ -2,6 +2,8 @@ package com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.shape;
 
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledChildException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledInnerTextException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufPolyStyle;
 
@@ -12,7 +14,11 @@ public class PolyStyleProtobufConverter {
 
     private static final String KEY_COLOR = "color";
 
-    public ProtobufPolyStyle.PolyStyle toPolyStyle(CotDetail cotDetail) throws UnknownDetailFieldException {
+    public ProtobufPolyStyle.PolyStyle toPolyStyle(CotDetail cotDetail) throws UnknownDetailFieldException, UnhandledInnerTextException, UnhandledChildException {
+        if (cotDetail.getInnerText() != null && !cotDetail.getInnerText().isEmpty()) {
+            throw new UnhandledInnerTextException("Unhandled inner text: " + cotDetail.getInnerText());
+        }
+
         ProtobufPolyStyle.PolyStyle.Builder builder = ProtobufPolyStyle.PolyStyle.newBuilder();
 
         CotAttribute[] attributes = cotDetail.getAttributes();
@@ -30,7 +36,7 @@ public class PolyStyleProtobufConverter {
                     builder.setColor(Long.parseLong(child.getInnerText(), 16));
                     break;
                 default:
-                    throw new UnknownDetailFieldException("Don't know how to handle child object: shape.Style.PolyStyle." + child.getElementName());
+                    throw new UnhandledChildException("Don't know how to handle child object: shape.Style.PolyStyle." + child.getElementName());
             }
         }
 
