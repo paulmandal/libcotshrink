@@ -10,9 +10,9 @@ message RouteLink {
   string uid = 1;
   string callsign = 2;
   string type = 3; // TODO: move to mapping
-  double lat = 4;
-  double lon = 5;
-  double hae = 6;
+  sint32 lat = 4;
+  sint32 lon = 5;
+  sint32 hae = 6;
   string remarks = 7; // TODO: gzip?
   string relation = 8; // TODO: move to mapping
 }

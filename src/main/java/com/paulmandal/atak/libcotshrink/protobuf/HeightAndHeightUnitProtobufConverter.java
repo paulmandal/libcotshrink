@@ -5,6 +5,7 @@ import com.atakmap.coremap.cot.event.CotDetail;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.MappingNotFoundException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 import com.paulmandal.atak.libcotshrink.protobuf.utils.BitUtils;
+import com.paulmandal.atak.libcotshrink.protobuf.utils.PrecisionUtil;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufHeight;
 
 public class HeightAndHeightUnitProtobufConverter {
@@ -22,7 +23,15 @@ public class HeightAndHeightUnitProtobufConverter {
             "nautical miles"
     };
 
-    private static final double NULL_MARKER = -1.0;
+    private static final double HEIGHT_PRECISION_FACTOR = Constants.HEIGHT_PRECISION_FACTOR;
+
+    private static final int NULL_MARKER = -1;
+
+    private final PrecisionUtil mPrecisionUtil;
+
+    public HeightAndHeightUnitProtobufConverter(PrecisionUtil precisionUtil) {
+        mPrecisionUtil = precisionUtil;
+    }
 
     public void maybeGetHeightUnitValues(CotDetail cotDetail, CustomBytesExtFields customBytesExtFields) {
         CotDetail heightUnitDetail = cotDetail.getFirstChildByName(0, KEY_HEIGHT_UNIT);
@@ -59,7 +68,7 @@ public class HeightAndHeightUnitProtobufConverter {
         builder.setHeightValue(NULL_MARKER);
 
         if (cotDetail.getInnerText() != null) {
-            builder.setHeightValue(Double.parseDouble(cotDetail.getInnerText()));
+            builder.setHeightValue(mPrecisionUtil.reducePrecision(cotDetail.getInnerText(), HEIGHT_PRECISION_FACTOR));
         }
 
         CotAttribute[] attributes = cotDetail.getAttributes();
@@ -69,7 +78,7 @@ public class HeightAndHeightUnitProtobufConverter {
                     // Do nothing, we are packing this into bits
                     break;
                 case KEY_VALUE:
-                    builder.setHeightValue(Double.parseDouble(attribute.getValue()));
+                    builder.setHeightValue(mPrecisionUtil.reducePrecision(attribute.getValue(), HEIGHT_PRECISION_FACTOR));
                     break;
                 default:
                     throw new UnknownDetailFieldException("Don't know how to handle detail field: height." + attribute.getName());
@@ -97,7 +106,7 @@ public class HeightAndHeightUnitProtobufConverter {
         }
 
         if (height.getHeightValue() != NULL_MARKER) {
-            String heightValueStr = Double.toString(height.getHeightValue());
+            String heightValueStr = Double.toString(height.getHeightValue() / HEIGHT_PRECISION_FACTOR);
             heightDetail.setInnerText(heightValueStr);
             heightDetail.setAttribute(KEY_VALUE, heightValueStr);
         }

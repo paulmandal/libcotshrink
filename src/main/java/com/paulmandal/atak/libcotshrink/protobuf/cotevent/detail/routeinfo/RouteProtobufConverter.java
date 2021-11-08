@@ -2,9 +2,11 @@ package com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.routeinfo;
 
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
-import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.routeinfo.navcue.navcues.NavCuesProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.Constants;
 import com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues;
+import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.routeinfo.navcue.navcues.NavCuesProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
+import com.paulmandal.atak.libcotshrink.protobuf.utils.PrecisionUtil;
 import com.paulmandal.atak.libcotshrink.protobuf.utils.StringUtils;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufRoute;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufRouteInfo;
@@ -25,12 +27,17 @@ public class RouteProtobufConverter {
 
     private static final String KEY_NAV_CUES = "__navcues";
 
-    private static final double NULL_VALUE = -1.0;
+    private static final int NULL_VALUE = -1;
 
-    private NavCuesProtobufConverter mNavCuesProtobufConverter;
+    private static final double LAT_LON_INT_CONVERSION_FACTOR = Constants.LAT_LON_INT_CONVERSION_FACTOR;
+    private static final double HAE_ALT_PRECISION_FACTOR = Constants.HAE_ALT_PRECISION_FACTOR;
 
-    public RouteProtobufConverter(NavCuesProtobufConverter navCuesProtobufConverter) {
+    private final NavCuesProtobufConverter mNavCuesProtobufConverter;
+    private final PrecisionUtil mPrecisionUtil;
+
+    public RouteProtobufConverter(NavCuesProtobufConverter navCuesProtobufConverter, PrecisionUtil precisionUtil) {
         mNavCuesProtobufConverter = navCuesProtobufConverter;
+        mPrecisionUtil = precisionUtil;
     }
 
     public void toRouteLink(CotDetail cotDetail, ProtobufRoute.Route.Builder routeBuilder, SubstitutionValues substitutionValues) throws UnknownDetailFieldException {
@@ -56,13 +63,13 @@ public class RouteProtobufConverter {
                 case KEY_POINT:
                     String[] splitPoint = attribute.getValue().split(",");
                     if (splitPoint.length > 0) {
-                        builder.setLat(Double.parseDouble(splitPoint[0]));
+                        builder.setLat(mPrecisionUtil.reducePrecision(splitPoint[0], LAT_LON_INT_CONVERSION_FACTOR));
                     }
                     if (splitPoint.length > 1) {
-                        builder.setLon(Double.parseDouble(splitPoint[1]));
+                        builder.setLon(mPrecisionUtil.reducePrecision(splitPoint[1], LAT_LON_INT_CONVERSION_FACTOR));
                     }
                     if (splitPoint.length > 2) {
-                        builder.setHae(Double.parseDouble(splitPoint[2]));
+                        builder.setHae(mPrecisionUtil.reducePrecision(splitPoint[2], HAE_ALT_PRECISION_FACTOR));
                     }
                     break;
                 case KEY_RELATION:
@@ -124,13 +131,13 @@ public class RouteProtobufConverter {
 
             String point = "";
             if (link.getLat() != NULL_VALUE) {
-                point += Double.toString(link.getLat());
+                point += Double.toString(link.getLat() / LAT_LON_INT_CONVERSION_FACTOR);
             }
             if (link.getLon() != NULL_VALUE) {
-                point += ((point.length() > 0 ? "," : "") + link.getLon());
+                point += ((point.length() > 0 ? "," : "") + link.getLon() / LAT_LON_INT_CONVERSION_FACTOR);
             }
             if (link.getHae() != NULL_VALUE) {
-                point += ((point.length() > 0 ? "," : "") + link.getHae());
+                point += ((point.length() > 0 ? "," : "") + link.getHae() / HAE_ALT_PRECISION_FACTOR);
             }
             linkDetail.setAttribute(KEY_POINT, point);
 

@@ -45,6 +45,7 @@ import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.shape.LineStyle
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.shape.PolyStyleProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.shape.ShapeProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.shape.StyleProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.utils.PrecisionUtil;
 
 import java.util.Calendar;
 
@@ -59,9 +60,11 @@ public class CotEventProtobufConverterFactory {
         cal.set(Calendar.MILLISECOND, 0);
         long startOfYearMs = cal.getTime().getTime();
 
+        PrecisionUtil precisionUtil = new PrecisionUtil();
+
         return new CotEventProtobufConverter(
                 new TakvProtobufConverter(),
-                new TrackProtobufConverter(),
+                new TrackProtobufConverter(precisionUtil),
                 new ServerDestinationProtobufConverter(),
                 new RemarksProtobufConverter(),
                 new ContactProtobufConverter(),
@@ -75,24 +78,25 @@ public class CotEventProtobufConverterFactory {
                 new PrecisionLocationProtobufConverter(),
                 new DroppedFieldConverter(),
                 new StatusProtobufConverter(),
-                new HeightAndHeightUnitProtobufConverter(),
+                new HeightAndHeightUnitProtobufConverter(precisionUtil),
                 new ModelProtobufConverter(),
                 new DetailStyleProtobufConverter(),
                 new CeHumanInputProtobufConverter(),
                 new FreehandLinkProtobufConverter(),
                 new ChatLinkProtobufConverter(),
                 new ComplexLinkProtobufConverter(),
-                new ShapeLinkProtobufConverter(),
+                new ShapeLinkProtobufConverter(precisionUtil),
                 new RouteProtobufConverter(
                         new NavCuesProtobufConverter(
                                 new NavCueProtobufConverter(
                                         new TriggerProtobufConverter()
                                 )
-                        )
+                        ),
+                        precisionUtil
                 ),
                 new LinkAttrProtobufConverter(),
                 new TogProtobufConverter(),
-                new SensorProtobufConverter(),
+                new SensorProtobufConverter(precisionUtil),
                 new VideoProtobufConverter(
                         new ConnectionEntryProtobufConverter()
                 ),
@@ -102,9 +106,9 @@ public class CotEventProtobufConverterFactory {
                                 new MistProtobufConverter()
                         )
                 ),
-                new GeoFenceProtobufConverter(),
+                new GeoFenceProtobufConverter(precisionUtil),
                 new ShapeProtobufConverter(
-                        new EllipseProtobufConverter(),
+                        new EllipseProtobufConverter(precisionUtil),
                         new EllipseLinkProtobufConverter(
                                 new StyleProtobufConverter(
                                         new LineStyleProtobufConverter(),
@@ -112,6 +116,7 @@ public class CotEventProtobufConverterFactory {
                                 )
                         )
                 ),
+                precisionUtil,
                 startOfYearMs);
     }
 }

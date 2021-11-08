@@ -7,7 +7,7 @@ package com.paulmandal.atak.libcotshrink.protobufs;
 option java_outer_classname = "ProtobufEllipse";
 
 message Ellipse {
-  double major = 1;
-  double minor = 2;
+  int32 major = 1;
+  int32 minor = 2;
   int32 angle = 3;
 }

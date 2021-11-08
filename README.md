@@ -53,15 +53,16 @@ Using the `CotShrinker.toByteArrayLossy(CotEvent)` method will cause loss of pre
 | ----------- | ------------------------------------ |
 | `time`      | to whole seconds since start of year |
 | `stale`     | to whole seconds since `time`        |
+| `start`     | reuses valuefrom `time`              |
+| all `lat`   | to 7 decimal places                  |
+| all `lon`   | to 7 decimal places                  |
 | `point.hae` | to 14 bit `int`, whole meters        |
 | `point.ce`  | to `int` from `double`               |
 | `point.le`  | to `int` from `double`               |
 
 # Contributing / TODO
 
-* Figure out how to get unit tests working, they rely on the ATAK lib but it doesn't seem to work during testing
-* Improve structure of Cot*ProtobufConverter classes, there should be a reasonable directory tree there
-* Ensure that all Cot*ProtobufConverter classes check for unhandled: InnerText, Child Objs. and Fields
+* Figure out how to get unit tests working, they rely `CotEvent.parse()` but this does not seem to work during unit tests
 * Use `sint32` instead of `int32` for fields that can be negative
 * Support more message types (please identify them and how they are generated in Issues)
 * Make more fields into enums (e.g. `CotEvent.type`)

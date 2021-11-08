@@ -2,7 +2,9 @@ package com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.sensor;
 
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
+import com.paulmandal.atak.libcotshrink.protobuf.Constants;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
+import com.paulmandal.atak.libcotshrink.protobuf.utils.PrecisionUtil;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufSensor;
 
 public class SensorProtobufConverter {
@@ -18,19 +20,27 @@ public class SensorProtobufConverter {
     private static final String KEY_HIDE_FOV = "hideFov";
     private static final String KEY_FOV_ALPHA = "fovAlpha";
 
+    private static final double SENSOR_FOV_PRECISION_FACTOR = Constants.SENSOR_FOV_PRECISION_FACTOR;
+
+    private final PrecisionUtil mPrecisionUtil;
+
+    public SensorProtobufConverter(PrecisionUtil precisionUtil) {
+        mPrecisionUtil = precisionUtil;
+    }
+
     public ProtobufSensor.Sensor toSensor(CotDetail cotDetail) throws UnknownDetailFieldException {
         ProtobufSensor.Sensor.Builder builder = ProtobufSensor.Sensor.newBuilder();
         CotAttribute[] attributes = cotDetail.getAttributes();
         for (CotAttribute attribute : attributes) {
             switch (attribute.getName()) {
                 case KEY_FOV_RED:
-                    builder.setFovRed(Double.parseDouble(attribute.getValue()));
+                    builder.setFovRed(mPrecisionUtil.reducePrecision(attribute.getValue(), SENSOR_FOV_PRECISION_FACTOR));
                     break;
                 case KEY_FOV_BLUE:
-                    builder.setFovBlue(Double.parseDouble(attribute.getValue()));
+                    builder.setFovBlue(mPrecisionUtil.reducePrecision(attribute.getValue(), SENSOR_FOV_PRECISION_FACTOR));
                     break;
                 case KEY_FOV_GREEN:
-                    builder.setFovGreen(Double.parseDouble(attribute.getValue()));
+                    builder.setFovGreen(mPrecisionUtil.reducePrecision(attribute.getValue(), SENSOR_FOV_PRECISION_FACTOR));
                     break;
                 case KEY_RANGE:
                     builder.setRange(Integer.parseInt(attribute.getValue()));
@@ -48,7 +58,7 @@ public class SensorProtobufConverter {
                     builder.setHideFov(Boolean.parseBoolean(attribute.getValue()));
                     break;
                 case KEY_FOV_ALPHA:
-                    builder.setFovAlpha(Double.parseDouble(attribute.getValue()));
+                    builder.setFovAlpha(mPrecisionUtil.reducePrecision(attribute.getValue(), SENSOR_FOV_PRECISION_FACTOR));
                     break;
                 default:
                     throw new UnknownDetailFieldException("Don't know how to handle detail field: sensor." + attribute.getName());
@@ -65,10 +75,10 @@ public class SensorProtobufConverter {
 
         CotDetail sensorDetail = new CotDetail(KEY_SENSOR);
 
-        sensorDetail.setAttribute(KEY_FOV_RED, Double.toString(sensor.getFovRed()));
-        sensorDetail.setAttribute(KEY_FOV_BLUE, Double.toString(sensor.getFovBlue()));
-        sensorDetail.setAttribute(KEY_FOV_GREEN, Double.toString(sensor.getFovGreen()));
-        sensorDetail.setAttribute(KEY_FOV_ALPHA, Double.toString(sensor.getFovAlpha()));
+        sensorDetail.setAttribute(KEY_FOV_RED, Double.toString(sensor.getFovRed() / SENSOR_FOV_PRECISION_FACTOR));
+        sensorDetail.setAttribute(KEY_FOV_BLUE, Double.toString(sensor.getFovBlue() / SENSOR_FOV_PRECISION_FACTOR));
+        sensorDetail.setAttribute(KEY_FOV_GREEN, Double.toString(sensor.getFovGreen() / SENSOR_FOV_PRECISION_FACTOR));
+        sensorDetail.setAttribute(KEY_FOV_ALPHA, Double.toString(sensor.getFovAlpha() / SENSOR_FOV_PRECISION_FACTOR));
         sensorDetail.setAttribute(KEY_RANGE, Integer.toString(sensor.getRange()));
         sensorDetail.setAttribute(KEY_AZIMUTH, Integer.toString(sensor.getAzimuth()));
         sensorDetail.setAttribute(KEY_DISPLAY_MAGNETIC_REFERENCE, Integer.toString(sensor.getDisplayMagneticReference()));

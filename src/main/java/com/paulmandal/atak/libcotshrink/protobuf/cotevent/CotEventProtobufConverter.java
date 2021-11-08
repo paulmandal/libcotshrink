@@ -7,6 +7,7 @@ import com.atakmap.coremap.cot.event.CotDetail;
 import com.atakmap.coremap.cot.event.CotEvent;
 import com.atakmap.coremap.cot.event.CotPoint;
 import com.google.protobuf.InvalidProtocolBufferException;
+import com.paulmandal.atak.libcotshrink.protobuf.Constants;
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.cehumaninput.CeHumanInputProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.link.ChatLinkProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.chat.ChatProtobufConverter;
@@ -43,6 +44,7 @@ import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.medevac.FlowTag
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.medevac.MedevacProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.geofence.GeoFenceProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.shape.ShapeProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.utils.PrecisionUtil;
 import com.paulmandal.atak.libcotshrink.protobuf.utils.StringUtils;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufContact;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufCotEvent;
@@ -102,6 +104,8 @@ public class CotEventProtobufConverter {
     
     private static final String GEOCHAT_MARKER = "GeoChat";
 
+    private static final double LAT_LON_INT_CONVERSION_FACTOR = Constants.LAT_LON_INT_CONVERSION_FACTOR;
+
     private final TakvProtobufConverter mTakvProtobufConverter;
     private final TrackProtobufConverter mTrackProtobufConverter;
     private final ServerDestinationProtobufConverter mServerDestinationProtobufConverter;
@@ -132,6 +136,7 @@ public class CotEventProtobufConverter {
     private final MedevacProtobufConverter mMedevacProtobufConverter;
     private final GeoFenceProtobufConverter mGeoFenceProtobufConverter;
     private final ShapeProtobufConverter mShapeProtobufConverter;
+    private final PrecisionUtil mPrecisionUtil;
     private final long mStartOfYearMs;
 
     public CotEventProtobufConverter(TakvProtobufConverter takvProtobufConverter,
@@ -164,6 +169,7 @@ public class CotEventProtobufConverter {
                                      MedevacProtobufConverter medevacProtobufConverter,
                                      GeoFenceProtobufConverter geoFenceProtobufConverter,
                                      ShapeProtobufConverter shapeProtobufConverter,
+                                     PrecisionUtil precisionUtil,
                                      long startOfYearMs) {
         mTakvProtobufConverter = takvProtobufConverter;
         mTrackProtobufConverter = trackProtobufConverter;
@@ -195,6 +201,7 @@ public class CotEventProtobufConverter {
         mMedevacProtobufConverter = medevacProtobufConverter;
         mGeoFenceProtobufConverter = geoFenceProtobufConverter;
         mShapeProtobufConverter = shapeProtobufConverter;
+        mPrecisionUtil = precisionUtil;
         mStartOfYearMs = startOfYearMs;
     }
 
@@ -234,7 +241,7 @@ public class CotEventProtobufConverter {
             cotEvent.setStale(customBytesFields.stale);
             cotEvent.setHow(customBytesExtFields.how);
             cotEvent.setDetail(cotDetailFromProtoDetail(cotEvent, protoCotEvent.getDetail(), customBytesExtFields, substitutionValues));
-            cotEvent.setPoint(new CotPoint(protoCotEvent.getLat(), protoCotEvent.getLon(), customBytesFields.hae, protoCotEvent.getCe(), protoCotEvent.getLe()));
+            cotEvent.setPoint(new CotPoint(protoCotEvent.getLat() / LAT_LON_INT_CONVERSION_FACTOR, protoCotEvent.getLon() / LAT_LON_INT_CONVERSION_FACTOR, customBytesFields.hae, protoCotEvent.getCe(), protoCotEvent.getLe()));
         } catch (InvalidProtocolBufferException e) {
 //            e.printStackTrace();
         }
@@ -268,8 +275,8 @@ public class CotEventProtobufConverter {
 
         CotPoint cotPoint = cotEvent.getCotPoint();
         if (cotPoint != null) {
-            builder.setLat(cotPoint.getLat());
-            builder.setLon(cotPoint.getLon());
+            builder.setLat(mPrecisionUtil.reducePrecision(cotPoint.getLat(), LAT_LON_INT_CONVERSION_FACTOR));
+            builder.setLon(mPrecisionUtil.reducePrecision(cotPoint.getLon(), LAT_LON_INT_CONVERSION_FACTOR));
             builder.setCe((int)cotPoint.getCe());
             builder.setLe((int)cotPoint.getLe());
         }
