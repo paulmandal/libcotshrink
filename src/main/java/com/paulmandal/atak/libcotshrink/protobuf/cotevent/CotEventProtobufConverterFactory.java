@@ -108,7 +108,7 @@ public class CotEventProtobufConverterFactory {
                 ),
                 new GeoFenceProtobufConverter(),
                 new ShapeProtobufConverter(
-                        new EllipseProtobufConverter(),
+                        new EllipseProtobufConverter(precisionUtil),
                         new EllipseLinkProtobufConverter(
                                 new StyleProtobufConverter(
                                         new LineStyleProtobufConverter(),

@@ -22,6 +22,7 @@ public class HackyTests {
     private static final double COURSE_PRECISION_FACTOR = Constants.COURSE_PRECISION_FACTOR;
     private static final double SPEED_PRECISION_FACTOR = Constants.SPEED_PRECISION_FACTOR;
     private static final double HEIGHT_PRECISION_FACTOR = Constants.HEIGHT_PRECISION_FACTOR;
+    private static final double ELLIPSE_MAJOR_MINOR_PRECISION_FACTOR = Constants.ELLIPSE_MAJOR_MINOR_PRECISION_FACTOR;
 
     public void runAllTests() {
         testPli();
@@ -128,7 +129,7 @@ public class HackyTests {
     public void testSensor() {
         String messageType = "Sensor";
         String testXml = "<?xml version='1.0' encoding='UTF-8' standalone='yes'?><event version='2.0' uid='53dc0c04-d84a-473b-9128-f241350693ef' type='b-m-p-s-p-loc' time='2021-08-29T21:22:06.524Z' start='2021-08-29T21:22:06.524Z' stale='2021-09-15T22:02:35.452Z' how='h-g-i-g-o'><point lat='39.72268266' lon='-105.002122' hae='1580.88835768' ce='9999999.0' le='9999999.0'/><detail><status readiness='true'/><archive/><contact callsign='Sensor Bale'/><remarks>Hi</remarks><archive/><link uid='ANDROID-355499060918435' production_time='2021-08-29T21:18:50.381Z' type='a-f-G-U-C' parent_callsign='maya' relation='p-p'/><precisionlocation altsrc='DTED2'/><sensor fovGreen='0.0' fovBlue='0.0' fovRed='1.0' range='699' azimuth='78' displayMagneticReference='0' fov='130' hideFov='true' fovAlpha='0.44'/><color argb='-1'/><__video uid='efd8f175-9732-4a2a-a7dc-fc7f2c803ed2' url=':6636'><ConnectionEntry networkTimeout='13000' uid='efd8f175-9732-4a2a-a7dc-fc7f2c803ed2' path='' protocol='udp' bufferTime='3000' address='' port='6636' roverPort='-1' rtspReliable='0' ignoreEmbeddedKLV='false' alias='about name'/></__video></detail></event>";
-        validateLossy(messageType, 299, testXml);
+        validateLossy(messageType, 285, testXml);
         validateLossless(messageType, 853, testXml);
         generatePerformanceTableOutput(messageType, testXml);
     }
@@ -176,7 +177,7 @@ public class HackyTests {
     public void testCircle() {
         String messageType = "Circle";
         String testXml = "<?xml version='1.0' encoding='UTF-8' standalone='yes'?><event version='2.0' uid='df11ad17-79d8-436b-ba7f-6c12a7d147d3' type='u-d-c-c' time='2021-08-30T18:50:27.452Z' start='2021-08-30T18:50:27.452Z' stale='2021-08-31T18:50:27.452Z' how='h-e'><point lat='39.52907656661326' lon='-105.75665450279342' hae='3100.9553102169134' ce='9999999.0' le='9999999.0' /><detail><shape><ellipse major='10.557862958543073' minor='10.557862958543073' angle='360'/><link uid='df11ad17-79d8-436b-ba7f-6c12a7d147d3.Style' type='b-x-KmlStyle' relation='p-c'><Style><LineStyle><color>ff0000ff</color><width>4.0</width></LineStyle><PolyStyle><color>960000ff</color></PolyStyle></Style></link></shape><contact callsign='Drawing Circle 1'/><remarks></remarks><archive/><strokeColor value='-16776961'/><strokeWeight value='4.0'/><fillColor value='-1778384641'/><labels_on value='true'/><precisionlocation altsrc='DTED2'/></detail></event>";
-        validateLossy(messageType, 216, testXml);
+        validateLossy(messageType, 209, testXml);
         validateLossless(messageType, 621, testXml);
         generatePerformanceTableOutput(messageType, testXml);
     }
@@ -296,6 +297,10 @@ public class HackyTests {
                 child.setAttribute("value", heightText);
                 child.setInnerText(heightText);
             }
+
+            if (child.getElementName().equals("shape")) {
+                fuzzShape(child);
+            }
         }
 
         validateXmls(messageType, maxSize, testXml.getBytes().length, cotEventAsBytes.length, cotEvent.toString(), convertedCotEvent.toString());
@@ -329,6 +334,18 @@ public class HackyTests {
             Log.e(TAG, "!!!!!!!!!!!!");
             Log.e(TAG, messageType + " size decreased from " + maxSize + " to " + size + "! Update to the new max size: " + size);
             Log.e(TAG, "!!!!!!!!!!!!");
+        }
+    }
+
+    private void fuzzShape(CotDetail shapeDetail) {
+        for (CotDetail child : shapeDetail.getChildren()) {
+            if (child.getElementName().equals("ellipse") && child.getAttribute("major") != null && child.getAttribute("minor") != null) {
+                String majorStr = child.getAttribute("major");
+                String minorStr = child.getAttribute("minor");
+
+                child.setAttribute("major", Double.toString(fuzzDouble(Double.parseDouble(majorStr), ELLIPSE_MAJOR_MINOR_PRECISION_FACTOR)));
+                child.setAttribute("minor", Double.toString(fuzzDouble(Double.parseDouble(minorStr), ELLIPSE_MAJOR_MINOR_PRECISION_FACTOR)));
+            }
         }
     }
 
