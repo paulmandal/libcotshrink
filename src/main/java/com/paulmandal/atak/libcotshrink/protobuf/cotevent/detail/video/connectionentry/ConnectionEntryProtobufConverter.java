@@ -3,6 +3,8 @@ package com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.video.connecti
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
 import com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledChildException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledInnerTextException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufConnectionEntry;
 
@@ -25,7 +27,11 @@ public class ConnectionEntryProtobufConverter {
 
     private static final String VIDEO_UID_SUBSTITUTION_MARKER = "#u";
 
-    public ProtobufConnectionEntry.ConnectionEntry toConnectionEntry(CotDetail cotDetail, SubstitutionValues substitutionValues) throws UnknownDetailFieldException {
+    public ProtobufConnectionEntry.ConnectionEntry toConnectionEntry(CotDetail cotDetail, SubstitutionValues substitutionValues) throws UnknownDetailFieldException, UnhandledInnerTextException, UnhandledChildException {
+        if (cotDetail.getInnerText() != null && !cotDetail.getInnerText().isEmpty()) {
+            throw new UnhandledInnerTextException("Unhandled inner text: " + cotDetail.getInnerText());
+        }
+
         ProtobufConnectionEntry.ConnectionEntry.Builder builder  = ProtobufConnectionEntry.ConnectionEntry.newBuilder();
 
         CotAttribute[] attributes = cotDetail.getAttributes();
@@ -77,7 +83,7 @@ public class ConnectionEntryProtobufConverter {
         for (CotDetail child : children) {
             switch (child.getElementName()) {
                 default:
-                    throw new UnknownDetailFieldException("Don't know how to handle child object: __video.ConnectionEntry." + child.getElementName());
+                    throw new UnhandledChildException("Don't know how to handle child object: __video.ConnectionEntry." + child.getElementName());
             }
         }
 
