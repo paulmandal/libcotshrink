@@ -1,1 +1,2 @@
-TODO: update this for Maven Central
+- Update version in build.gradle
+- ./gradlew :publishReleasePublicationToSonatypeRepository :closeAndReleaseSonatypeStagingRepository
