@@ -30,6 +30,7 @@ public class RouteProtobufConverter {
     private static final int NULL_VALUE = -1;
 
     private static final double LAT_LON_INT_CONVERSION_FACTOR = Constants.LAT_LON_INT_CONVERSION_FACTOR;
+    private static final double HAE_ALT_PRECISION_FACTOR = Constants.HAE_ALT_PRECISION_FACTOR;
 
     private final NavCuesProtobufConverter mNavCuesProtobufConverter;
     private final PrecisionUtil mPrecisionUtil;
@@ -68,7 +69,7 @@ public class RouteProtobufConverter {
                         builder.setLon(mPrecisionUtil.reducePrecision(splitPoint[1], LAT_LON_INT_CONVERSION_FACTOR));
                     }
                     if (splitPoint.length > 2) {
-                        builder.setHae(Double.parseDouble(splitPoint[2]));
+                        builder.setHae(mPrecisionUtil.reducePrecision(splitPoint[2], HAE_ALT_PRECISION_FACTOR));
                     }
                     break;
                 case KEY_RELATION:
@@ -136,7 +137,7 @@ public class RouteProtobufConverter {
                 point += ((point.length() > 0 ? "," : "") + link.getLon() / LAT_LON_INT_CONVERSION_FACTOR);
             }
             if (link.getHae() != NULL_VALUE) {
-                point += ((point.length() > 0 ? "," : "") + link.getHae());
+                point += ((point.length() > 0 ? "," : "") + link.getHae() / HAE_ALT_PRECISION_FACTOR);
             }
             linkDetail.setAttribute(KEY_POINT, point);
 

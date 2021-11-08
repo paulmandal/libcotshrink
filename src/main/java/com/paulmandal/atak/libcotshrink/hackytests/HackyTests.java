@@ -20,6 +20,7 @@ public class HackyTests {
 
     private static final double LAT_LON_INT_CONVERSION_FACTOR = Constants.LAT_LON_INT_CONVERSION_FACTOR;
     public static final double HAE_ALT_PRECISION_FACTOR = Constants.HAE_ALT_PRECISION_FACTOR;
+    public static final double HAE_ALT_PRECISION_FACTOR_ALT = Constants.HAE_ALT_PRECISION_FACTOR_ALT;
     private static final double COURSE_PRECISION_FACTOR = Constants.COURSE_PRECISION_FACTOR;
     private static final double SPEED_PRECISION_FACTOR = Constants.SPEED_PRECISION_FACTOR;
     private static final double HEIGHT_PRECISION_FACTOR = Constants.HEIGHT_PRECISION_FACTOR;
@@ -57,9 +58,17 @@ public class HackyTests {
         generatePerformanceTableOutput(messageType, testXml);
     }
 
+    public void testHighAltitudePli() {
+        String messageType = "High Altitude PLI";
+        String testXml = "<?xml version='1.0' encoding='UTF-8' standalone='yes'?><event version='2.0' uid='ANDROID-53af0912586418dc' type='a-f-G-U-C' time='2021-08-29T21:14:00.406Z' start='2021-08-29T21:14:00.406Z' stale='2021-08-29T21:15:15.406Z' how='h-e'><point lat='39.71401955573084' lon='-104.99452709918448' hae='19000.245787738948' ce='9999999.0' le='9999999.0'/><detail><takv os='29' version='4.0.0.7 (a457ad0d).1597850931-CIV' device='GOOGLE PIXEL 4 XL' platform='ATAK-CIV'/><contact endpoint='192.168.1.159:4242:tcp' callsign='dasuberdog'/><uid Droid='dasuberdog'/><precisionlocation altsrc='DTED2' geopointsrc='USER'/><__group role='Team Lead' name='Orange'/><status battery='58'/><track course='327.66875837972367' speed='0.0'/></detail></event>";
+        validateLossy(messageType, 171, testXml);
+        validateLossless(messageType, 545, testXml);
+        generatePerformanceTableOutput(messageType, testXml);
+    }
+
     public void testPliWithNegativeHae() {
         String messageType = "PLI with negative HAE";
-        String testXml = "<?xml version='1.0' encoding='UTF-8' standalone='yes'?><event version='2.0' uid='ANDROID-53af0912586418dc' type='a-f-G-U-C' time='2021-08-29T21:14:00.406Z' start='2021-08-29T21:14:00.406Z' stale='2021-08-29T21:15:15.406Z' how='h-e'><point lat='39.71401955573084' lon='-104.99452709918448' hae='-800.0' ce='9999999.0' le='9999999.0'/><detail><takv os='29' version='4.0.0.7 (a457ad0d).1597850931-CIV' device='GOOGLE PIXEL 4 XL' platform='ATAK-CIV'/><contact endpoint='192.168.1.159:4242:tcp' callsign='dasuberdog'/><uid Droid='dasuberdog'/><precisionlocation altsrc='DTED2' geopointsrc='USER'/><__group role='Team Lead' name='Orange'/><status battery='58'/><track course='327.66875837972367' speed='0.0'/></detail></event>";
+        String testXml = "<?xml version='1.0' encoding='UTF-8' standalone='yes'?><event version='2.0' uid='ANDROID-53af0912586418dc' type='a-f-G-U-C' time='2021-08-29T21:14:00.406Z' start='2021-08-29T21:14:00.406Z' stale='2021-08-29T21:15:15.406Z' how='h-e'><point lat='39.71401955573084' lon='-104.99452709918448' hae='-899.0' ce='9999999.0' le='9999999.0'/><detail><takv os='29' version='4.0.0.7 (a457ad0d).1597850931-CIV' device='GOOGLE PIXEL 4 XL' platform='ATAK-CIV'/><contact endpoint='192.168.1.159:4242:tcp' callsign='dasuberdog'/><uid Droid='dasuberdog'/><precisionlocation altsrc='DTED2' geopointsrc='USER'/><__group role='Team Lead' name='Orange'/><status battery='58'/><track course='327.66875837972367' speed='0.0'/></detail></event>";
         validateLossy(messageType, 171, testXml);
         validateLossless(messageType, 543, testXml);
         generatePerformanceTableOutput(messageType, testXml);
@@ -84,7 +93,7 @@ public class HackyTests {
     public void testDrawnShape() {
         String messageType = "Drawn Shape";
         String testXml = "<?xml version='1.0' encoding='UTF-8' standalone='yes'?><event version='2.0' uid='52ce8003-8a24-41fd-8119-7e603ac1e95e' type='u-d-r' time='2021-08-29T21:31:25.109Z' start='2021-08-29T21:31:25.109Z' stale='2021-08-30T21:31:25.109Z' how='h-e'><point lat='39.730614458351475' lon='-104.99506083807847' hae='1588.394668173431' ce='9999999.0' le='9999999.0'/><detail><link point='39.734374690892466,-105.000951756657,1583.000100853604'/><link point='39.72561220672946,-104.9910075127075,1591.5484945254186'/><link point='39.72685459182151,-104.98916936139345'/><link point='39.735616232147535,-104.99911502806049'/><contact callsign='Rectangle 1'/><remarks>Nice</remarks><archive/><strokeColor value='-16744704'/><strokeWeight value='4.0'/><fillColor value='-1778352384'/><labels_on value='true'/><height_unit>4</height_unit><height unit='feet' value='0.9144000000000001'>0.9144000000000001</height><precisionlocation altsrc='DTED2'/><tog enabled='1'/></detail></event>";
-        validateLossy(messageType, 229, testXml);
+        validateLossy(messageType, 212, testXml);
         validateLossless(messageType, 687, testXml);
         generatePerformanceTableOutput(messageType, testXml);
     }
@@ -124,7 +133,7 @@ public class HackyTests {
     public void testRoute() {
         String messageType = "Route";
         String testXml = "<?xml version='1.0' encoding='UTF-8' standalone='yes'?><event version='2.0' uid='3eb5f892-e44f-4605-9693-288815722690' type='b-m-r' time='2021-08-29T21:38:00.716Z' start='2021-08-29T21:38:00.716Z' stale='2021-08-30T21:38:00.716Z' how='h-e'><point lat='0.0' lon='0.0' hae='9999999.0' ce='9999999.0' le='9999999.0'/><detail><link uid='93798514-6c72-4e14-88ce-2288ad85370e' callsign='Route 7 SP' type='b-m-p-w' point='39.530711638779984,-105.76095833293527,3229.2090310525723' remarks='' relation='c'/><link uid='e0b082c8-a522-4661-9960-211b2d0f61cb' callsign='' type='b-m-p-c' point='39.53015542202335,-105.76000133390068,3199.4863308287886' remarks='' relation='c'/><link uid='ae39bb53-4bae-449a-b6c3-80dde5bce84d' callsign='' type='b-m-p-c' point='39.53091028762164,-105.75927125216293,3221.245650987822' remarks='' relation='c'/><link uid='23a5e2db-a00a-47b3-addd-450ff2982360' callsign='CP1' type='b-m-p-w' point='39.529834273062676,-105.75886674741635,3175.9541488988066' remarks='' relation='c'/><link uid='1d9bd771-708e-4793-a6d9-7e7d5dac9d18' callsign='' type='b-m-p-c' point='39.53053285482249,-105.75811364508328,3197.533593376215' remarks='' relation='c'/><link uid='7ac29e4e-a9df-463d-8aa3-3ae18aac0953' callsign='' type='b-m-p-c' point='39.53113873378954,-105.7575973260165,3206.9957389306155' remarks='' relation='c'/><link uid='bda0fba4-8e9d-46ca-8f95-a7bcdad2a7b6' callsign='CP2' type='b-m-p-w' point='39.53023488156001,-105.75715664604867,3178.162436818524' remarks='' relation='c'/><link uid='0ff20d3a-dcef-43a3-a4c5-3ef11ca0440d' callsign='' type='b-m-p-c' point='39.530456706099855,-105.75633777058607,3171.74040652843' remarks='' relation='c'/><link uid='8d633813-f589-4a5a-8cd1-0d61806b0c71' callsign='' type='b-m-p-c' point='39.531188395999955,-105.75618978104464,3183.9218981426966' remarks='' relation='c'/><link uid='2e81f497-651f-4fba-8b45-85d102c9d642' callsign='' type='b-m-p-c' point='39.53076461180442,-105.75506834918622,3140.0895940184528' remarks='' relation='c'/><link uid='37b4e06d-d8ab-4e7c-b6e1-5a689a8b04ff' callsign='TGT' type='b-m-p-w' point='39.52982102980656,-105.75470659697383,3097.669497337116' remarks='' relation='c'/><link_attr planningmethod='Infil' color='-16776961' method='Walking' prefix='CP' type='On Foot' stroke='3' direction='Infil' routetype='Primary' order='Ascending Check Points'/><labels_on value='false'/><__routeinfo><__navcues><__navcue voice='Speed Up' id='bda0fba4-8e9d-46ca-8f95-a7bcdad2a7b6' text='Speed Up'><trigger mode='d' value='70'/></__navcue><__navcue voice='Stop' id='23a5e2db-a00a-47b3-addd-450ff2982360' text='Stop'><trigger mode='d' value='70'/></__navcue></__navcues></__routeinfo><archive/><color value='-16776961'/><remarks>Butts</remarks><strokeColor value='-16776961'/><strokeWeight value='3.0'/><contact callsign='Route 7'/></detail></event>";
-        validateLossy(messageType, 608, testXml);
+        validateLossy(messageType, 544, testXml);
         validateLossless(messageType, 1692, testXml);
         generatePerformanceTableOutput(messageType, testXml);
     }
@@ -188,7 +197,7 @@ public class HackyTests {
     public void testGeoFenceWithAltitude() {
         String messageType = "GeoFence w/ Altitude";
         String testXml = "<?xml version='1.0' encoding='UTF-8' standalone='yes'?><event version='2.0' uid='07965d48-0d4b-4575-9c5b-c56a4b66ce10' type='u-d-r' time='2021-09-13T05:25:30.882Z' start='2021-09-13T05:25:30.882Z' stale='2021-09-14T05:25:30.882Z' how='h-e'><point lat='39.86657654739065' lon='-105.16496033254576' hae='1698.7690850953754' ce='9999999.0' le='9999999.0' /><detail><link point='39.93470375464395,-105.24931298523292,1743.6532212063455'/><link point='39.79887842819508,-105.24974402778368,1880.848705771484'/><link point='39.79843415916509,-105.08077499386248'/><link point='39.93425862060156,-105.08000930131891'/><tog enabled='1'/><strokeColor value='-16729857'/><strokeWeight value='3.4'/><fillColor value='-1778337537'/><remarks>Rmks</remarks><__geofence elevationMonitored='true' minElevation='0.7919789468754104' monitor='TAKUsers' trigger='Both' tracking='true' maxElevation='96.19437894687542' boundingSphere='85000.0'/><precisionlocation altsrc='DTED2'/><contact callsign='Warning'/><archive/><labels_on value='true'/></detail></event>";
-        validateLossy(messageType, 241, testXml);
+        validateLossy(messageType, 222, testXml);
         validateLossless(messageType, 792, testXml);
         generatePerformanceTableOutput(messageType, testXml);
     }
@@ -196,7 +205,7 @@ public class HackyTests {
     public void testGeoFenceWithoutAltitude() {
         String messageType = "GeoFence w/o Altitude";
         String testXml = "<?xml version='1.0' encoding='UTF-8' standalone='yes'?><event version='2.0' uid='07965d48-0d4b-4575-9c5b-c56a4b66ce10' type='u-d-r' time='2021-09-13T05:24:17.214Z' start='2021-09-13T05:24:17.214Z' stale='2021-09-14T05:24:17.214Z' how='h-e'><point lat='39.86657654739065' lon='-105.16496033254576' hae='1698.7690850953754' ce='9999999.0' le='9999999.0' /><detail><link point='39.93470375464395,-105.24931298523292,1743.6532212063455'/><link point='39.79887842819508,-105.24974402778368,1880.848705771484'/><link point='39.79843415916509,-105.08077499386248'/><link point='39.93425862060156,-105.08000930131891'/><tog enabled='1'/><strokeColor value='-16729857'/><strokeWeight value='3.4'/><fillColor value='-1778337537'/><remarks>Rmks</remarks><__geofence elevationMonitored='false' minElevation='NaN' monitor='All' trigger='Entry' tracking='false' maxElevation='NaN' boundingSphere='85000.0'/><precisionlocation altsrc='DTED2'/><contact callsign='Warning'/><archive/><labels_on value='true'/></detail></event>";
-        validateLossy(messageType, 236, testXml);
+        validateLossy(messageType, 217, testXml);
         validateLossless(messageType, 761, testXml);
         generatePerformanceTableOutput(messageType, testXml);
     }
@@ -234,7 +243,7 @@ public class HackyTests {
         CoordinatedTime fuzzedStale = cotEvent.getStale().addMilliseconds((int)(-1 * (cotEvent.getStale().getMilliseconds() % 1000)));
 
         CotPoint originalCotPoint = cotEvent.getCotPoint();
-        CotPoint fuzzedCotPoint = new CotPoint(fuzzDouble(originalCotPoint.getLat(), LAT_LON_INT_CONVERSION_FACTOR), fuzzDouble(originalCotPoint.getLon(), LAT_LON_INT_CONVERSION_FACTOR), (int)originalCotPoint.getHae(), (int)originalCotPoint.getCe(), (int)originalCotPoint.getLe());
+        CotPoint fuzzedCotPoint = new CotPoint(fuzzDouble(originalCotPoint.getLat(), LAT_LON_INT_CONVERSION_FACTOR), fuzzDouble(originalCotPoint.getLon(), LAT_LON_INT_CONVERSION_FACTOR), fuzzDouble(originalCotPoint.getHae(), HAE_ALT_PRECISION_FACTOR_ALT), (int)originalCotPoint.getCe(), (int)originalCotPoint.getLe());
 
         cotEvent.setTime(fuzzedTime);
         cotEvent.setStart(fuzzedStart);
@@ -280,7 +289,7 @@ public class HackyTests {
                 Double lon = fuzzDouble(Double.parseDouble(pointSplit[1]), LAT_LON_INT_CONVERSION_FACTOR);
                 String newPoint = lat + "," + lon;
                 if (pointSplit.length == 3) {
-                     newPoint = newPoint + "," + pointSplit[2];
+                     newPoint = newPoint + "," + fuzzDouble(Double.parseDouble(pointSplit[2]), HAE_ALT_PRECISION_FACTOR);
                 }
                 child.setAttribute("point", newPoint);
             }

@@ -17,8 +17,11 @@ public class CustomBytesConverter {
     private static final int CUSTOM_FIELD_STALE_LENGTH = 23;
     private static final int CUSTOM_FIELD_HAE_LENGTH = 16;
 
-    private static final int MAX_HAE_PACKED = 65535;
+    private static final double HAE_ALT_PRECISION_FACTOR_ALT = Constants.HAE_ALT_PRECISION_FACTOR_ALT;
+
+    private static final int MAX_HAE_PACKED = 20945;
     private static final int MAX_HAE = 9999999;
+    private static final int HAE_OFFSET = 900;
 
     public long packCustomBytes(CoordinatedTime time, CoordinatedTime stale, double hae, long startOfYearMs) {
         ShiftTracker shiftTracker = new ShiftTracker();
@@ -34,6 +37,8 @@ public class CustomBytesConverter {
             hae = MAX_HAE_PACKED;
         }
 
+        hae = hae + HAE_OFFSET;
+        hae = hae * HAE_ALT_PRECISION_FACTOR_ALT;
         customBytes = BitUtils.packBits(customBytes, LONG_INT_LENGTH, (long)hae, CUSTOM_FIELD_HAE_LENGTH, shiftTracker);
 
         return customBytes;
@@ -48,7 +53,9 @@ public class CustomBytesConverter {
         long timeUntilStale = BitUtils.unpackBits(customBytes, LONG_INT_LENGTH, CUSTOM_FIELD_STALE_LENGTH, shiftTracker);
         CoordinatedTime stale = new CoordinatedTime(time.getMilliseconds() + timeUntilStale * 1000);
 
-        double hae = (double)BitUtils.unpackBits(customBytes, LONG_INT_LENGTH, CUSTOM_FIELD_HAE_LENGTH, shiftTracker);
+        long haeLong = BitUtils.unpackBits(customBytes, LONG_INT_LENGTH, CUSTOM_FIELD_HAE_LENGTH, shiftTracker);
+        double hae = haeLong / HAE_ALT_PRECISION_FACTOR_ALT;
+        hae = hae - HAE_OFFSET;
 
         if (hae == MAX_HAE_PACKED) {
             hae = MAX_HAE;
