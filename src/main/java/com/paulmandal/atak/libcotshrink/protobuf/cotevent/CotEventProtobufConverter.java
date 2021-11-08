@@ -44,6 +44,7 @@ import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.medevac.FlowTag
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.medevac.MedevacProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.geofence.GeoFenceProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.shape.ShapeProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.utils.PrecisionUtil;
 import com.paulmandal.atak.libcotshrink.protobuf.utils.StringUtils;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufContact;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufCotEvent;
@@ -135,6 +136,7 @@ public class CotEventProtobufConverter {
     private final MedevacProtobufConverter mMedevacProtobufConverter;
     private final GeoFenceProtobufConverter mGeoFenceProtobufConverter;
     private final ShapeProtobufConverter mShapeProtobufConverter;
+    private final PrecisionUtil mPrecisionUtil;
     private final long mStartOfYearMs;
 
     public CotEventProtobufConverter(TakvProtobufConverter takvProtobufConverter,
@@ -167,6 +169,7 @@ public class CotEventProtobufConverter {
                                      MedevacProtobufConverter medevacProtobufConverter,
                                      GeoFenceProtobufConverter geoFenceProtobufConverter,
                                      ShapeProtobufConverter shapeProtobufConverter,
+                                     PrecisionUtil precisionUtil,
                                      long startOfYearMs) {
         mTakvProtobufConverter = takvProtobufConverter;
         mTrackProtobufConverter = trackProtobufConverter;
@@ -198,6 +201,7 @@ public class CotEventProtobufConverter {
         mMedevacProtobufConverter = medevacProtobufConverter;
         mGeoFenceProtobufConverter = geoFenceProtobufConverter;
         mShapeProtobufConverter = shapeProtobufConverter;
+        mPrecisionUtil = precisionUtil;
         mStartOfYearMs = startOfYearMs;
     }
 
@@ -271,8 +275,8 @@ public class CotEventProtobufConverter {
 
         CotPoint cotPoint = cotEvent.getCotPoint();
         if (cotPoint != null) {
-            builder.setLat((int)(cotPoint.getLat() * LAT_LON_INT_CONVERSION_FACTOR));
-            builder.setLon((int)(cotPoint.getLon() * LAT_LON_INT_CONVERSION_FACTOR));
+            builder.setLat(mPrecisionUtil.reducePrecision(cotPoint.getLat(), LAT_LON_INT_CONVERSION_FACTOR));
+            builder.setLon(mPrecisionUtil.reducePrecision(cotPoint.getLon(), LAT_LON_INT_CONVERSION_FACTOR));
             builder.setCe((int)cotPoint.getCe());
             builder.setLe((int)cotPoint.getLe());
         }

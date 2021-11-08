@@ -4,6 +4,7 @@ import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
 import com.paulmandal.atak.libcotshrink.protobuf.Constants;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
+import com.paulmandal.atak.libcotshrink.protobuf.utils.PrecisionUtil;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufTrack;
 
 public class TrackProtobufConverter {
@@ -17,6 +18,12 @@ public class TrackProtobufConverter {
 
     private static final int NULL_MARKER = -1;
 
+    private final PrecisionUtil mPrecisionUtil;
+
+    public TrackProtobufConverter(PrecisionUtil precisionUtil) {
+        mPrecisionUtil = precisionUtil;
+    }
+
     public ProtobufTrack.Track toTrack(CotDetail cotDetail) throws UnknownDetailFieldException {
         ProtobufTrack.Track.Builder builder = ProtobufTrack.Track.newBuilder();
         builder.setCourse(NULL_MARKER);
@@ -25,10 +32,10 @@ public class TrackProtobufConverter {
         for (CotAttribute attribute : attributes) {
             switch (attribute.getName()) {
                 case KEY_COURSE:
-                    builder.setCourse((int)(Double.parseDouble(attribute.getValue()) * COURSE_PRECISION_FACTOR));
+                    builder.setCourse(mPrecisionUtil.reducePrecision(attribute.getValue(), COURSE_PRECISION_FACTOR));
                     break;
                 case KEY_SPEED:
-                    builder.setSpeed((int)(Double.parseDouble(attribute.getValue()) * SPEED_PRECISION_FACTOR));
+                    builder.setSpeed(mPrecisionUtil.reducePrecision(attribute.getValue(), SPEED_PRECISION_FACTOR));
                     break;
                 default:
                     throw new UnknownDetailFieldException("Don't know how to handle detail field: track." + attribute.getName());

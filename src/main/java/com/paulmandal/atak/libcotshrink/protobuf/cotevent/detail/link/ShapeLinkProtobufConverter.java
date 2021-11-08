@@ -4,6 +4,7 @@ import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
 import com.paulmandal.atak.libcotshrink.protobuf.Constants;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
+import com.paulmandal.atak.libcotshrink.protobuf.utils.PrecisionUtil;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufDrawnShape;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufShapeLink;
 
@@ -15,6 +16,12 @@ public class ShapeLinkProtobufConverter {
     private static final double LAT_LON_INT_CONVERSION_FACTOR = Constants.LAT_LON_INT_CONVERSION_FACTOR;
 
     private static final int NULL_VALUE = -1;
+
+    private final PrecisionUtil mPrecisionUtil;
+
+    public ShapeLinkProtobufConverter(PrecisionUtil precisionUtil) {
+        mPrecisionUtil = precisionUtil;
+    }
 
     public void toShapeLink(CotDetail cotDetail, ProtobufDrawnShape.DrawnShape.Builder shapeBuilder) throws UnknownDetailFieldException {
         ProtobufShapeLink.ShapeLink.Builder builder = ProtobufShapeLink.ShapeLink.newBuilder();
@@ -29,10 +36,10 @@ public class ShapeLinkProtobufConverter {
                 case KEY_POINT:
                     String[] splitPoint = attribute.getValue().split(",");
                     if (splitPoint.length > 0) {
-                        builder.setLat((int)(Double.parseDouble(splitPoint[0]) * LAT_LON_INT_CONVERSION_FACTOR));
+                        builder.setLat(mPrecisionUtil.reducePrecision(splitPoint[0], LAT_LON_INT_CONVERSION_FACTOR));
                     }
                     if (splitPoint.length > 1) {
-                        builder.setLon((int)(Double.parseDouble(splitPoint[1]) * LAT_LON_INT_CONVERSION_FACTOR));
+                        builder.setLon(mPrecisionUtil.reducePrecision(splitPoint[1], LAT_LON_INT_CONVERSION_FACTOR));
                     }
                     if (splitPoint.length > 2) {
                         builder.setHae(Double.parseDouble(splitPoint[2]));

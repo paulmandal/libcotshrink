@@ -7,13 +7,13 @@ package com.paulmandal.atak.libcotshrink.protobufs;
 option java_outer_classname = "ProtobufSensor";
 
 message Sensor {
-  double fovGreen = 1;
-  double fovBlue = 2;
-  double fovRed = 3;
+  int32 fovGreen = 1;
+  int32 fovBlue = 2;
+  int32 fovRed = 3;
   int32 range = 4;
   int32 azimuth = 5;
   int32 displayMagneticReference = 6;
   int32 fov = 7;
   bool hideFov = 8; // TODO: can be packed into customBytes
-  double fovAlpha = 9;
+  int32 fovAlpha = 9;
 }

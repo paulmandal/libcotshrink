@@ -6,6 +6,7 @@ import com.paulmandal.atak.libcotshrink.protobuf.Constants;
 import com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues;
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.routeinfo.navcue.navcues.NavCuesProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
+import com.paulmandal.atak.libcotshrink.protobuf.utils.PrecisionUtil;
 import com.paulmandal.atak.libcotshrink.protobuf.utils.StringUtils;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufRoute;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufRouteInfo;
@@ -30,10 +31,12 @@ public class RouteProtobufConverter {
 
     private static final double LAT_LON_INT_CONVERSION_FACTOR = Constants.LAT_LON_INT_CONVERSION_FACTOR;
 
-    private NavCuesProtobufConverter mNavCuesProtobufConverter;
+    private final NavCuesProtobufConverter mNavCuesProtobufConverter;
+    private final PrecisionUtil mPrecisionUtil;
 
-    public RouteProtobufConverter(NavCuesProtobufConverter navCuesProtobufConverter) {
+    public RouteProtobufConverter(NavCuesProtobufConverter navCuesProtobufConverter, PrecisionUtil precisionUtil) {
         mNavCuesProtobufConverter = navCuesProtobufConverter;
+        mPrecisionUtil = precisionUtil;
     }
 
     public void toRouteLink(CotDetail cotDetail, ProtobufRoute.Route.Builder routeBuilder, SubstitutionValues substitutionValues) throws UnknownDetailFieldException {
@@ -59,10 +62,10 @@ public class RouteProtobufConverter {
                 case KEY_POINT:
                     String[] splitPoint = attribute.getValue().split(",");
                     if (splitPoint.length > 0) {
-                        builder.setLat((int)(Double.parseDouble(splitPoint[0]) * LAT_LON_INT_CONVERSION_FACTOR));
+                        builder.setLat(mPrecisionUtil.reducePrecision(splitPoint[0], LAT_LON_INT_CONVERSION_FACTOR));
                     }
                     if (splitPoint.length > 1) {
-                        builder.setLon((int)(Double.parseDouble(splitPoint[1]) * LAT_LON_INT_CONVERSION_FACTOR));
+                        builder.setLon(mPrecisionUtil.reducePrecision(splitPoint[1], LAT_LON_INT_CONVERSION_FACTOR));
                     }
                     if (splitPoint.length > 2) {
                         builder.setHae(Double.parseDouble(splitPoint[2]));
