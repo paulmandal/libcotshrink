@@ -1,19 +1,21 @@
 package com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.chat;
 
+import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.CHATROOM_SUBSTITUTION_MARKER;
+import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.USER_GROUPS_SUBSTITUTION_MARKER;
+import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.VALUE_USER_GROUPS;
+
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
-import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.chat.hierarchy.HierarchyProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues;
+import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.chat.hierarchy.HierarchyProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledChildException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledInnerTextException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 import com.paulmandal.atak.libcotshrink.protobuf.utils.BitUtils;
 import com.paulmandal.atak.libcotshrink.protobuf.utils.StringUtils;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufChat;
 
 import java.util.List;
-
-import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.CHATROOM_SUBSTITUTION_MARKER;
-import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.USER_GROUPS_SUBSTITUTION_MARKER;
-import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.VALUE_USER_GROUPS;
 
 public class ChatProtobufConverter {
     private static final String KEY_CHAT = "__chat";
@@ -37,7 +39,11 @@ public class ChatProtobufConverter {
         mHierarchyProtobufConverter = hierarchyProtobufConverter;
     }
 
-    public ProtobufChat.Chat toChat(CotDetail cotDetail, SubstitutionValues substitutionValues) throws UnknownDetailFieldException {
+    public ProtobufChat.Chat toChat(CotDetail cotDetail, SubstitutionValues substitutionValues) throws UnknownDetailFieldException, UnhandledChildException, UnhandledInnerTextException {
+        if (cotDetail.getInnerText() != null && !cotDetail.getInnerText().isEmpty()) {
+            throw new UnhandledInnerTextException("Unhandled inner text: " + cotDetail.getInnerText());
+        }
+
         ProtobufChat.Chat.Builder builder = ProtobufChat.Chat.newBuilder();
         CotAttribute[] attributes = cotDetail.getAttributes();
         for (CotAttribute attribute : attributes) {
@@ -82,7 +88,7 @@ public class ChatProtobufConverter {
                     builder.setHierarchy(mHierarchyProtobufConverter.toHierarchy(childDetail, substitutionValues));
                     break;
                 default:
-                    throw new UnknownDetailFieldException("Don't know how to handle child object: chat." + childDetail.getElementName());
+                    throw new UnhandledChildException("Don't know how to handle child object: chat." + childDetail.getElementName());
             }
         }
         return builder.build();

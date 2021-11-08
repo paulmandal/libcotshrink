@@ -2,8 +2,10 @@ package com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.chat.hierarchy
 
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
-import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.chat.hierarchy.group.GroupProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues;
+import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.chat.hierarchy.group.GroupProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledChildException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledInnerTextException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufHierarchy;
 
@@ -19,7 +21,11 @@ public class HierarchyProtobufConverter {
         mGroupProtobufConverter = groupProtobufConverter;
     }
 
-    public ProtobufHierarchy.Hierarchy toHierarchy(CotDetail cotDetail, SubstitutionValues substitutionValues) throws UnknownDetailFieldException {
+    public ProtobufHierarchy.Hierarchy toHierarchy(CotDetail cotDetail, SubstitutionValues substitutionValues) throws UnknownDetailFieldException, UnhandledChildException, UnhandledInnerTextException {
+        if (cotDetail.getInnerText() != null && !cotDetail.getInnerText().isEmpty()) {
+            throw new UnhandledInnerTextException("Unhandled inner text: " + cotDetail.getInnerText());
+        }
+
         ProtobufHierarchy.Hierarchy.Builder builder = ProtobufHierarchy.Hierarchy.newBuilder();
         CotAttribute[] attributes = cotDetail.getAttributes();
         for (CotAttribute attribute : attributes) {
@@ -36,7 +42,7 @@ public class HierarchyProtobufConverter {
                     builder.setGroup(mGroupProtobufConverter.toGroup(child, substitutionValues));
                     break;
                 default:
-                    throw new UnknownDetailFieldException("Don't know how to handle child object: chat.hierarchy." + child.getElementName());
+                    throw new UnhandledChildException("Don't know how to handle child object: chat.hierarchy." + child.getElementName());
             }
         }
 

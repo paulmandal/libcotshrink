@@ -8,30 +8,34 @@ import com.atakmap.coremap.cot.event.CotEvent;
 import com.atakmap.coremap.cot.event.CotPoint;
 import com.google.protobuf.InvalidProtocolBufferException;
 import com.paulmandal.atak.libcotshrink.protobuf.Constants;
-import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.cehumaninput.CeHumanInputProtobufConverter;
-import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.link.ChatLinkProtobufConverter;
-import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.chat.ChatProtobufConverter;
-import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.link.ComplexLinkProtobufConverter;
-import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.contact.ContactProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.CustomBytesConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.CustomBytesExtConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.CustomBytesExtFields;
 import com.paulmandal.atak.libcotshrink.protobuf.CustomBytesFields;
-import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.colorstroke.DetailStyleProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.DroppedFieldConverter;
-import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.link.FreehandLinkProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.HeightAndHeightUnitProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues;
+import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.cehumaninput.CeHumanInputProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.chat.ChatProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.colorstroke.DetailStyleProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.contact.ContactProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.geofence.GeoFenceProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.labelson.LabelsOnProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.link.ChatLinkProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.link.ComplexLinkProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.link.FreehandLinkProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.link.ShapeLinkProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.linkattr.LinkAttrProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.medevac.FlowTagsProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.medevac.MedevacProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.model.ModelProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.precisionlocation.PrecisionLocationProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.remarks.RemarksProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.routeinfo.RouteProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.sensor.SensorProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.serverdestination.ServerDestinationProtobufConverter;
-import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.link.ShapeLinkProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.shape.ShapeProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.status.StatusProtobufConverter;
-import com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues;
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.takv.TakvProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.tog.TogProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.track.TrackProtobufConverter;
@@ -39,11 +43,9 @@ import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.underscoredgrou
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.video.VideoProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.InvalidCotEventTypeException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.MappingNotFoundException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledChildException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledInnerTextException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
-import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.medevac.FlowTagsProtobufConverter;
-import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.medevac.MedevacProtobufConverter;
-import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.geofence.GeoFenceProtobufConverter;
-import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.shape.ShapeProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.utils.PrecisionUtil;
 import com.paulmandal.atak.libcotshrink.protobuf.utils.StringUtils;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufContact;
@@ -206,7 +208,7 @@ public class CotEventProtobufConverter {
     }
 
     @NonNull
-    public byte[] toByteArray(CotEvent cotEvent) throws MappingNotFoundException, InvalidCotEventTypeException, UnknownDetailFieldException {
+    public byte[] toByteArray(CotEvent cotEvent) throws MappingNotFoundException, InvalidCotEventTypeException, UnknownDetailFieldException, UnhandledInnerTextException, UnhandledChildException {
         ProtobufCotEvent.CotEvent cotEventProtobuf = toCotEventProtobuf(cotEvent);
         return cotEventProtobuf.toByteArray();
     }
@@ -251,7 +253,7 @@ public class CotEventProtobufConverter {
     /**
      * toByteArray
      */
-    private ProtobufCotEvent.CotEvent toCotEventProtobuf(CotEvent cotEvent) throws MappingNotFoundException, InvalidCotEventTypeException, UnknownDetailFieldException {
+    private ProtobufCotEvent.CotEvent toCotEventProtobuf(CotEvent cotEvent) throws MappingNotFoundException, InvalidCotEventTypeException, UnknownDetailFieldException, UnhandledInnerTextException, UnhandledChildException {
         ProtobufCotEvent.CotEvent.Builder builder = ProtobufCotEvent.CotEvent.newBuilder();
 
         SubstitutionValues substitutionValues = new SubstitutionValues();
@@ -305,11 +307,15 @@ public class CotEventProtobufConverter {
         return builder.build();
     }
 
-    private ProtobufDetail.Detail toDetail(CotDetail cotDetail, SubstitutionValues substitutionValues) throws UnknownDetailFieldException {
+    private ProtobufDetail.Detail toDetail(CotDetail cotDetail, SubstitutionValues substitutionValues) throws UnknownDetailFieldException, UnhandledInnerTextException, UnhandledChildException {
         ProtobufDetail.Detail.Builder builder = ProtobufDetail.Detail.newBuilder();
         ProtobufDetailStyle.DetailStyle.Builder detailStyleBuilder = null;
         ProtobufDrawnShape.DrawnShape.Builder drawnShapeBuilder = null;
         ProtobufRoute.Route.Builder routeBuilder = null;
+
+        if (cotDetail.getInnerText() != null && !cotDetail.getInnerText().isEmpty()) {
+            throw new UnhandledInnerTextException("Unhandled inner text: " + cotDetail.getInnerText());
+        }
 
         for (CotDetail innerDetail : cotDetail.getChildren()) {
             switch (innerDetail.getElementName()) {

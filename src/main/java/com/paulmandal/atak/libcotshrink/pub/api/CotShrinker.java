@@ -10,6 +10,8 @@ import com.paulmandal.atak.libcotshrink.gzip.GzipHelper;
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.CotEventProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.InvalidCotEventTypeException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.MappingNotFoundException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledChildException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledInnerTextException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 
 import java.io.IOException;
@@ -65,7 +67,7 @@ public class  CotShrinker {
 
         try {
             cotEventBytes = mCotEventProtobufConverter.toByteArray(cotEvent);
-        } catch (MappingNotFoundException | InvalidCotEventTypeException | UnknownDetailFieldException e) {
+        } catch (MappingNotFoundException | InvalidCotEventTypeException | UnhandledInnerTextException | UnhandledChildException | UnknownDetailFieldException e) {
             Log.e(TAG, e.getMessage());
             e.printStackTrace();
         }
