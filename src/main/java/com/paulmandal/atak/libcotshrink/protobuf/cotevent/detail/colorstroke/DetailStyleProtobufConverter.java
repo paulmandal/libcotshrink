@@ -2,6 +2,8 @@ package com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.colorstroke;
 
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledChildException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledInnerTextException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufColor;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufDetailStyle;
@@ -15,7 +17,15 @@ public class DetailStyleProtobufConverter {
     private static final String KEY_ARGB = "argb";
     private static final String KEY_VALUE = "value";
 
-    public void toColor(CotDetail cotDetail, ProtobufDetailStyle.DetailStyle.Builder detailStyleBuilder) throws UnknownDetailFieldException {
+    public void toColor(CotDetail cotDetail, ProtobufDetailStyle.DetailStyle.Builder detailStyleBuilder) throws UnknownDetailFieldException, UnhandledInnerTextException, UnhandledChildException {
+        if (cotDetail.getInnerText() != null && !cotDetail.getInnerText().isEmpty()) {
+            throw new UnhandledInnerTextException("Unhandled inner text: " + cotDetail.getInnerText());
+        }
+
+        if (cotDetail.getChildren() != null && cotDetail.getChildren().size() > 0) {
+            throw new UnhandledChildException("Unhandled child: " + cotDetail.getChildren().get(0).getElementName());
+        }
+
         ProtobufColor.Color.Builder builder = ProtobufColor.Color.newBuilder();
         CotAttribute[] attributes = cotDetail.getAttributes();
         for (CotAttribute attribute : attributes) {

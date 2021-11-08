@@ -3,6 +3,8 @@ package com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.link;
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
 import com.paulmandal.atak.libcotshrink.protobuf.Constants;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledChildException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledInnerTextException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 import com.paulmandal.atak.libcotshrink.protobuf.utils.PrecisionUtil;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufDrawnShape;
@@ -24,7 +26,15 @@ public class ShapeLinkProtobufConverter {
         mPrecisionUtil = precisionUtil;
     }
 
-    public void toShapeLink(CotDetail cotDetail, ProtobufDrawnShape.DrawnShape.Builder shapeBuilder) throws UnknownDetailFieldException {
+    public void toShapeLink(CotDetail cotDetail, ProtobufDrawnShape.DrawnShape.Builder shapeBuilder) throws UnknownDetailFieldException, UnhandledInnerTextException, UnhandledChildException {
+        if (cotDetail.getInnerText() != null && !cotDetail.getInnerText().isEmpty()) {
+            throw new UnhandledInnerTextException("Unhandled inner text: " + cotDetail.getInnerText());
+        }
+
+        if (cotDetail.getChildren() != null && cotDetail.getChildren().size() > 0) {
+            throw new UnhandledChildException("Unhandled child: " + cotDetail.getChildren().get(0).getElementName());
+        }
+
         ProtobufShapeLink.ShapeLink.Builder builder = ProtobufShapeLink.ShapeLink.newBuilder();
         CotAttribute[] attributes = cotDetail.getAttributes();
 

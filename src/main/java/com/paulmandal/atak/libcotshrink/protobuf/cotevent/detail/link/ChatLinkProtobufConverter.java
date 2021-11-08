@@ -1,13 +1,15 @@
 package com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.link;
 
+import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.UID_SUBSTITUTION_MARKER;
+
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
 import com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledChildException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledInnerTextException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 import com.paulmandal.atak.libcotshrink.protobuf.utils.StringUtils;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufChatLink;
-
-import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.UID_SUBSTITUTION_MARKER;
 
 public class ChatLinkProtobufConverter {
     private static final String KEY_LINK = "link";
@@ -16,7 +18,15 @@ public class ChatLinkProtobufConverter {
     private static final String KEY_TYPE = "type";
     private static final String KEY_RELATION = "relation";
 
-    public ProtobufChatLink.ChatLink toChatLink(CotDetail cotDetail, SubstitutionValues substitutionValues) throws UnknownDetailFieldException {
+    public ProtobufChatLink.ChatLink toChatLink(CotDetail cotDetail, SubstitutionValues substitutionValues) throws UnknownDetailFieldException, UnhandledInnerTextException, UnhandledChildException {
+        if (cotDetail.getInnerText() != null && !cotDetail.getInnerText().isEmpty()) {
+            throw new UnhandledInnerTextException("Unhandled inner text: " + cotDetail.getInnerText());
+        }
+
+        if (cotDetail.getChildren() != null && cotDetail.getChildren().size() > 0) {
+            throw new UnhandledChildException("Unhandled child: " + cotDetail.getChildren().get(0).getElementName());
+        }
+
         ProtobufChatLink.ChatLink.Builder builder = ProtobufChatLink.ChatLink.newBuilder();
         CotAttribute[] attributes = cotDetail.getAttributes();
         for (CotAttribute attribute : attributes) {

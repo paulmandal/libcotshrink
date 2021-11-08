@@ -2,8 +2,10 @@ package com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.medevac;
 
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
-import com.paulmandal.atak.libcotshrink.protobuf.utils.StringUtils;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledChildException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledInnerTextException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
+import com.paulmandal.atak.libcotshrink.protobuf.utils.StringUtils;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufMist;
 
 public class MistProtobufConverter {
@@ -16,7 +18,15 @@ public class MistProtobufConverter {
     private static final String KEY_TITLE = "title";
     private static final String KEY_MECHANISM_OF_INJURY = "m";
 
-    public ProtobufMist.Mist toMist(CotDetail cotDetail) throws UnknownDetailFieldException {
+    public ProtobufMist.Mist toMist(CotDetail cotDetail) throws UnknownDetailFieldException, UnhandledInnerTextException, UnhandledChildException {
+        if (cotDetail.getInnerText() != null && !cotDetail.getInnerText().isEmpty()) {
+            throw new UnhandledInnerTextException("Unhandled inner text: " + cotDetail.getInnerText());
+        }
+
+        if (cotDetail.getChildren() != null && cotDetail.getChildren().size() > 0) {
+            throw new UnhandledChildException("Unhandled child: " + cotDetail.getChildren().get(0).getElementName());
+        }
+
         ProtobufMist.Mist.Builder builder = ProtobufMist.Mist.newBuilder();
         CotAttribute[] attributes = cotDetail.getAttributes();
         for (CotAttribute attribute : attributes) {
@@ -41,13 +51,6 @@ public class MistProtobufConverter {
                     break;
                 default:
                     throw new UnknownDetailFieldException("Don't know how to handle detail field: medevac.zMistsMap.zMist." + attribute.getName());
-            }
-        }
-
-        for (CotDetail child : cotDetail.getChildren()) {
-            switch (child.getElementName()) {
-                default:
-                    throw new UnknownDetailFieldException("Don't know how to handle child detail object: medevac.zMistsMap.zMist." + child.getElementName());
             }
         }
 

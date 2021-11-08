@@ -17,9 +17,6 @@ public class TakvProtobufConverter {
     private static final String KEY_VERSION = "version";
 
     public ProtobufTakv.Takv toTakv(CotDetail cotDetail) throws UnknownDetailFieldException, UnhandledInnerTextException, UnhandledChildException {
-        ProtobufTakv.Takv.Builder builder = ProtobufTakv.Takv.newBuilder();
-        CotAttribute[] attributes = cotDetail.getAttributes();
-
         if (cotDetail.getInnerText() != null && !cotDetail.getInnerText().isEmpty()) {
             throw new UnhandledInnerTextException("Unhandled inner text: " + cotDetail.getInnerText());
         }
@@ -28,6 +25,8 @@ public class TakvProtobufConverter {
             throw new UnhandledChildException("Unhandled child: " + cotDetail.getChildren().get(0).getElementName());
         }
 
+        ProtobufTakv.Takv.Builder builder = ProtobufTakv.Takv.newBuilder();
+        CotAttribute[] attributes = cotDetail.getAttributes();
         for (CotAttribute attribute : attributes) {
             switch (attribute.getName()) {
                 case KEY_DEVICE:

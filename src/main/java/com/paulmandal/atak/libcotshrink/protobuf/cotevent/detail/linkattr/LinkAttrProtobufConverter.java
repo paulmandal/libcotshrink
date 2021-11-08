@@ -3,10 +3,14 @@ package com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.linkattr;
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
 import com.paulmandal.atak.libcotshrink.protobuf.CustomBytesExtFields;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledChildException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledInnerTextException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 import com.paulmandal.atak.libcotshrink.protobuf.utils.StringUtils;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufLinkAttr;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufRoute;
+
+import java.util.List;
 
 public class LinkAttrProtobufConverter {
     private static final String KEY_LINK_ATTR = "link_attr";
@@ -33,7 +37,11 @@ public class LinkAttrProtobufConverter {
         }
     }
 
-    public void toLinkAttr(CotDetail cotDetail, ProtobufRoute.Route.Builder routeBuilder) throws UnknownDetailFieldException {
+    public void toLinkAttr(CotDetail cotDetail, ProtobufRoute.Route.Builder routeBuilder) throws UnknownDetailFieldException, UnhandledInnerTextException, UnhandledChildException {
+        if (cotDetail.getInnerText() != null && !cotDetail.getInnerText().isEmpty()) {
+            throw new UnhandledInnerTextException("Unhandled inner text: " + cotDetail.getInnerText());
+        }
+
         ProtobufLinkAttr.LinkAttr.Builder builder = ProtobufLinkAttr.LinkAttr.newBuilder();
         CotAttribute[] attributes = cotDetail.getAttributes();
         for (CotAttribute attribute : attributes) {
@@ -60,6 +68,16 @@ public class LinkAttrProtobufConverter {
 
         if (!cotDetail.getAttribute(KEY_DIRECTION).equals(cotDetail.getAttribute(KEY_PLANNING_METHOD))) {
             throw new UnknownDetailFieldException("link_attr.direction did not match link_attr.planning_method!");
+        }
+
+        List<CotDetail> children = cotDetail.getChildren();
+        for (CotDetail child : children) {
+            switch (child.getElementName()) {
+                case KEY_LINK_ATTR:
+                    break;
+                default:
+                    throw new UnhandledChildException("Don't know how to handle child object: " + child.getElementName());
+            }
         }
 
         routeBuilder.setLinkAttr(builder);

@@ -2,6 +2,8 @@ package com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.medevac;
 
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledChildException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledInnerTextException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufMist;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufMistsMap;
@@ -17,7 +19,11 @@ public class MistsMapProtobufConverter {
         mMistProtobufConverter = mistProtobufConverter;
     }
 
-    public ProtobufMistsMap.MistsMap toMistsMap(CotDetail cotDetail) throws UnknownDetailFieldException {
+    public ProtobufMistsMap.MistsMap toMistsMap(CotDetail cotDetail) throws UnknownDetailFieldException, UnhandledChildException, UnhandledInnerTextException {
+        if (cotDetail.getInnerText() != null && !cotDetail.getInnerText().isEmpty()) {
+            throw new UnhandledInnerTextException("Unhandled inner text: " + cotDetail.getInnerText());
+        }
+
         ProtobufMistsMap.MistsMap.Builder builder = ProtobufMistsMap.MistsMap.newBuilder();
         CotAttribute[] attributes = cotDetail.getAttributes();
         for (CotAttribute attribute : attributes) {

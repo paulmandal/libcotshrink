@@ -2,8 +2,10 @@ package com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.medevac;
 
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
-import com.paulmandal.atak.libcotshrink.protobuf.utils.StringUtils;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledChildException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledInnerTextException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
+import com.paulmandal.atak.libcotshrink.protobuf.utils.StringUtils;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufFlowTags;
 
 public class FlowTagsProtobufConverter {
@@ -12,7 +14,15 @@ public class FlowTagsProtobufConverter {
     private static final String KEY_ANDROID_MEDICAL_LINE = "AndroidMedicalLine";
     private static final String KEY_OBSTACLES = "obstacles";
 
-    public ProtobufFlowTags.FlowTags toFlowTags(CotDetail cotDetail) throws UnknownDetailFieldException {
+    public ProtobufFlowTags.FlowTags toFlowTags(CotDetail cotDetail) throws UnknownDetailFieldException, UnhandledChildException, UnhandledInnerTextException {
+        if (cotDetail.getInnerText() != null && !cotDetail.getInnerText().isEmpty()) {
+            throw new UnhandledInnerTextException("Unhandled inner text: " + cotDetail.getInnerText());
+        }
+
+        if (cotDetail.getChildren() != null && cotDetail.getChildren().size() > 0) {
+            throw new UnhandledChildException("Unhandled child: " + cotDetail.getChildren().get(0).getElementName());
+        }
+
         ProtobufFlowTags.FlowTags.Builder builder = ProtobufFlowTags.FlowTags.newBuilder();
         CotAttribute[] attributes = cotDetail.getAttributes();
         for (CotAttribute attribute : attributes) {
@@ -25,13 +35,6 @@ public class FlowTagsProtobufConverter {
                     break;
                 default:
                     throw new UnknownDetailFieldException("Don't know how to handle detail field: _flow-tags_." + attribute.getName());
-            }
-        }
-
-        for (CotDetail child : cotDetail.getChildren()) {
-            switch (child.getElementName()) {
-                default:
-                    throw new UnknownDetailFieldException("Don't know how to handle child detail object: _flow-tags_." + child.getElementName());
             }
         }
 
