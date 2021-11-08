@@ -2,6 +2,8 @@ package com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.shape;
 
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledChildException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledInnerTextException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufLineStyle;
 
@@ -13,7 +15,11 @@ public class LineStyleProtobufConverter {
     private static final String KEY_COLOR = "color";
     private static final String KEY_WIDTH = "width";
 
-    public ProtobufLineStyle.LineStyle toLineStyle(CotDetail cotDetail) throws UnknownDetailFieldException {
+    public ProtobufLineStyle.LineStyle toLineStyle(CotDetail cotDetail) throws UnknownDetailFieldException, UnhandledInnerTextException, UnhandledChildException {
+        if (cotDetail.getInnerText() != null && !cotDetail.getInnerText().isEmpty()) {
+            throw new UnhandledInnerTextException("Unhandled inner text: " + cotDetail.getInnerText());
+        }
+
         ProtobufLineStyle.LineStyle.Builder builder = ProtobufLineStyle.LineStyle.newBuilder();
 
         CotAttribute[] attributes = cotDetail.getAttributes();
@@ -34,7 +40,7 @@ public class LineStyleProtobufConverter {
                     builder.setWidth((int)(Double.parseDouble(child.getInnerText()) * 100));
                     break;
                     default:
-                    throw new UnknownDetailFieldException("Don't know how to handle child object: shape.Style.LineStyle." + child.getElementName());
+                    throw new UnhandledChildException("Don't know how to handle child object: shape.Style.LineStyle." + child.getElementName());
             }
         }
 

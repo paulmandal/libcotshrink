@@ -5,6 +5,8 @@ import android.util.Log;
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
 import com.paulmandal.atak.libcotshrink.protobuf.Constants;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledChildException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledInnerTextException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 import com.paulmandal.atak.libcotshrink.protobuf.utils.PrecisionUtil;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufGeoFence;
@@ -36,7 +38,11 @@ public class GeoFenceProtobufConverter {
         mPrecisionUtil = precisionUtil;
     }
 
-    public ProtobufGeoFence.GeoFence toGeoFence(CotDetail cotDetail) throws UnknownDetailFieldException {
+    public ProtobufGeoFence.GeoFence toGeoFence(CotDetail cotDetail) throws UnknownDetailFieldException, UnhandledInnerTextException, UnhandledChildException {
+        if (cotDetail.getInnerText() != null && !cotDetail.getInnerText().isEmpty()) {
+            throw new UnhandledInnerTextException("Unhandled inner text: " + cotDetail.getInnerText());
+        }
+
         ProtobufGeoFence.GeoFence.Builder builder = ProtobufGeoFence.GeoFence.newBuilder();
 
         CotAttribute[] attributes = cotDetail.getAttributes();
@@ -82,7 +88,7 @@ public class GeoFenceProtobufConverter {
         for (CotDetail child : children) {
             switch (child.getElementName()) {
                 default:
-                    throw new UnknownDetailFieldException("Don't know how to handle child object: __geofence." + child.getElementName());
+                    throw new UnhandledChildException("Don't know how to handle child object: __geofence." + child.getElementName());
             }
         }
 

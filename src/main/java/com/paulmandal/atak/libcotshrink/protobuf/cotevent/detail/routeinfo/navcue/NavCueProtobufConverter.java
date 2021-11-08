@@ -4,6 +4,8 @@ import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
 import com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues;
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.routeinfo.navcue.trigger.TriggerProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledChildException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledInnerTextException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 import com.paulmandal.atak.libcotshrink.protobuf.utils.StringUtils;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufNavCue;
@@ -28,7 +30,11 @@ public class NavCueProtobufConverter {
         mTriggerProtobufConverter = triggerProtobufConverter;
     }
 
-    public ProtobufNavCue.NavCue toNavCue(CotDetail cotDetail, SubstitutionValues substitutionValues) throws UnknownDetailFieldException {
+    public ProtobufNavCue.NavCue toNavCue(CotDetail cotDetail, SubstitutionValues substitutionValues) throws UnknownDetailFieldException, UnhandledInnerTextException, UnhandledChildException {
+        if (cotDetail.getInnerText() != null && !cotDetail.getInnerText().isEmpty()) {
+            throw new UnhandledInnerTextException("Unhandled inner text: " + cotDetail.getInnerText());
+        }
+
         ProtobufNavCue.NavCue.Builder builder = ProtobufNavCue.NavCue.newBuilder();
         CotAttribute[] attributes = cotDetail.getAttributes();
         for (CotAttribute attribute : attributes) {
@@ -63,7 +69,7 @@ public class NavCueProtobufConverter {
                     builder.addTrigger(mTriggerProtobufConverter.toTrigger(child));
                     break;
                 default:
-                    throw new UnknownDetailFieldException("Don't know how to handle child detail object: __navcue." + child.getElementName());
+                    throw new UnhandledChildException("Don't know how to handle child detail object: __navcue." + child.getElementName());
             }
         }
         return builder.build();

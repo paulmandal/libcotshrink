@@ -3,11 +3,11 @@ package com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.shape;
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
 import com.paulmandal.atak.libcotshrink.protobuf.Constants;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledChildException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledInnerTextException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 import com.paulmandal.atak.libcotshrink.protobuf.utils.PrecisionUtil;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufEllipse;
-
-import java.util.List;
 
 public class EllipseProtobufConverter {
     private static final String KEY_ELLIPSE = "ellipse";
@@ -24,7 +24,15 @@ public class EllipseProtobufConverter {
         mPrecisionUtil = precisionUtil;
     }
 
-    public ProtobufEllipse.Ellipse toEllipse(CotDetail cotDetail) throws UnknownDetailFieldException {
+    public ProtobufEllipse.Ellipse toEllipse(CotDetail cotDetail) throws UnknownDetailFieldException, UnhandledInnerTextException, UnhandledChildException {
+        if (cotDetail.getInnerText() != null && !cotDetail.getInnerText().isEmpty()) {
+            throw new UnhandledInnerTextException("Unhandled inner text: " + cotDetail.getInnerText());
+        }
+
+        if (cotDetail.getChildren() != null && cotDetail.getChildren().size() > 0) {
+            throw new UnhandledChildException("Unhandled child: " + cotDetail.getChildren().get(0).getElementName());
+        }
+
         ProtobufEllipse.Ellipse.Builder builder = ProtobufEllipse.Ellipse.newBuilder();
 
         CotAttribute[] attributes = cotDetail.getAttributes();
@@ -41,14 +49,6 @@ public class EllipseProtobufConverter {
                     break;
                 default:
                     throw new UnknownDetailFieldException("Don't know how to handle child attribute: ellipse." + attribute.getName());
-            }
-        }
-
-        List<CotDetail> children = cotDetail.getChildren();
-        for (CotDetail child : children) {
-            switch (child.getElementName()) {
-                default:
-                    throw new UnknownDetailFieldException("Don't know how to handle child object: ellipse." + child.getElementName());
             }
         }
 

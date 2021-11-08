@@ -3,6 +3,8 @@ package com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.cehumaninput;
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
 import com.paulmandal.atak.libcotshrink.protobuf.CustomBytesExtFields;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledChildException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledInnerTextException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 
 public class CeHumanInputProtobufConverter {
@@ -18,7 +20,20 @@ public class CeHumanInputProtobufConverter {
         }
     }
 
-    public void toCeHumanInput(CotDetail cotDetail) throws UnknownDetailFieldException {
+    public void toCeHumanInput(CotDetail cotDetail) throws UnknownDetailFieldException, UnhandledInnerTextException, UnhandledChildException {
+        if (cotDetail.getInnerText() != null && !cotDetail.getInnerText().isEmpty()) {
+            // Do nothing, this is handled
+        }
+
+        for (CotDetail child : cotDetail.getChildren()) {
+            switch (child.getElementName()) {
+                case KEY_CE_HUMAN_INPUT:
+                    break;
+                default:
+                    throw new UnhandledChildException("Unhandled child: " + cotDetail.getChildren().get(0).getElementName());
+            }
+        }
+
         CotAttribute[] attributes = cotDetail.getAttributes();
         for (CotAttribute attribute : attributes) {
             switch (attribute.getName()) {

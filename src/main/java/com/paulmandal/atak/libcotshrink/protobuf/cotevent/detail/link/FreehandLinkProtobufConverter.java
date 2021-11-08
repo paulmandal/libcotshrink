@@ -4,6 +4,8 @@ import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
 import com.google.protobuf.ByteString;
 import com.paulmandal.atak.libcotshrink.gzip.GzipHelper;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledChildException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledInnerTextException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufFreehandLink;
 
@@ -14,7 +16,15 @@ public class FreehandLinkProtobufConverter {
 
     private static final String KEY_LINE = "line";
 
-    public ProtobufFreehandLink.FreehandLink toFreehandLink(CotDetail cotDetail) throws UnknownDetailFieldException {
+    public ProtobufFreehandLink.FreehandLink toFreehandLink(CotDetail cotDetail) throws UnknownDetailFieldException, UnhandledInnerTextException, UnhandledChildException {
+        if (cotDetail.getInnerText() != null && !cotDetail.getInnerText().isEmpty()) {
+            throw new UnhandledInnerTextException("Unhandled inner text: " + cotDetail.getInnerText());
+        }
+
+        if (cotDetail.getChildren() != null && cotDetail.getChildren().size() > 0) {
+            throw new UnhandledChildException("Unhandled child: " + cotDetail.getChildren().get(0).getElementName());
+        }
+
         ProtobufFreehandLink.FreehandLink.Builder builder = ProtobufFreehandLink.FreehandLink.newBuilder();
         CotAttribute[] attributes = cotDetail.getAttributes();
         for (CotAttribute attribute : attributes) {

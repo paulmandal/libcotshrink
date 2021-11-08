@@ -1,16 +1,18 @@
 package com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.chat;
 
+import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.ID_SUBSTITUTION_MARKER;
+import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.UID_SUBSTITUTION_MARKER;
+
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
 import com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledChildException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledInnerTextException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 import com.paulmandal.atak.libcotshrink.protobuf.utils.StringUtils;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufChatGroup;
 
 import java.util.List;
-
-import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.ID_SUBSTITUTION_MARKER;
-import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.UID_SUBSTITUTION_MARKER;
 
 public class ChatGroupProtobufConverter {
     private static final String KEY_CHAT_GROUP = "chatgrp";
@@ -18,7 +20,15 @@ public class ChatGroupProtobufConverter {
     private static final String KEY_ID = "id";
     private static final String KEY_UID = "uid";
 
-    public ProtobufChatGroup.ChatGroup toChatGroup(CotDetail cotDetail, SubstitutionValues substitutionValues) throws UnknownDetailFieldException {
+    public ProtobufChatGroup.ChatGroup toChatGroup(CotDetail cotDetail, SubstitutionValues substitutionValues) throws UnknownDetailFieldException, UnhandledInnerTextException, UnhandledChildException {
+        if (cotDetail.getInnerText() != null && !cotDetail.getInnerText().isEmpty()) {
+            throw new UnhandledInnerTextException("Unhandled inner text: " + cotDetail.getInnerText());
+        }
+
+        if (cotDetail.getChildren() != null && cotDetail.getChildren().size() > 0) {
+            throw new UnhandledChildException("Unhandled child: " + cotDetail.getChildren().get(0).getElementName());
+        }
+
         ProtobufChatGroup.ChatGroup.Builder builder = ProtobufChatGroup.ChatGroup.newBuilder();
         CotAttribute[] attributes = cotDetail.getAttributes();
         for (CotAttribute attribute : attributes) {

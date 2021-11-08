@@ -1,14 +1,16 @@
 package com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.chat.hierarchy.group.contact;
 
+import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.SENDER_CALLSIGN_SUBSTITUION_MARKER;
+import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.UID_SUBSTITUTION_MARKER;
+
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
 import com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledChildException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledInnerTextException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 import com.paulmandal.atak.libcotshrink.protobuf.utils.StringUtils;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufGroupContact;
-
-import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.SENDER_CALLSIGN_SUBSTITUION_MARKER;
-import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.UID_SUBSTITUTION_MARKER;
 
 public class GroupContactProtobufConverter {
     private static final String KEY_CONTACT = "contact";
@@ -16,7 +18,15 @@ public class GroupContactProtobufConverter {
     private static final String KEY_UID = "uid";
     private static final String KEY_NAME = "name";
 
-    public ProtobufGroupContact.GroupContact toGroupContact(CotDetail cotDetail, SubstitutionValues substitutionValues) throws UnknownDetailFieldException {
+    public ProtobufGroupContact.GroupContact toGroupContact(CotDetail cotDetail, SubstitutionValues substitutionValues) throws UnknownDetailFieldException, UnhandledInnerTextException, UnhandledChildException {
+        if (cotDetail.getInnerText() != null && !cotDetail.getInnerText().isEmpty()) {
+            throw new UnhandledInnerTextException("Unhandled inner text: " + cotDetail.getInnerText());
+        }
+
+        if (cotDetail.getChildren() != null && cotDetail.getChildren().size() > 0) {
+            throw new UnhandledChildException("Unhandled child: " + cotDetail.getChildren().get(0).getElementName());
+        }
+
         ProtobufGroupContact.GroupContact.Builder builder = ProtobufGroupContact.GroupContact.newBuilder();
         CotAttribute[] attributes = cotDetail.getAttributes();
         for (CotAttribute attribute : attributes) {

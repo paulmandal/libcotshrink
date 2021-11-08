@@ -4,6 +4,8 @@ import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
 import com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues;
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.routeinfo.navcue.NavCueProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledChildException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledInnerTextException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufNavCue;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufNavCues;
@@ -21,7 +23,11 @@ public class NavCuesProtobufConverter {
         mNavCueProtobufConverter = navCueProtobufConverter;
     }
 
-    public ProtobufNavCues.NavCues toNavCues(CotDetail cotDetail, SubstitutionValues substitutionValues) throws UnknownDetailFieldException {
+    public ProtobufNavCues.NavCues toNavCues(CotDetail cotDetail, SubstitutionValues substitutionValues) throws UnknownDetailFieldException, UnhandledInnerTextException, UnhandledChildException {
+        if (cotDetail.getInnerText() != null && !cotDetail.getInnerText().isEmpty()) {
+            throw new UnhandledInnerTextException("Unhandled inner text: " + cotDetail.getInnerText());
+        }
+
         ProtobufNavCues.NavCues.Builder builder = ProtobufNavCues.NavCues.newBuilder();
         CotAttribute[] attributes = cotDetail.getAttributes();
         for (CotAttribute attribute : attributes) {
@@ -38,7 +44,7 @@ public class NavCuesProtobufConverter {
                     builder.addNavCues(mNavCueProtobufConverter.toNavCue(child, substitutionValues));
                     break;
                 default:
-                    throw new UnknownDetailFieldException("Don't know how to handle child detail object: __navcues." + child.getElementName());
+                    throw new UnhandledChildException("Don't know how to handle child detail object: __navcues." + child.getElementName());
             }
         }
         return builder.build();

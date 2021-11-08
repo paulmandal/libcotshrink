@@ -2,6 +2,8 @@ package com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.shape;
 
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledChildException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledInnerTextException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufEllipseLink;
 
@@ -22,7 +24,11 @@ public class EllipseLinkProtobufConverter {
         mStyleProtobufConverter = styleProtobufConverter;
     }
 
-    public ProtobufEllipseLink.EllipseLink toEllipseLink(CotDetail cotDetail) throws UnknownDetailFieldException {
+    public ProtobufEllipseLink.EllipseLink toEllipseLink(CotDetail cotDetail) throws UnknownDetailFieldException, UnhandledInnerTextException, UnhandledChildException {
+        if (cotDetail.getInnerText() != null && !cotDetail.getInnerText().isEmpty()) {
+            throw new UnhandledInnerTextException("Unhandled inner text: " + cotDetail.getInnerText());
+        }
+
         ProtobufEllipseLink.EllipseLink.Builder builder = ProtobufEllipseLink.EllipseLink.newBuilder();
 
         CotAttribute[] attributes = cotDetail.getAttributes();
@@ -49,7 +55,7 @@ public class EllipseLinkProtobufConverter {
                     builder.setStyle(mStyleProtobufConverter.toStyle(child));
                     break;
                 default:
-                    throw new UnknownDetailFieldException("Don't know how to handle child object: shape.link." + child.getElementName());
+                    throw new UnhandledChildException("Don't know how to handle child object: shape.link." + child.getElementName());
             }
         }
 

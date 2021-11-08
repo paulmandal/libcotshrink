@@ -1,16 +1,18 @@
 package com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.remarks;
 
+import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.UID_SUBSTITUTION_MARKER;
+
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
 import com.atakmap.coremap.maps.time.CoordinatedTime;
 import com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledChildException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledInnerTextException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 import com.paulmandal.atak.libcotshrink.protobuf.utils.StringUtils;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufRemarks;
 
 import java.text.ParseException;
-
-import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.UID_SUBSTITUTION_MARKER;
 
 public class RemarksProtobufConverter {
     private static final String KEY_REMARKS = "remarks";
@@ -19,7 +21,11 @@ public class RemarksProtobufConverter {
     private static final String KEY_TO = "to";
     private static final String KEY_TIME = "time";
 
-    public ProtobufRemarks.Remarks toRemarks(CotDetail cotDetail, SubstitutionValues substitutionValues, long startOfYearMs) throws UnknownDetailFieldException {
+    public ProtobufRemarks.Remarks toRemarks(CotDetail cotDetail, SubstitutionValues substitutionValues, long startOfYearMs) throws UnknownDetailFieldException, UnhandledInnerTextException, UnhandledChildException {
+        if (cotDetail.getChildren() != null && cotDetail.getChildren().size() > 0) {
+            throw new UnhandledChildException("Unhandled child: " + cotDetail.getChildren().get(0).getElementName());
+        }
+
         ProtobufRemarks.Remarks.Builder builder = ProtobufRemarks.Remarks.newBuilder();
         String remarks = cotDetail.getInnerText();
         if (remarks != null) {

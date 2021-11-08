@@ -2,8 +2,10 @@ package com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.video;
 
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
-import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.video.connectionentry.ConnectionEntryProtobufConverter;
 import com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues;
+import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.video.connectionentry.ConnectionEntryProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledChildException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledInnerTextException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 import com.paulmandal.atak.libcotshrink.protobuf.utils.StringUtils;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufConnectionEntry;
@@ -25,7 +27,11 @@ public class VideoProtobufConverter {
         mConnectionEntryProtobufConverter = connectionEntryProtobufConverter;
     }
 
-    public ProtobufVideo.Video toVideo(CotDetail cotDetail, SubstitutionValues substitutionValues) throws UnknownDetailFieldException {
+    public ProtobufVideo.Video toVideo(CotDetail cotDetail, SubstitutionValues substitutionValues) throws UnknownDetailFieldException, UnhandledInnerTextException, UnhandledChildException {
+        if (cotDetail.getInnerText() != null && !cotDetail.getInnerText().isEmpty()) {
+            throw new UnhandledInnerTextException("Unhandled inner text: " + cotDetail.getInnerText());
+        }
+
         ProtobufVideo.Video.Builder builder = ProtobufVideo.Video.newBuilder();
 
         CotAttribute[] attributes = cotDetail.getAttributes();
@@ -51,7 +57,7 @@ public class VideoProtobufConverter {
                     builder.addConnectionEntry(mConnectionEntryProtobufConverter.toConnectionEntry(child, substitutionValues));
                     break;
                 default:
-                    throw new UnknownDetailFieldException("Don't know how to handle child object: __video." + child.getElementName());
+                    throw new UnhandledChildException("Don't know how to handle child object: __video." + child.getElementName());
             }
         }
 

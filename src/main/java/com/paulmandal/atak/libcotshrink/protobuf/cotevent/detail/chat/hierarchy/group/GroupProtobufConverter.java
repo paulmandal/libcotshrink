@@ -1,22 +1,24 @@
 package com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.chat.hierarchy.group;
 
-import com.atakmap.coremap.cot.event.CotAttribute;
-import com.atakmap.coremap.cot.event.CotDetail;
-import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.chat.hierarchy.group.contact.GroupContactProtobufConverter;
-import com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues;
-import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
-import com.paulmandal.atak.libcotshrink.protobuf.utils.StringUtils;
-import com.paulmandal.atak.libcotshrink.protobufs.ProtobufGroup;
-import com.paulmandal.atak.libcotshrink.protobufs.ProtobufGroupContact;
-
-import java.util.List;
-
 import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.CHATROOM_SUBSTITUTION_MARKER;
 import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.GROUPS_SUBSTITUION_MARKER;
 import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.ID_SUBSTITUTION_MARKER;
 import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.USER_GROUPS_SUBSTITUTION_MARKER;
 import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.VALUE_GROUPS;
 import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.VALUE_USER_GROUPS;
+
+import com.atakmap.coremap.cot.event.CotAttribute;
+import com.atakmap.coremap.cot.event.CotDetail;
+import com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues;
+import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.chat.hierarchy.group.contact.GroupContactProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledChildException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledInnerTextException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
+import com.paulmandal.atak.libcotshrink.protobuf.utils.StringUtils;
+import com.paulmandal.atak.libcotshrink.protobufs.ProtobufGroup;
+import com.paulmandal.atak.libcotshrink.protobufs.ProtobufGroupContact;
+
+import java.util.List;
 
 public class GroupProtobufConverter {
     private static final String KEY_GROUP = "group";
@@ -31,7 +33,11 @@ public class GroupProtobufConverter {
         mGroupContactProtobufConverter = groupContactProtobufConverter;
     }
 
-    public ProtobufGroup.Group toGroup(CotDetail cotDetail, SubstitutionValues substitutionValues) throws UnknownDetailFieldException {
+    public ProtobufGroup.Group toGroup(CotDetail cotDetail, SubstitutionValues substitutionValues) throws UnknownDetailFieldException, UnhandledInnerTextException, UnhandledChildException {
+        if (cotDetail.getInnerText() != null && !cotDetail.getInnerText().isEmpty()) {
+            throw new UnhandledInnerTextException("Unhandled inner text: " + cotDetail.getInnerText());
+        }
+
         ProtobufGroup.Group.Builder builder = ProtobufGroup.Group.newBuilder();
         CotAttribute[] attributes = cotDetail.getAttributes();
         for (CotAttribute attribute : attributes) {
@@ -69,7 +75,7 @@ public class GroupProtobufConverter {
                     builder.addContact(mGroupContactProtobufConverter.toGroupContact(child, substitutionValues));
                     break;
                 default:
-                    throw new UnknownDetailFieldException("Don't know how to handle child detail object: group." + child.getElementName());
+                    throw new UnhandledChildException("Don't know how to handle child detail object: group." + child.getElementName());
             }
         }
         return builder.build();

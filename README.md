@@ -4,7 +4,7 @@ It uses a combination of EXI (Efficient XML Interchange), Protobufs, and GZip.
 
 # Adding to your Project
 
-libcotshrink is now available on JCenter
+libcotshrink is now available on Maven Central
 
 Edit your `app/build.gradle` and add the library to your app/plugin's dependencies:
 
@@ -12,7 +12,7 @@ Edit your `app/build.gradle` and add the library to your app/plugin's dependenci
 dependencies {
     ...
 
-    implementation 'com.paulmandal.atak:libcotshrink:0.1.0'
+    implementation 'com.paulmandal.atak:libcotshrink:1.0.0'
 }
 
 ```
@@ -49,16 +49,27 @@ CotEvent cotFromLossyBytes = cotShrinker.toCotEvent(cotAsLossyBytes);
 
 Using the `CotShrinker.toByteArrayLossy(CotEvent)` method will cause loss of precision in the following ways:
 
-| Field       | Description                          |
-| ----------- | ------------------------------------ |
-| `time`      | to whole seconds since start of year |
-| `stale`     | to whole seconds since `time`        |
-| `start`     | reuses valuefrom `time`              |
-| all `lat`   | to 7 decimal places                  |
-| all `lon`   | to 7 decimal places                  |
-| `point.hae` | to 14 bit `int`, whole meters        |
-| `point.ce`  | to `int` from `double`               |
-| `point.le`  | to `int` from `double`               |
+| Field          | Description                          |
+| -------------- | ------------------------------------ |
+|    `time`      | to whole seconds since start of year |
+|    `stale`     | to whole seconds since `time`        |
+|    `start`     | reuses valuefrom `time`              |
+|    `point.lat` | to 7 decimal places                  |
+|    `point.lon` | to 7 decimal places                  |
+|    `point.hae` | to 16 bit, -900 to 20945 range, 0.3m |
+|    `point.ce`  | to `int` from `double`               |
+|    `point.le`  | to `int` from `double`               |
+|    `link.lat`  | to 7 decimal places                  |
+|    `link.lon`  | to 7 decimal places                  |
+|    `link.hae`  | to 2 decimal places                  |
+| `track.course` | to 3 decimal places                  |
+|  `track.speed` | to 1 decimal place                   |
+| `height.value` | to 3 decimal places                  |
+|  `shape.major` | to 3 decimal places                  |
+|  `shape.minor` | to 3 decimal places                  |
+| `__geofence.boundingSphere` | to 1 decimal place      |
+| `__geofence.minElevation`   | to 1 decimal place      |
+| `__geofence.maxElevation`   | to 1 decimal place      |
 
 # Contributing / TODO
 
@@ -72,23 +83,24 @@ Using the `CotShrinker.toByteArrayLossy(CotEvent)` method will cause loss of pre
 
 # Performance Stats
 
-| Message Type            | Original Size | Lossless Size  | Lossy Size    |
-|-------------------------|---------------|----------------|---------------|
-| PLI                     | 731           | 568 (-22.30%)  | 193 (-73.60%) |
-| PLI w 0.0.0.0 endpoint  | 725           | 562 (-22.48%)  | 188 (-74.07%) |
-| Complex Shape           | 800           | 598 (-25.25%)  | 226 (-71.75%) |
-| Drawn Shape             | 963           | 711 (-26.17%)  | 264 (-72.59%) |
-| Freehand                | 1867          | 958 (-48.69%)  | 606 (-67.54%) |
-| Group Chat              | 1181          | 746 (-36.83%)  | 352 (-70.19%) |
-| OP                      | 735           | 569 (-22.59%)  | 200 (-72.79%) |
-| P2P Chat                | 951           | 665 (-30.07%)  | 309 (-67.51%) |
-| Route                   | 2826          | 1680 (-40.55%) | 667 (-76.40%) |
-| Sensor                  | 1106          | 859 (-22.33%)  | 305 (-72.42%) |
-| Simple Shape            | 881           | 678 (-23.04%)  | 252 (-71.40%) |
-| User Icon               | 770           | 606 (-21.30%)  | 258 (-66.49%) |
-| Waypoint                | 756           | 577 (-23.68%)  | 204 (-73.02%) |
-| Casevac w/ All Fields   | 1810          | 1438 (-20.55%) | 609 (-66.35%) |
-| Casevac w/ Empty Fields | 876           | 694 (-20.78%)  | 242 (-72.37%) |
-| Circle                  | 912           | 645 (-29.28%)  | 222 (-75.66%) |
-| GeoFence w/ Altitude    | 1040          | 816 (-21.54%)  | 284 (-72.69%) |
-| GeoFence w/o Altitude   | 1009          | 785 (-22.20%)  | 269 (-73.34%) |
+| Message Type            | Original Size | Lossless Size  | Lossy Size     |
+|-------------------------|---------------|----------------|----------------|
+| PLI                     |           731 |  545 (-25.44%) |  171 (-76.61%) |
+| PLI with negative HAE   |           720 |  543 (-24.58%) |  171 (-76.25%) |
+| PLI w 0.0.0.0 endpoint  |           725 |  539 (-25.66%) |  166 (-77.10%) |
+| Complex Shape           |           800 |  575 (-28.13%) |  222 (-72.25%) |
+| Drawn Shape             |           963 |  687 (-28.66%) |  212 (-77.99%) |
+| Freehand                |          1867 |  958 (-48.69%) |  600 (-67.86%) |
+| Group Chat              |          1181 |  723 (-38.78%) |  346 (-70.70%) |
+| OP                      |           735 |  546 (-25.71%) |  194 (-73.61%) |
+| P2P Chat                |           951 |  642 (-32.49%) |  303 (-68.14%) |
+| Route                   |          2826 | 1692 (-40.13%) |  544 (-80.75%) |
+| Sensor                  |          1106 |  853 (-22.88%) |  285 (-74.23%) |
+| Simple Shape            |           881 |  656 (-25.54%) |  240 (-72.76%) |
+| User Icon               |           770 |  582 (-24.42%) |  252 (-67.27%) |
+| Waypoint                |           756 |  552 (-26.98%) |  198 (-73.81%) |
+| Casevac w/ All Fields   |          1810 | 1414 (-21.88%) |  601 (-66.80%) |
+| Casevac w/ Empty Fields |           876 |  669 (-23.63%) |  236 (-73.06%) |
+| Circle                  |           912 |  621 (-31.91%) |  209 (-77.08%) |
+| GeoFence w/ Altitude    |          1040 |  792 (-23.85%) |  222 (-78.65%) |
+| GeoFence w/o Altitude   |          1009 |  761 (-24.58%) |  217 (-78.49%) |

@@ -2,6 +2,8 @@ package com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.medevac;
 
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledChildException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledInnerTextException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufMedevac;
 
@@ -56,7 +58,11 @@ public class MedevacProtobufConverter {
     }
 
 
-    public ProtobufMedevac.Medevac toMedevac(CotDetail cotDetail) throws UnknownDetailFieldException {
+    public ProtobufMedevac.Medevac toMedevac(CotDetail cotDetail) throws UnknownDetailFieldException, UnhandledInnerTextException, UnhandledChildException {
+        if (cotDetail.getInnerText() != null && !cotDetail.getInnerText().isEmpty()) {
+            throw new UnhandledInnerTextException("Unhandled inner text: " + cotDetail.getInnerText());
+        }
+
         ProtobufMedevac.Medevac.Builder builder = ProtobufMedevac.Medevac.newBuilder();
         CotAttribute[] attributes = cotDetail.getAttributes();
         for (CotAttribute attribute : attributes) {
@@ -185,7 +191,7 @@ public class MedevacProtobufConverter {
                     builder.setZMistsMap(mMistsMapProtobufConverter.toMistsMap(child));
                     break;
                 default:
-                    throw new UnknownDetailFieldException("Don't know how to handle child detail object: medevac." + child.getElementName());
+                    throw new UnhandledChildException("Don't know how to handle child detail object: medevac." + child.getElementName());
             }
         }
 

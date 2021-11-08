@@ -5,6 +5,8 @@ import com.atakmap.coremap.cot.event.CotDetail;
 import com.paulmandal.atak.libcotshrink.protobuf.Constants;
 import com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues;
 import com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.routeinfo.navcue.navcues.NavCuesProtobufConverter;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledChildException;
+import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnhandledInnerTextException;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 import com.paulmandal.atak.libcotshrink.protobuf.utils.PrecisionUtil;
 import com.paulmandal.atak.libcotshrink.protobuf.utils.StringUtils;
@@ -40,7 +42,15 @@ public class RouteProtobufConverter {
         mPrecisionUtil = precisionUtil;
     }
 
-    public void toRouteLink(CotDetail cotDetail, ProtobufRoute.Route.Builder routeBuilder, SubstitutionValues substitutionValues) throws UnknownDetailFieldException {
+    public void toRouteLink(CotDetail cotDetail, ProtobufRoute.Route.Builder routeBuilder, SubstitutionValues substitutionValues) throws UnknownDetailFieldException, UnhandledInnerTextException, UnhandledChildException {
+        if (cotDetail.getInnerText() != null && !cotDetail.getInnerText().isEmpty()) {
+            throw new UnhandledInnerTextException("Unhandled inner text: " + cotDetail.getInnerText());
+        }
+
+        if (cotDetail.getChildren() != null && cotDetail.getChildren().size() > 0) {
+            throw new UnhandledChildException("Unhandled child: " + cotDetail.getChildren().get(0).getElementName());
+        }
+
         ProtobufRouteLink.RouteLink.Builder builder = ProtobufRouteLink.RouteLink.newBuilder();
         CotAttribute[] attributes = cotDetail.getAttributes();
 
@@ -89,7 +99,11 @@ public class RouteProtobufConverter {
         routeBuilder.addLink(builder);
     }
 
-    public void toRouteInfo(CotDetail cotDetail, ProtobufRoute.Route.Builder routeBuilder, SubstitutionValues substitutionValues) throws UnknownDetailFieldException {
+    public void toRouteInfo(CotDetail cotDetail, ProtobufRoute.Route.Builder routeBuilder, SubstitutionValues substitutionValues) throws UnknownDetailFieldException, UnhandledInnerTextException, UnhandledChildException {
+        if (cotDetail.getInnerText() != null && !cotDetail.getInnerText().isEmpty()) {
+            throw new UnhandledInnerTextException("Unhandled inner text: " + cotDetail.getInnerText());
+        }
+
         ProtobufRouteInfo.RouteInfo.Builder builder = ProtobufRouteInfo.RouteInfo.newBuilder();
         CotAttribute[] attributes = cotDetail.getAttributes();
         for (CotAttribute attribute : attributes) {
@@ -106,7 +120,7 @@ public class RouteProtobufConverter {
                     builder.setNavCues(mNavCuesProtobufConverter.toNavCues(child, substitutionValues));
                     break;
                 default:
-                    throw new UnknownDetailFieldException("Don't know how to handle child object: __routeinfo." + child.getElementName());
+                    throw new UnhandledChildException("Don't know how to handle child object: __routeinfo." + child.getElementName());
             }
         }
 
