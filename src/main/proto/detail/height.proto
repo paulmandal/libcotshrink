@@ -7,5 +7,5 @@ package com.paulmandal.atak.libcotshrink.protobufs;
 option java_outer_classname = "ProtobufHeight";
 
 message Height {
-  double heightValue = 1;
+  int32 heightValue = 1;
 }

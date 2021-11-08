@@ -2,6 +2,7 @@ package com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.track;
 
 import com.atakmap.coremap.cot.event.CotAttribute;
 import com.atakmap.coremap.cot.event.CotDetail;
+import com.paulmandal.atak.libcotshrink.protobuf.Constants;
 import com.paulmandal.atak.libcotshrink.protobuf.exceptions.UnknownDetailFieldException;
 import com.paulmandal.atak.libcotshrink.protobufs.ProtobufTrack;
 
@@ -11,8 +12,8 @@ public class TrackProtobufConverter {
     private static final String KEY_COURSE = "course";
     private static final String KEY_SPEED = "speed";
 
-    private static final double COURSE_PRECISION_FACTOR = 1000.0;
-    private static final double SPEED_PRECISION_FACTOR = 10.0;
+    private static final double COURSE_PRECISION_FACTOR = Constants.COURSE_PRECISION_FACTOR;
+    private static final double SPEED_PRECISION_FACTOR = Constants.SPEED_PRECISION_FACTOR;
 
     private static final int NULL_MARKER = -1;
 
