@@ -4,7 +4,7 @@ It uses a combination of EXI (Efficient XML Interchange), Protobufs, and GZip.
 
 # Adding to your Project
 
-libcotshrink is now available on JCenter
+libcotshrink is now available on Maven Central
 
 Edit your `app/build.gradle` and add the library to your app/plugin's dependencies:
 
@@ -12,7 +12,7 @@ Edit your `app/build.gradle` and add the library to your app/plugin's dependenci
 dependencies {
     ...
 
-    implementation 'com.paulmandal.atak:libcotshrink:0.1.0'
+    implementation 'com.paulmandal.atak:libcotshrink:1.0.0'
 }
 
 ```
@@ -49,16 +49,27 @@ CotEvent cotFromLossyBytes = cotShrinker.toCotEvent(cotAsLossyBytes);
 
 Using the `CotShrinker.toByteArrayLossy(CotEvent)` method will cause loss of precision in the following ways:
 
-| Field       | Description                          |
-| ----------- | ------------------------------------ |
-| `time`      | to whole seconds since start of year |
-| `stale`     | to whole seconds since `time`        |
-| `start`     | reuses valuefrom `time`              |
-| all `lat`   | to 7 decimal places                  |
-| all `lon`   | to 7 decimal places                  |
-| `point.hae` | to 14 bit `int`, whole meters        |
-| `point.ce`  | to `int` from `double`               |
-| `point.le`  | to `int` from `double`               |
+| Field          | Description                          |
+| -------------- | ------------------------------------ |
+|    `time`      | to whole seconds since start of year |
+|    `stale`     | to whole seconds since `time`        |
+|    `start`     | reuses valuefrom `time`              |
+|    `point.lat` | to 7 decimal places                  |
+|    `point.lon` | to 7 decimal places                  |
+|    `point.hae` | to 16 bit, -900 to 20945 range, 0.3m |
+|    `point.ce`  | to `int` from `double`               |
+|    `point.le`  | to `int` from `double`               |
+|    `link.lat`  | to 7 decimal places                  |
+|    `link.lon`  | to 7 decimal places                  |
+|    `link.hae`  | to 2 decimal places                  |
+| `track.course` | to 3 decimal places                  |
+|  `track.speed` | to 1 decimal place                   |
+| `height.value` | to 3 decimal places                  |
+|  `shape.major` | to 3 decimal places                  |
+|  `shape.minor` | to 3 decimal places                  |
+| `__geofence.boundingSphere` | to 1 decimal place      |
+| `__geofence.minElevation`   | to 1 decimal place      |
+| `__geofence.maxElevation`   | to 1 decimal place      |
 
 # Contributing / TODO
 
