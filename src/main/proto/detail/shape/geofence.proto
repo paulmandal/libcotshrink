@@ -11,9 +11,9 @@ message GeoFence {
   Monitor monitor = 2;
   Trigger trigger = 3;
   bool tracking = 4;
-  double minElevation = 5;
-  double maxElevation = 6;
-  double boundingSphere = 7; // TODO: maybe another data type?
+  sint32 minElevation = 5;
+  sint32 maxElevation = 6;
+  int32 boundingSphere = 7; // TODO: maybe another data type?
 
   enum Trigger {
     ENTRY = 0;

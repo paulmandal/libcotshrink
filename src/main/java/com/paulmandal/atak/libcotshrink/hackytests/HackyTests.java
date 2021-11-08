@@ -19,10 +19,13 @@ public class HackyTests {
     private static final String TAG = HackyTests.class.getSimpleName();
 
     private static final double LAT_LON_INT_CONVERSION_FACTOR = Constants.LAT_LON_INT_CONVERSION_FACTOR;
+    public static final double HAE_ALT_PRECISION_FACTOR = Constants.HAE_ALT_PRECISION_FACTOR;
     private static final double COURSE_PRECISION_FACTOR = Constants.COURSE_PRECISION_FACTOR;
     private static final double SPEED_PRECISION_FACTOR = Constants.SPEED_PRECISION_FACTOR;
     private static final double HEIGHT_PRECISION_FACTOR = Constants.HEIGHT_PRECISION_FACTOR;
     private static final double ELLIPSE_MAJOR_MINOR_PRECISION_FACTOR = Constants.ELLIPSE_MAJOR_MINOR_PRECISION_FACTOR;
+    public static final double GEOFENCE_BOUNDING_SPHERE_PRECISION_FACTOR = Constants.GEOFENCE_BOUNDING_SPHERE_PRECISION_FACTOR;
+
 
     public void runAllTests() {
         testPli();
@@ -185,7 +188,7 @@ public class HackyTests {
     public void testGeoFenceWithAltitude() {
         String messageType = "GeoFence w/ Altitude";
         String testXml = "<?xml version='1.0' encoding='UTF-8' standalone='yes'?><event version='2.0' uid='07965d48-0d4b-4575-9c5b-c56a4b66ce10' type='u-d-r' time='2021-09-13T05:25:30.882Z' start='2021-09-13T05:25:30.882Z' stale='2021-09-14T05:25:30.882Z' how='h-e'><point lat='39.86657654739065' lon='-105.16496033254576' hae='1698.7690850953754' ce='9999999.0' le='9999999.0' /><detail><link point='39.93470375464395,-105.24931298523292,1743.6532212063455'/><link point='39.79887842819508,-105.24974402778368,1880.848705771484'/><link point='39.79843415916509,-105.08077499386248'/><link point='39.93425862060156,-105.08000930131891'/><tog enabled='1'/><strokeColor value='-16729857'/><strokeWeight value='3.4'/><fillColor value='-1778337537'/><remarks>Rmks</remarks><__geofence elevationMonitored='true' minElevation='0.7919789468754104' monitor='TAKUsers' trigger='Both' tracking='true' maxElevation='96.19437894687542' boundingSphere='85000.0'/><precisionlocation altsrc='DTED2'/><contact callsign='Warning'/><archive/><labels_on value='true'/></detail></event>";
-        validateLossy(messageType, 258, testXml);
+        validateLossy(messageType, 241, testXml);
         validateLossless(messageType, 792, testXml);
         generatePerformanceTableOutput(messageType, testXml);
     }
@@ -193,7 +196,7 @@ public class HackyTests {
     public void testGeoFenceWithoutAltitude() {
         String messageType = "GeoFence w/o Altitude";
         String testXml = "<?xml version='1.0' encoding='UTF-8' standalone='yes'?><event version='2.0' uid='07965d48-0d4b-4575-9c5b-c56a4b66ce10' type='u-d-r' time='2021-09-13T05:24:17.214Z' start='2021-09-13T05:24:17.214Z' stale='2021-09-14T05:24:17.214Z' how='h-e'><point lat='39.86657654739065' lon='-105.16496033254576' hae='1698.7690850953754' ce='9999999.0' le='9999999.0' /><detail><link point='39.93470375464395,-105.24931298523292,1743.6532212063455'/><link point='39.79887842819508,-105.24974402778368,1880.848705771484'/><link point='39.79843415916509,-105.08077499386248'/><link point='39.93425862060156,-105.08000930131891'/><tog enabled='1'/><strokeColor value='-16729857'/><strokeWeight value='3.4'/><fillColor value='-1778337537'/><remarks>Rmks</remarks><__geofence elevationMonitored='false' minElevation='NaN' monitor='All' trigger='Entry' tracking='false' maxElevation='NaN' boundingSphere='85000.0'/><precisionlocation altsrc='DTED2'/><contact callsign='Warning'/><archive/><labels_on value='true'/></detail></event>";
-        validateLossy(messageType, 242, testXml);
+        validateLossy(messageType, 236, testXml);
         validateLossless(messageType, 761, testXml);
         generatePerformanceTableOutput(messageType, testXml);
     }
@@ -300,6 +303,24 @@ public class HackyTests {
 
             if (child.getElementName().equals("shape")) {
                 fuzzShape(child);
+            }
+
+            if (child.getElementName().equals("__geofence") && child.getAttribute("minElevation") != null && child.getAttribute("maxElevation") != null && child.getAttribute("boundingSphere") != null) {
+                String boundingSphereStr = child.getAttribute("boundingSphere");
+                String minElevationStr = child.getAttribute("minElevation");
+                String maxElevationStr = child.getAttribute("maxElevation");
+
+                if (boundingSphereStr != null && !boundingSphereStr.equals("NaN")) {
+                    child.setAttribute("boundingSphere", Double.toString(fuzzDouble(Double.parseDouble(boundingSphereStr), GEOFENCE_BOUNDING_SPHERE_PRECISION_FACTOR)));
+                }
+
+                if (minElevationStr != null && !minElevationStr.equals("NaN")) {
+                    child.setAttribute("minElevation", Double.toString(fuzzDouble(Double.parseDouble(minElevationStr), HAE_ALT_PRECISION_FACTOR)));
+                }
+
+                if (maxElevationStr != null && !maxElevationStr.equals("NaN")) {
+                    child.setAttribute("maxElevation", Double.toString(fuzzDouble(Double.parseDouble(maxElevationStr), HAE_ALT_PRECISION_FACTOR)));
+                }
             }
         }
 
