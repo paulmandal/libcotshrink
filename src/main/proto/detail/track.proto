@@ -7,6 +7,6 @@ package com.paulmandal.atak.libcotshrink.protobufs;
 option java_outer_classname = "ProtobufTrack";
 
 message Track {
-  double course = 1;
-  double speed = 2;
+  int32 course = 1;
+  int32 speed = 2;
 }

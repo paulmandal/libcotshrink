@@ -18,6 +18,8 @@ public class HackyTests {
     private static final String TAG = HackyTests.class.getSimpleName();
 
     private static final double LAT_LON_INT_CONVERSION_FACTOR = 10000000F;
+    private static final double COURSE_PRECISION_FACTOR = 1000.0;
+    private static final double SPEED_PRECISION_FACTOR = 10.0;
 
     public void runAllTests() {
         testPli();
@@ -44,7 +46,7 @@ public class HackyTests {
     public void testPli() {
         String messageType = "PLI";
         String testXml = "<?xml version='1.0' encoding='UTF-8' standalone='yes'?><event version='2.0' uid='ANDROID-53af0912586418dc' type='a-f-G-U-C' time='2021-08-29T21:14:00.406Z' start='2021-08-29T21:14:00.406Z' stale='2021-08-29T21:15:15.406Z' how='h-e'><point lat='39.71401955573084' lon='-104.99452709918448' hae='1586.245787738948' ce='9999999.0' le='9999999.0'/><detail><takv os='29' version='4.0.0.7 (a457ad0d).1597850931-CIV' device='GOOGLE PIXEL 4 XL' platform='ATAK-CIV'/><contact endpoint='192.168.1.159:4242:tcp' callsign='dasuberdog'/><uid Droid='dasuberdog'/><precisionlocation altsrc='DTED2' geopointsrc='USER'/><__group role='Team Lead' name='Orange'/><status battery='58'/><track course='327.66875837972367' speed='0.0'/></detail></event>";
-        validateLossy(messageType, 176, testXml);
+        validateLossy(messageType, 171, testXml);
         validateLossless(messageType, 545, testXml);
         generatePerformanceTableOutput(messageType, testXml);
     }
@@ -52,7 +54,7 @@ public class HackyTests {
     public void testPliWithNegativeHae() {
         String messageType = "PLI with negative HAE";
         String testXml = "<?xml version='1.0' encoding='UTF-8' standalone='yes'?><event version='2.0' uid='ANDROID-53af0912586418dc' type='a-f-G-U-C' time='2021-08-29T21:14:00.406Z' start='2021-08-29T21:14:00.406Z' stale='2021-08-29T21:15:15.406Z' how='h-e'><point lat='39.71401955573084' lon='-104.99452709918448' hae='-800.0' ce='9999999.0' le='9999999.0'/><detail><takv os='29' version='4.0.0.7 (a457ad0d).1597850931-CIV' device='GOOGLE PIXEL 4 XL' platform='ATAK-CIV'/><contact endpoint='192.168.1.159:4242:tcp' callsign='dasuberdog'/><uid Droid='dasuberdog'/><precisionlocation altsrc='DTED2' geopointsrc='USER'/><__group role='Team Lead' name='Orange'/><status battery='58'/><track course='327.66875837972367' speed='0.0'/></detail></event>";
-        validateLossy(messageType, 176, testXml);
+        validateLossy(messageType, 171, testXml);
         validateLossless(messageType, 543, testXml);
         generatePerformanceTableOutput(messageType, testXml);
     }
@@ -60,7 +62,7 @@ public class HackyTests {
     public void testPliWithZeroEndpointAddr() {
         String messageType = "PLI w 0.0.0.0 endpoint";
         String testXml = "<?xml version='1.0' encoding='UTF-8' standalone='yes'?><event version='2.0' uid='ANDROID-53af0912586418dc' type='a-f-G-U-C' time='2021-08-29T21:14:00.406Z' start='2021-08-29T21:14:00.406Z' stale='2021-08-29T21:15:15.406Z' how='h-e'><point lat='39.71401955573084' lon='-104.99452709918448' hae='1586.245787738948' ce='9999999.0' le='9999999.0'/><detail><takv os='29' version='4.0.0.7 (a457ad0d).1597850931-CIV' device='GOOGLE PIXEL 4 XL' platform='ATAK-CIV'/><contact endpoint='0.0.0.0:4242:tcp' callsign='dasuberdog'/><uid Droid='dasuberdog'/><precisionlocation altsrc='DTED2' geopointsrc='USER'/><__group role='Team Lead' name='Orange'/><status battery='58'/><track course='327.66875837972367' speed='0.0'/></detail></event>";
-        validateLossy(messageType, 171, testXml);
+        validateLossy(messageType, 166, testXml);
         validateLossless(messageType, 539, testXml);
         generatePerformanceTableOutput(messageType, testXml);
     }
@@ -68,7 +70,7 @@ public class HackyTests {
     public void testComplexShape() {
         String messageType = "Complex Shape";
         String testXml = "<?xml version='1.0' encoding='UTF-8' standalone='yes'?><event version='2.0' uid='1da89ca4-9a57-4bba-b082-3793ebbd3ddb' type='overhead_marker' time='2021-08-29T21:25:54.877Z' start='2021-08-29T21:25:54.877Z' stale='2021-08-30T21:25:54.877Z' how='h-e'><point lat='39.72750837570107' lon='-104.98061468169054' hae='1597.252688001634' ce='9999999.0' le='9999999.0'/><detail><model name='Squad Car'/><track course='0.0'/><contact callsign='Squad Car'/><remarks>Do p</remarks><archive/><link uid='ANDROID-53af0912586418dc' production_time='2021-08-29T21:25:36.669Z' type='a-f-G-U-C' parent_callsign='dasuberdog' relation='p-p'/><labels_on value='false'/><height_unit>1</height_unit><height unit='meters' value='0.0'>0.0</height><precisionlocation altsrc='DTED2'/><color value='-16744704'/></detail></event>";
-        validateLossy(messageType, 220, testXml);
+        validateLossy(messageType, 222, testXml);
         validateLossless(messageType, 575, testXml);
         generatePerformanceTableOutput(messageType, testXml);
     }
@@ -226,7 +228,7 @@ public class HackyTests {
         CoordinatedTime fuzzedStale = cotEvent.getStale().addMilliseconds((int)(-1 * (cotEvent.getStale().getMilliseconds() % 1000)));
 
         CotPoint originalCotPoint = cotEvent.getCotPoint();
-        CotPoint fuzzedCotPoint = new CotPoint(fuzzLatLon(originalCotPoint.getLat()), fuzzLatLon(originalCotPoint.getLon()), (int)originalCotPoint.getHae(), (int)originalCotPoint.getCe(), (int)originalCotPoint.getLe());
+        CotPoint fuzzedCotPoint = new CotPoint(fuzzDouble(originalCotPoint.getLat(), LAT_LON_INT_CONVERSION_FACTOR), fuzzDouble(originalCotPoint.getLon(), LAT_LON_INT_CONVERSION_FACTOR), (int)originalCotPoint.getHae(), (int)originalCotPoint.getCe(), (int)originalCotPoint.getLe());
 
         cotEvent.setTime(fuzzedTime);
         cotEvent.setStart(fuzzedStart);
@@ -268,13 +270,21 @@ public class HackyTests {
 
             if (child.getElementName().equals("link") && child.getAttribute("point") != null) {
                 String[] pointSplit = child.getAttribute("point").split(",");
-                Double lat = fuzzLatLon(Double.parseDouble(pointSplit[0]));
-                Double lon = fuzzLatLon(Double.parseDouble(pointSplit[1]));
+                Double lat = fuzzDouble(Double.parseDouble(pointSplit[0]), LAT_LON_INT_CONVERSION_FACTOR);
+                Double lon = fuzzDouble(Double.parseDouble(pointSplit[1]), LAT_LON_INT_CONVERSION_FACTOR);
                 String newPoint = lat + "," + lon;
                 if (pointSplit.length == 3) {
                      newPoint = newPoint + "," + pointSplit[2];
                 }
                 child.setAttribute("point", newPoint);
+            }
+
+            if (child.getElementName().equals("track") && child.getAttribute("speed") != null && child.getAttribute("course") != null) {
+                String speedStr = child.getAttribute("speed");
+                String courseStr = child.getAttribute("course");
+
+                child.setAttribute("speed", Double.toString(fuzzDouble(Double.parseDouble(speedStr), SPEED_PRECISION_FACTOR)));
+                child.setAttribute("course", Double.toString(fuzzDouble(Double.parseDouble(courseStr), COURSE_PRECISION_FACTOR)));
             }
         }
 
@@ -311,10 +321,6 @@ public class HackyTests {
             Log.e(TAG, "!!!!!!!!!!!!");
         }
     }
-    
-    private double fuzzLatLon(double latLon) {
-        return ((int)(latLon * LAT_LON_INT_CONVERSION_FACTOR)) / LAT_LON_INT_CONVERSION_FACTOR;
-    }
 
     private String fuzzTimeFromString(String timeStr) {
         try {
@@ -324,5 +330,9 @@ public class HackyTests {
             e.printStackTrace();
             return new CoordinatedTime().toString();
         }
+    }
+
+    private double fuzzDouble(double d, double factor) {
+        return ((int)(d * factor)) / factor;
     }
 }
