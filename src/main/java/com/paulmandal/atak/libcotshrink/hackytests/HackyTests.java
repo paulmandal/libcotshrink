@@ -30,12 +30,14 @@ public class HackyTests {
 
     public void runAllTests() {
         testPli();
+        testHighAltitudePli();
         testPliWithNegativeHae();
         testPliWithZeroEndpointAddr();
         testComplexShape();
         testDrawnShape();
         testFreehand();
         testGroupChat();
+        testChatWithMessageId();
         testOp();
         testPeerToPeerChat();
         testRoute();
@@ -111,6 +113,14 @@ public class HackyTests {
         String testXml = "<?xml version='1.0' encoding='UTF-8' standalone='yes'?><event version='2.0' uid='GeoChat.ANDROID-53af0912586418dc.okm.35f1f729-4107-4c84-8eb5-c04f3eac7701' type='b-t-f' time='2021-08-29T21:29:33.912Z' start='2021-08-29T21:29:33.912Z' stale='2021-08-30T21:29:33.912Z' how='h-g-i-g-o'><point lat='39.71401955573084' lon='-104.99452709918448' hae='1586.245787738948' ce='9999999.0' le='9999999.0'/><detail><__chat parent='UserGroups' groupOwner='true' chatroom='okm' id='b1367178-c68f-4f86-9753-4fd9a283f1c9' senderCallsign='dasuberdog'><chatgrp uid0='ANDROID-53af0912586418dc' uid1='ANDROID-355499060918435' id='b1367178-c68f-4f86-9753-4fd9a283f1c9'/><hierarchy><group uid='UserGroups' name='Groups'><group uid='b1367178-c68f-4f86-9753-4fd9a283f1c9' name='okm'><contact uid='ANDROID-53af0912586418dc' name='dasuberdog'/><contact uid='ANDROID-355499060918435' name='maya'/></group></group></hierarchy></__chat><link uid='ANDROID-53af0912586418dc' type='a-f-G-U-C' relation='p-p'/><remarks source='BAO.F.ATAK.ANDROID-53af0912586418dc' time='2021-08-29T21:29:33.912Z'>at VDO</remarks><__serverdestination destinations='192.168.1.159:4242:tcp:ANDROID-53af0912586418dc'/></detail></event>";
         validateLossy(messageType, 346, testXml);
         validateLossless(messageType, 723, testXml);
+        generatePerformanceTableOutput(messageType, testXml);
+    }
+
+    public void testChatWithMessageId() {
+        String messageType = "CHat w/ MessageId";
+        String testXml = "<?xml version='1.0' encoding='UTF-8' standalone='yes'?><event version='2.0' uid='GeoChat.ANDROID-355499060918435.All Chat Rooms.9a8e20ef-570c-4cc4-9689-675ee947a80c' type='b-t-f' time='2021-11-20T05:46:18.816Z' start='2021-11-20T05:46:18.816Z' stale='2021-11-21T05:46:18.816Z' how='h-g-i-g-o'><point lat='0.0' lon='0.0' hae='9999999.0' ce='9999999.0' le='9999999.0' /><detail><__chat senderCallsign='maya' chatroom='All Chat Rooms' groupOwner='false' id='All Chat Rooms' parent='RootContactGroup' messageId='9a8e20ef-570c-4cc4-9689-675ee947a80c'><chatgrp uid0='ANDROID-355499060918435' uid1='All Chat Rooms' id='All Chat Rooms'/></__chat><link relation='p-p' type='a-f-G-U-C' uid='ANDROID-355499060918435'/><__serverdestination destinations='192.168.1.166:4242:tcp:ANDROID-355499060918435'/><remarks time='2021-11-20T05:46:18.816Z' to='All Chat Rooms' source='BAO.F.ATAK.ANDROID-355499060918435'>at breach</remarks></detail></event>";
+        validateLossy(messageType, 274, testXml);
+        validateLossless(messageType, 647, testXml);
         generatePerformanceTableOutput(messageType, testXml);
     }
 

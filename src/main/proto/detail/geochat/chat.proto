@@ -17,4 +17,5 @@ message Chat {
   string senderCallsign = 5;
   ChatGroup chatGroup = 6;
   Hierarchy hierarchy = 7;
+  string messageId = 8;
 }
