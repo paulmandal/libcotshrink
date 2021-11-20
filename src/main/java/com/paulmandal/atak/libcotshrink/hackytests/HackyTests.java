@@ -61,15 +61,15 @@ public class HackyTests {
     }
 
     public void testHighAltitudePli() {
-        String messageType = "High Altitude PLI";
+        String messageType = "HA PLI";
         String testXml = "<?xml version='1.0' encoding='UTF-8' standalone='yes'?><event version='2.0' uid='ANDROID-53af0912586418dc' type='a-f-G-U-C' time='2021-08-29T21:14:00.406Z' start='2021-08-29T21:14:00.406Z' stale='2021-08-29T21:15:15.406Z' how='h-e'><point lat='39.71401955573084' lon='-104.99452709918448' hae='19000.245787738948' ce='9999999.0' le='9999999.0'/><detail><takv os='29' version='4.0.0.7 (a457ad0d).1597850931-CIV' device='GOOGLE PIXEL 4 XL' platform='ATAK-CIV'/><contact endpoint='192.168.1.159:4242:tcp' callsign='dasuberdog'/><uid Droid='dasuberdog'/><precisionlocation altsrc='DTED2' geopointsrc='USER'/><__group role='Team Lead' name='Orange'/><status battery='58'/><track course='327.66875837972367' speed='0.0'/></detail></event>";
         validateLossy(messageType, 171, testXml);
-        validateLossless(messageType, 545, testXml);
+        validateLossless(messageType, 546, testXml);
         generatePerformanceTableOutput(messageType, testXml);
     }
 
     public void testPliWithNegativeHae() {
-        String messageType = "PLI with negative HAE";
+        String messageType = "-HAE PLI";
         String testXml = "<?xml version='1.0' encoding='UTF-8' standalone='yes'?><event version='2.0' uid='ANDROID-53af0912586418dc' type='a-f-G-U-C' time='2021-08-29T21:14:00.406Z' start='2021-08-29T21:14:00.406Z' stale='2021-08-29T21:15:15.406Z' how='h-e'><point lat='39.71401955573084' lon='-104.99452709918448' hae='-899.0' ce='9999999.0' le='9999999.0'/><detail><takv os='29' version='4.0.0.7 (a457ad0d).1597850931-CIV' device='GOOGLE PIXEL 4 XL' platform='ATAK-CIV'/><contact endpoint='192.168.1.159:4242:tcp' callsign='dasuberdog'/><uid Droid='dasuberdog'/><precisionlocation altsrc='DTED2' geopointsrc='USER'/><__group role='Team Lead' name='Orange'/><status battery='58'/><track course='327.66875837972367' speed='0.0'/></detail></event>";
         validateLossy(messageType, 171, testXml);
         validateLossless(messageType, 543, testXml);
@@ -77,7 +77,7 @@ public class HackyTests {
     }
 
     public void testPliWithZeroEndpointAddr() {
-        String messageType = "PLI w 0.0.0.0 endpoint";
+        String messageType = "PLI w/o IP";
         String testXml = "<?xml version='1.0' encoding='UTF-8' standalone='yes'?><event version='2.0' uid='ANDROID-53af0912586418dc' type='a-f-G-U-C' time='2021-08-29T21:14:00.406Z' start='2021-08-29T21:14:00.406Z' stale='2021-08-29T21:15:15.406Z' how='h-e'><point lat='39.71401955573084' lon='-104.99452709918448' hae='1586.245787738948' ce='9999999.0' le='9999999.0'/><detail><takv os='29' version='4.0.0.7 (a457ad0d).1597850931-CIV' device='GOOGLE PIXEL 4 XL' platform='ATAK-CIV'/><contact endpoint='0.0.0.0:4242:tcp' callsign='dasuberdog'/><uid Droid='dasuberdog'/><precisionlocation altsrc='DTED2' geopointsrc='USER'/><__group role='Team Lead' name='Orange'/><status battery='58'/><track course='327.66875837972367' speed='0.0'/></detail></event>";
         validateLossy(messageType, 166, testXml);
         validateLossless(messageType, 539, testXml);
@@ -117,7 +117,7 @@ public class HackyTests {
     }
 
     public void testChatWithMessageId() {
-        String messageType = "CHat w/ MessageId";
+        String messageType = "Chat w/ MessageId";
         String testXml = "<?xml version='1.0' encoding='UTF-8' standalone='yes'?><event version='2.0' uid='GeoChat.ANDROID-355499060918435.All Chat Rooms.9a8e20ef-570c-4cc4-9689-675ee947a80c' type='b-t-f' time='2021-11-20T05:46:18.816Z' start='2021-11-20T05:46:18.816Z' stale='2021-11-21T05:46:18.816Z' how='h-g-i-g-o'><point lat='0.0' lon='0.0' hae='9999999.0' ce='9999999.0' le='9999999.0' /><detail><__chat senderCallsign='maya' chatroom='All Chat Rooms' groupOwner='false' id='All Chat Rooms' parent='RootContactGroup' messageId='9a8e20ef-570c-4cc4-9689-675ee947a80c'><chatgrp uid0='ANDROID-355499060918435' uid1='All Chat Rooms' id='All Chat Rooms'/></__chat><link relation='p-p' type='a-f-G-U-C' uid='ANDROID-355499060918435'/><__serverdestination destinations='192.168.1.166:4242:tcp:ANDROID-355499060918435'/><remarks time='2021-11-20T05:46:18.816Z' to='All Chat Rooms' source='BAO.F.ATAK.ANDROID-355499060918435'>at breach</remarks></detail></event>";
         validateLossy(messageType, 274, testXml);
         validateLossless(messageType, 647, testXml);
