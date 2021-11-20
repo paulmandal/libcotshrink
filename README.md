@@ -12,7 +12,7 @@ Edit your `app/build.gradle` and add the library to your app/plugin's dependenci
 dependencies {
     ...
 
-    implementation 'com.paulmandal.atak:libcotshrink:1.0.0'
+    implementation 'com.paulmandal.atak:libcotshrink:1.0.1'
 }
 
 ```
@@ -83,24 +83,26 @@ Using the `CotShrinker.toByteArrayLossy(CotEvent)` method will cause loss of pre
 
 # Performance Stats
 
-| Message Type            | Original Size | Lossless Size  | Lossy Size     |
-|-------------------------|---------------|----------------|----------------|
-| PLI                     |           731 |  545 (-25.44%) |  171 (-76.61%) |
-| PLI with negative HAE   |           720 |  543 (-24.58%) |  171 (-76.25%) |
-| PLI w 0.0.0.0 endpoint  |           725 |  539 (-25.66%) |  166 (-77.10%) |
-| Complex Shape           |           800 |  575 (-28.13%) |  222 (-72.25%) |
-| Drawn Shape             |           963 |  687 (-28.66%) |  212 (-77.99%) |
-| Freehand                |          1867 |  958 (-48.69%) |  600 (-67.86%) |
-| Group Chat              |          1181 |  723 (-38.78%) |  346 (-70.70%) |
-| OP                      |           735 |  546 (-25.71%) |  194 (-73.61%) |
-| P2P Chat                |           951 |  642 (-32.49%) |  303 (-68.14%) |
-| Route                   |          2826 | 1692 (-40.13%) |  544 (-80.75%) |
-| Sensor                  |          1106 |  853 (-22.88%) |  285 (-74.23%) |
-| Simple Shape            |           881 |  656 (-25.54%) |  240 (-72.76%) |
-| User Icon               |           770 |  582 (-24.42%) |  252 (-67.27%) |
-| Waypoint                |           756 |  552 (-26.98%) |  198 (-73.81%) |
-| Casevac w/ All Fields   |          1810 | 1414 (-21.88%) |  601 (-66.80%) |
-| Casevac w/ Empty Fields |           876 |  669 (-23.63%) |  236 (-73.06%) |
-| Circle                  |           912 |  621 (-31.91%) |  209 (-77.08%) |
-| GeoFence w/ Altitude    |          1040 |  792 (-23.85%) |  222 (-78.65%) |
-| GeoFence w/o Altitude   |          1009 |  761 (-24.58%) |  217 (-78.49%) |
+| Message Type            | Original Size | Lossless Size  | Lossy Size    |
+|-------------------------|---------------|----------------|---------------|
+| PLI                     | 731           | 545 (-25.44%)  | 171 (-76.61%) |
+| HA PLI                  | 732           | 546 (-25.41%)  | 171 (-76.64%) |
+| -HAE PLI                | 720           | 543 (-24.58%)  | 171 (-76.25%) |
+| PLI w/o IP              | 725           | 539 (-25.66%)  | 166 (-77.10%) |
+| Complex Shape           | 800           | 575 (-28.13%)  | 222 (-72.25%) |
+| Drawn Shape             | 963           | 687 (-28.66%)  | 212 (-77.99%) |
+| Freehand                | 1867          | 958 (-48.69%)  | 600 (-67.86%) |
+| Group Chat              | 1181          | 723 (-38.78%)  | 346 (-70.70%) |
+| Chat w/ MessageId       | 932           | 647 (-30.58%)  | 274 (-70.60%) |
+| OP                      | 735           | 546 (-25.71%)  | 194 (-73.61%) |
+| P2P Chat                | 951           | 642 (-32.49%)  | 303 (-68.14%) |
+| Route                   | 2826          | 1692 (-40.13%) | 544 (-80.75%) |
+| Sensor                  | 1106          | 853 (-22.88%)  | 285 (-74.23%) |
+| Simple Shape            | 881           | 656 (-25.54%)  | 240 (-72.76%) |
+| User Icon               | 770           | 582 (-24.42%)  | 252 (-67.27%) |
+| Waypoint                | 756           | 552 (-26.98%)  | 198 (-73.81%) |
+| Casevac w/ All Fields   | 1810          | 1414 (-21.88%) | 601 (-66.80%) |
+| Casevac w/ Empty Fields | 876           | 669 (-23.63%)  | 236 (-73.06%) |
+| Circle                  | 912           | 621 (-31.91%)  | 209 (-77.08%) |
+| GeoFence w/ Altitude    | 1040          | 792 (-23.85%)  | 222 (-78.65%) |
+| GeoFence w/o Altitude   | 1009          | 761 (-24.58%)  | 217 (-78.49%) |

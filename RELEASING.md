@@ -1,2 +1,3 @@
 - Update version in build.gradle
-- ./gradlew :publishReleasePublicationToSonatypeRepository :closeAndReleaseSonatypeStagingRepository
+- Update version in README.md
+- Run ./gradlew :publishReleasePublicationToSonatypeRepository :closeAndReleaseSonatypeStagingRepository
