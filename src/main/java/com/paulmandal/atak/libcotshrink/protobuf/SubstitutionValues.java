@@ -6,6 +6,7 @@ import java.util.List;
 public class SubstitutionValues {
     public static final String CHATROOM_SUBSTITUTION_MARKER = "#c";
     public static final String UID_SUBSTITUTION_MARKER = "#u";
+    public static final String MESSAGE_ID_SUBSTITUTION_MARKER = "#d";
     public static final String ID_SUBSTITUTION_MARKER = "#i";
     public static final String SENDER_CALLSIGN_SUBSTITUION_MARKER = "#s";
 
@@ -17,6 +18,7 @@ public class SubstitutionValues {
 
     public String uidFromGeoChat;
     public String chatroomFromGeoChat;
+    public String messageIdFromGeoChat;
     public String idFromChat;
     public String senderCallsignFromChat;
     public List<String> uidsFromChatGroup = new ArrayList<>();

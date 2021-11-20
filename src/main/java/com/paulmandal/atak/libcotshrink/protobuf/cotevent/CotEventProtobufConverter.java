@@ -231,6 +231,7 @@ public class CotEventProtobufConverter {
                 String[] geoChatSplit = uid.split("\\.");
                 substitutionValues.uidFromGeoChat = geoChatSplit[1];
                 substitutionValues.chatroomFromGeoChat = geoChatSplit[2];
+                substitutionValues.messageIdFromGeoChat = geoChatSplit[3];
             }
             cotEvent.setUID(uid);
             if (protoCotEvent.getType().equals("")) {
@@ -264,6 +265,7 @@ public class CotEventProtobufConverter {
                 String[] geoChatSplit = uid.split("\\.");
                 substitutionValues.uidFromGeoChat = geoChatSplit[1];
                 substitutionValues.chatroomFromGeoChat = geoChatSplit[2];
+                substitutionValues.messageIdFromGeoChat = geoChatSplit[3];
             }
         }
 

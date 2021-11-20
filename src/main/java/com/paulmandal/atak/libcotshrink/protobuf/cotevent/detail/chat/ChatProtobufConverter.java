@@ -1,6 +1,7 @@
 package com.paulmandal.atak.libcotshrink.protobuf.cotevent.detail.chat;
 
 import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.CHATROOM_SUBSTITUTION_MARKER;
+import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.MESSAGE_ID_SUBSTITUTION_MARKER;
 import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.USER_GROUPS_SUBSTITUTION_MARKER;
 import static com.paulmandal.atak.libcotshrink.protobuf.SubstitutionValues.VALUE_USER_GROUPS;
 
@@ -27,6 +28,7 @@ public class ChatProtobufConverter {
     private static final String KEY_CHATROOM = "chatroom";
     private static final String KEY_ID = "id";
     private static final String KEY_SENDER_CALLSIGN = "senderCallsign";
+    private static final String KEY_MESSAGE_ID = "messageId";
 
     private static final String VALUE_TRUE = "true";
 
@@ -72,6 +74,13 @@ public class ChatProtobufConverter {
                 case KEY_SENDER_CALLSIGN:
                     substitutionValues.senderCallsignFromChat = attribute.getValue();
                     builder.setSenderCallsign(substitutionValues.senderCallsignFromChat);
+                    break;
+                case KEY_MESSAGE_ID:
+                    String messageId = attribute.getValue();
+                    if (messageId.equals(substitutionValues.messageIdFromGeoChat)) {
+                        messageId = MESSAGE_ID_SUBSTITUTION_MARKER;
+                    }
+                    builder.setMessageId(messageId);
                     break;
                 default:
                     throw new UnknownDetailFieldException("Don't know how to handle detail field: chat." + attribute.getName());
@@ -126,6 +135,13 @@ public class ChatProtobufConverter {
         substitutionValues.senderCallsignFromChat = chat.getSenderCallsign();
         if (!StringUtils.isNullOrEmpty(substitutionValues.senderCallsignFromChat)) {
             chatDetail.setAttribute(KEY_SENDER_CALLSIGN, substitutionValues.senderCallsignFromChat);
+        }
+        String messageId = chat.getMessageId();
+        if (!StringUtils.isNullOrEmpty(messageId)) {
+            if (messageId.equals(MESSAGE_ID_SUBSTITUTION_MARKER)) {
+                messageId = substitutionValues.messageIdFromGeoChat;
+            }
+            chatDetail.setAttribute(KEY_MESSAGE_ID, messageId);
         }
 
         mChatGroupProtobufConverter.maybeAddChatGroup(chatDetail, chat.getChatGroup(), substitutionValues);
