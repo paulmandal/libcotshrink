@@ -1,5 +1,5 @@
 buildscript {
-    ext.ATAK_VERSION = "4.4.0"
+    ext.ATAK_VERSION = "4.6.0"
 
     def takdevVersion = '2.3.1'
 
@@ -14,7 +14,7 @@ buildscript {
 
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 
     dependencies {
@@ -31,7 +31,7 @@ plugins {
 
 ext {
     PUBLISH_GROUP_ID = 'com.paulmandal.atak'
-    PUBLISH_VERSION = '1.0.1'
+    PUBLISH_VERSION = '1.0.2'
     PUBLISH_ARTIFACT_ID = 'libcotshrink'
 }
 
@@ -43,12 +43,12 @@ apply from: "${rootProject.projectDir}/scripts/publish-root.gradle"
 apply from: "${rootProject.projectDir}/scripts/publish-module.gradle"
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 32
     buildToolsVersion "30.0.3"
 
     defaultConfig {
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdkVersion 32
         versionCode 1
         versionName "0.1"
 
@@ -126,7 +126,7 @@ protobuf {
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 }
 

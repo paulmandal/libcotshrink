@@ -12,7 +12,7 @@ Edit your `app/build.gradle` and add the library to your app/plugin's dependenci
 dependencies {
     ...
 
-    implementation 'com.paulmandal.atak:libcotshrink:1.0.1'
+    implementation 'com.paulmandal.atak:libcotshrink:1.0.2'
 }
 
 ```
@@ -73,10 +73,27 @@ Using the `CotShrinker.toByteArrayLossy(CotEvent)` method will cause loss of pre
 
 # Contributing / TODO
 
+To test your changes, make sure your app is in the same parent directory as your `libcotshrink` directory. In your app's `settings.gradle`:
+
+```groovy
+include ':libcotshrink'
+project(':libcotshrink').projectDir = file('../libcotshrink')
+```
+
+and in your app's `build.gradle` include the dependency like this:
+
+```groovy
+dependencies {
+    ...
+    implementation project(':libcotshrink')
+}
+```
+
+You will need to comment out all the `build.gradle` lines in `libcotshrink` related to publishing to Maven, you can just click `Try Again` in Android Studio repeatedly and comment out each line that causes an issue.
+
 * Figure out how to get unit tests working, they rely `CotEvent.parse()` but this does not seem to work during unit tests
 * Use `sint32` instead of `int32` for fields that can be negative
 * Support more message types (please identify them and how they are generated in Issues)
-* Make more fields into enums (e.g. `CotEvent.type`)
 * Create detail subobjects for each set of detail fields used by a specific message type, e.g. the detail field should have objs like GeoChatDetail, PliDetail, etc. that are composed of the existing detail fields. This MAY save some space, need to test with PLI or something like that first.
 * Shrink messages further
 * Use Dagger 2
