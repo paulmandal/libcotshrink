@@ -12,7 +12,7 @@ Edit your `app/build.gradle` and add the library to your app/plugin's dependenci
 dependencies {
     ...
 
-    implementation 'com.paulmandal.atak:libcotshrink:1.0.2'
+    implementation 'com.paulmandal.atak:libcotshrink:1.0.3'
 }
 
 ```
