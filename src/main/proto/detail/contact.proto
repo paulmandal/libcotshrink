@@ -10,4 +10,6 @@ message Contact {
   string callsign = 1;
   fixed32 endpointAddr = 2;
   string phone = 3;
+  string emailAddress = 4;
+  bool sipAddress = 5;
 }

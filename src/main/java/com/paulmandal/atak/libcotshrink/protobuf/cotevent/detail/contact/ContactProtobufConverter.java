@@ -18,6 +18,8 @@ public class ContactProtobufConverter {
     private static final String KEY_CALLSIGN = "callsign";
     private static final String KEY_ENDPOINT = "endpoint";
     private static final String KEY_PHONE = "phone";
+    private static final String KEY_EMAIL_ADDRESS = "emailAddress";
+    private static final String KEY_SIP_ADDRESS = "sipAddress";
 
     private static final String FAKE_ENDPOINT_ADDRESS = "0.0.0.0";
     private static final String DEFAULT_CHAT_PORT_AND_PROTO = ":4242:tcp";
@@ -51,6 +53,12 @@ public class ContactProtobufConverter {
                 case KEY_PHONE:
                     builder.setPhone(attribute.getValue());
                     break;
+                case KEY_EMAIL_ADDRESS:
+                    builder.setEmailAddress(attribute.getValue());
+                    break;
+                case KEY_SIP_ADDRESS:
+                    builder.setSipAddress(true);
+                    break;
                 default:
                     throw new UnknownDetailFieldException("Don't know how to handle detail field: contact." + attribute.getName());
             }
@@ -69,10 +77,11 @@ public class ContactProtobufConverter {
             contactDetail.setAttribute(KEY_CALLSIGN, contact.getCallsign());
         }
 
+        String ipAddress = null;
         if (contact.getEndpointAddr() != 0) {
             try {
                 byte[] endpointAddrAsBytes = BigInteger.valueOf(contact.getEndpointAddr()).toByteArray();
-                String ipAddress = InetAddress.getByAddress(endpointAddrAsBytes).getHostAddress();
+                ipAddress = InetAddress.getByAddress(endpointAddrAsBytes).getHostAddress();
                 contactDetail.setAttribute(KEY_ENDPOINT, ipAddress + DEFAULT_CHAT_PORT_AND_PROTO);
             } catch (UnknownHostException e) {
                 e.printStackTrace();
@@ -84,6 +93,14 @@ public class ContactProtobufConverter {
 
         if (!StringUtils.isNullOrEmpty(contact.getPhone())) {
             contactDetail.setAttribute(KEY_PHONE, contact.getPhone());
+        }
+
+        if (!StringUtils.isNullOrEmpty(contact.getEmailAddress())) {
+            contactDetail.setAttribute(KEY_EMAIL_ADDRESS, contact.getEmailAddress());
+        }
+
+        if (contact.getSipAddress() && ipAddress != null) {
+            contactDetail.setAttribute(KEY_SIP_ADDRESS, ipAddress);
         }
 
         cotDetail.addChild(contactDetail);
