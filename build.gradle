@@ -41,6 +41,8 @@ apply from: "${rootProject.projectDir}/scripts/publish-root.gradle"
 apply from: "${rootProject.projectDir}/scripts/publish-module.gradle"
 
 android {
+    namespace "com.paulmandal.atak.libcotshrink"
+
     compileSdkVersion 33
     buildToolsVersion "30.0.3"
 
